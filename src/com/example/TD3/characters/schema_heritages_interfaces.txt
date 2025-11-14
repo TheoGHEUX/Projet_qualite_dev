@@ -1,0 +1,20 @@
+Interfaces :
+    - Fighter
+    - Leader
+    - Worker
+
+Héritages :
+    Characters (Abstract) :
+        - Gauls (Abstract) :
+            -- Merchant --> Worker
+            -- Innkeeper --> Worker
+            -- Druid --> Worker, Leader, Fighter
+            -- Blacksmith --> Worker
+        - Romans (Abstract) :
+            -- Legionnaires --> Fighter
+            -- Prefect --> Leader
+            -- General --> Leader, Fighter
+        - Creatures (Abstract) :
+            -- Werewolf --> Fighter
+
+
