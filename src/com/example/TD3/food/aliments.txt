@@ -1,0 +1,30 @@
+Type de nourriture anglais / français :
+- wild_boar (sanglier)
+- passable_fish_fresh (poisson passablement frais)
+- not_fresh_fish (poisson pas frais)
+- mistletoe (gui)
+- lobster (homard)
+- strawberries (fraises)
+- carrots (carrotes)
+- salt (sel)
+- fresh_four-leaf_clover (trèfle à quattre feuilles frais)
+- not_fresh_four-leaf_clover (trèfle à quattre feuilles pas frais)
+- rock_oil (huile de roche)
+- beet_juice (jus de betterave)
+- honey (miel)
+- vin (wine)
+- mead (hydromel)
+- two_heads_unicorn_milk (lait de licorne à deux têtes)
+- Dogmatix_hair (poils d'Idefix)
+- secret_ingredient (ingrédient secret )
+
+Aliments mauvais :
+- passable_fish_fresh (poisson passablement frais)
+
+A ne pas manger consécutivement :
+- mistletoe (gui)
+- strawberries (fraises)
+- carrots (carrotes)
+- fresh_four-leaf_clover (trèfle à quattre feuilles frais)
+- not_fresh_four-leaf_clover (trèfle à quattre feuilles pas frais)
+(par exemple manger strawberries puis mistletoe est mauvais )

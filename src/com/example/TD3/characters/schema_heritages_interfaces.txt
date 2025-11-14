@@ -10,10 +10,12 @@ Héritages :
             -- Innkeeper --> Worker
             -- Druid --> Worker, Leader, Fighter
             -- Blacksmith --> Worker
+            * food --> wild_boar, passable_fish_fresh, wine
         - Romans (Abstract) :
             -- Legionnaires --> Fighter
             -- Prefect --> Leader
             -- General --> Leader, Fighter
+            * food --> wild_boar, honey, wine, mead
         - Creatures (Abstract) :
             -- Werewolf --> Fighter
 
