@@ -1,6 +1,6 @@
 package com.example.TD3.characters;
 
-public class Character {
+public abstract class Character {
     private String name;
     private String sex;
     private double size;
