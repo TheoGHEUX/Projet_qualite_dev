@@ -2,13 +2,13 @@ package com.example.TD3.food;
 
 public class Food {
     private FoodType foodType;
-    private int healtEffect;
+    private int healthEffect;
     private int hungerEffect;
     private boolean isVege;
 
-    public Food(FoodType foodtype, int healtEffect, int hungerEffect, boolean isVege) {
+    public Food(FoodType foodtype, int healthEffect, int hungerEffect, boolean isVege) {
         this.foodType = foodtype;
-        this.healtEffect = healtEffect;
+        this.healthEffect = healthEffect;
         this.hungerEffect = hungerEffect;
         this.isVege = isVege;
     }
@@ -17,8 +17,8 @@ public class Food {
         return foodType;
     }
 
-    public int getHealtEffect() {
-        return healtEffect;
+    public int getHealthEffect() {
+        return healthEffect;
     }
 
     public int getHungerEffect() {
