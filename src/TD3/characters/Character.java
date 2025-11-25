@@ -47,7 +47,7 @@ public abstract class Character {
             this.health = maxHealth;
         }
         else{
-            this.health = health;
+            this.health += health;
         }
         if(this.health <= 0){
             this.decease();
