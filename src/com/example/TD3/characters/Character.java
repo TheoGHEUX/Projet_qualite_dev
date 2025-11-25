@@ -23,6 +23,8 @@ public abstract class Character {
         this.stamina = stamina;
         this.health = health;
         this.hunger = 100;
+        this.belligerence = 0;
+        this.potion_level = 0;
     }
 
     public void fight (Character enemy) {
@@ -42,6 +44,6 @@ public abstract class Character {
     }
 
     public void decease (){
-        
+
     }
 }
