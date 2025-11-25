@@ -4,15 +4,13 @@ public class Food {
     private FoodType foodType;
     private int healtEffect;
     private int hungerEffect;
-    private boolean isFeeding;
-    private boolean isHarmful;
+    private boolean isVege;
 
-    public Food(FoodType foodtype, int healtEffect, int hungerEffect, boolean isFeeding, boolean isHarmful) {
+    public Food(FoodType foodtype, int healtEffect, int hungerEffect, boolean isVege) {
         this.foodType = foodtype;
         this.healtEffect = healtEffect;
         this.hungerEffect = hungerEffect;
-        this.isFeeding = isFeeding;
-        this.isHarmful = isHarmful;
+        this.isVege = isVege;
     }
 
     public FoodType getFoodType() {
@@ -27,11 +25,7 @@ public class Food {
         return hungerEffect;
     }
 
-    public boolean isFeeding() {
-        return isFeeding;
-    }
-
-    public boolean isHarmful() {
-        return isHarmful;
+    public boolean isVege() {
+        return isVege;
     }
 }
