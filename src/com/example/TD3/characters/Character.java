@@ -32,6 +32,8 @@ public abstract class Character {
         this.last_was_vege = false;
     }
 
+    // Méthodes
+
     public void fight (Character enemy) {
 
     }
@@ -40,44 +42,43 @@ public abstract class Character {
         this.health += sum;
     }
 
-    public void eat (Food food){
+    public void updateHealth(int health) {
+        this.health += health;
+        if(this.health <= 0){
+            this.decease();
+        }
+    }
 
-        // Gestion de la faim qui ne peut pas être supérieure à 100
-        if((food.getHungerEffect() + hunger) >= 100){
-            this.hunger = 100;
-        }
-        else{
-            this.hunger += food.getHungerEffect();
-        }
+    public void updateHunger(int hunger) {
+        this.hunger += hunger;
+    }
 
-        // Gestion des végétaux : si deux végétaux d'affilée sont consommés, l'effet de vie est négatif
-        if(food.isVege()){
-            if(this.last_was_vege){
-                this.health -= Math.abs(food.getHealthEffect());
-                if(this.health <= 0){
-                    this.decease();
-                }
-            }
-            else{
-                this.last_was_vege = true;
-                if(this.health + food.getHealthEffect() > this.maxHealth){
-                    this.health = this.maxHealth;
-                }
-                else{
-                    this.health += food.getHealthEffect();
-                }
-            }
-        }
-        else{
-            this.last_was_vege = false;
-            if(this.health + food.getHealthEffect() > this.maxHealth){
-                this.health = this.maxHealth;
-            }
-            else{
-                this.health += food.getHealthEffect();
-            }
+    public void eat(Food food){
+        // Gestion de la faim
+        if(hunger + food.getHungerEffect() >= 100){
+            hunger = 100;
+        } else {
+            updateHunger(food.getHungerEffect());
         }
 
+        // Gestion de la santé
+        int effect = food.getHealthEffect();
+        if(food.isVege() && last_was_vege){
+            effect = -Math.abs(effect);
+        }
+
+        if(effect > 0){
+            if(health + effect > maxHealth){
+                health = maxHealth;
+            } else {
+                updateHealth(effect);
+            }
+        } else {
+            updateHealth(effect);
+        }
+
+        // Gestion des végétaux
+        last_was_vege = food.isVege();
     }
 
     public void drinkMagicPotion (int doses){
@@ -86,4 +87,55 @@ public abstract class Character {
 
     public void decease (){
     }
+
+    // Getters
+
+    public String getName() {
+        return name;
+    }
+
+    public Sex getSex(){
+        return sex;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public int getStrength() {
+        return strength;
+    }
+
+    public int getStamina() {
+        return stamina;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public int getMaxHealth() {
+        return maxHealth;
+    }
+
+    public int getHunger() {
+        return hunger;
+    }
+
+    public int getBelligerence() {
+        return belligerence;
+    }
+
+    public int getPotion_level() {
+        return potion_level;
+    }
+
+    public boolean getLast_was_vege() {
+        return last_was_vege;
+    }
+
 }
