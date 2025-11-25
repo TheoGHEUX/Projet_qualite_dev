@@ -4,44 +4,41 @@ public class FoodStats {
     public static Food newFood(FoodType foodType){
         switch (foodType) {
             case WILD_BOAR:
-                return new Food(foodType, 10, 20, true, false);
+                return new Food(foodType, 10, 20, false);
             case PASSABLE_FRESH_FISH:
-                return new Food(foodType, 10, 20, true, false);
+                return new Food(foodType, 8, 15, false);
             case NOT_FRESH_FISH:
-                return new Food(foodType, 10, 20, true, false);
+                return new Food(foodType, -5, 6, false);
             case MISTLETOE:
-                return new Food(foodType, 10, 20, true, false);
+                return new Food(foodType, 5, 8, true);
             case LOBSTER:
-                return new Food(foodType, 10, 20, true, false);
-            case STRAWBERRY:
-                return new Food(foodType, 10, 20, true, false);
+                return new Food(foodType, 12, 18, false);
+            case STRAWBERRY, BEET_JUICE:
+                return new Food(foodType, 6, 12, true);
             case CARROT:
-                return new Food(foodType, 10, 20, true, false);
+                return new Food(foodType, 5, 10, true);
             case SALT:
-                return new Food(foodType, 10, 20, true, false);
+                return new Food(foodType, 0, 1, false);
             case FRESH_FOUR_LEAF_CLOVER:
-                return new Food(foodType, 10, 20, true, false);
+                return new Food(foodType, 7, 10, true);
             case NOT_FRESH_FOUR_LEAF_CLOVER:
-                return new Food(foodType, 10, 20, true, false);
+                return new Food(foodType, 3, 5, true);
             case ROCKFISH_OIL:
-                return new Food(foodType, 10, 20, true, false);
-            case BEET_JUICE:
-                return new Food(foodType, 10, 20, true, false);
+                return new Food(foodType, 10, 8, false);
             case HONEY:
-                return new Food(foodType, 10, 20, true, false);
+                return new Food(foodType, 8, 5, false);
             case WINE:
-                return new Food(foodType, 10, 20, true, false);
+                return new Food(foodType, 2, 5, false);
             case MEAD:
-                return new Food(foodType, 10, 20, true, false);
+                return new Food(foodType, 3, 5, false);
             case TWO_HEADS_UNICORN_MILK:
-                return new Food(foodType, 10, 20, true, false);
+                return new Food(foodType, 15, 20, false);
             case DOGMATIX_HAIR:
-                return new Food(foodType, 10, 20, true, false);
+                return new Food(foodType, 1, 1, false);
             case SECRET_INGREDIENT:
-                return new Food(foodType, 10, 20, true, false);
+                return new Food(foodType, 20, 25, false);
             default:
-                return new Food(foodType, 10, 20, true, false);
+                return new Food(foodType, 5, 10, false);
         }
-
     }
 }
