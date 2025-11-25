@@ -14,4 +14,24 @@ public class Food {
         this.isFeeding = isFeeding;
         this.isHarmful = isHarmful;
     }
+
+    public FoodType getFoodType() {
+        return foodType;
+    }
+
+    public int getHealtEffect() {
+        return healtEffect;
+    }
+
+    public int getHungerEffect() {
+        return hungerEffect;
+    }
+
+    public boolean isFeeding() {
+        return isFeeding;
+    }
+
+    public boolean isHarmful() {
+        return isHarmful;
+    }
 }
