@@ -43,7 +43,12 @@ public abstract class Character {
     }
 
     public void updateHealth(int health) {
-        this.health += health;
+        if(this.health + health >= maxHealth){
+            this.health = maxHealth;
+        }
+        else{
+            this.health = health;
+        }
         if(this.health <= 0){
             this.decease();
         }
@@ -55,6 +60,9 @@ public abstract class Character {
         }
         else{
             this.hunger += hunger;
+        }
+        if(this.hunger <= 0){
+            this.decease();
         }
     }
 
