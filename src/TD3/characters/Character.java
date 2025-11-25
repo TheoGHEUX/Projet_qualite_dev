@@ -50,7 +50,12 @@ public abstract class Character {
     }
 
     public void updateHunger(int hunger) {
-        this.hunger += hunger;
+        if(this.hunger + hunger >= 100){
+            this.hunger = 100 ;
+        }
+        else{
+            this.hunger += hunger;
+        }
     }
 
     public void eat(Food food){
