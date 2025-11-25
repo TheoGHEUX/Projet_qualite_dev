@@ -2,8 +2,6 @@ package com.example.TD3.characters.gaul;
 
 import com.example.TD3.enums.Sex;
 
-import java.util.Random;
-
 // Forgerons
 public class Blacksmith extends Gaul {
 
