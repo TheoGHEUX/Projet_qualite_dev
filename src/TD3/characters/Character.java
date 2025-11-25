@@ -151,4 +151,12 @@ public abstract class Character {
         return lastWasVegetal;
     }
 
+    public void showCharacterVitalData(){
+        System.out.println(this.getName() + " | Health: " + this.getHealth() + "/" + this.maxHealth + " | Hunger: " + this.getHunger() + "%" + " | Stamine: " + this.getStamina() );
+    }
+
+    public void showCharacterInfos(){
+        System.out.println(this.getName() + " | Age: " + this.getAge() + " | Size: " + this.getSize() + "cm" + " | Strength: " + this.getStrength());
+    }
+
 }
