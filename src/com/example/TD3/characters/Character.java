@@ -14,8 +14,8 @@ public abstract class Character {
     protected int maxHealth;
     protected  int hunger;
     protected  int belligerence ;
-    protected  int potion_level;
-    protected  boolean last_was_vege;
+    protected  int potionLevel;
+    protected  boolean lastWasVegetal;
 
     public Character(String name, Sex sex, int size, int age, int strength, int stamina, int health) {
         this.name = name;
@@ -28,8 +28,8 @@ public abstract class Character {
         this.maxHealth = health;
         this.hunger = 100;
         this.belligerence = 0;
-        this.potion_level = 0;
-        this.last_was_vege = false;
+        this.potionLevel = 0;
+        this.lastWasVegetal = false;
     }
 
     // Méthodes
@@ -63,7 +63,7 @@ public abstract class Character {
 
         // Gestion de la santé
         int effect = food.getHealthEffect();
-        if(food.isVege() && last_was_vege){
+        if(food.isVege() && lastWasVegetal){
             effect = -Math.abs(effect);
         }
 
@@ -78,11 +78,11 @@ public abstract class Character {
         }
 
         // Gestion des végétaux
-        last_was_vege = food.isVege();
+        lastWasVegetal = food.isVege();
     }
 
     public void drinkMagicPotion (int doses){
-        this.potion_level += doses;
+        this.potionLevel += doses;
     }
 
     public void decease (){
@@ -131,11 +131,11 @@ public abstract class Character {
     }
 
     public int getPotion_level() {
-        return potion_level;
+        return potionLevel;
     }
 
     public boolean getLast_was_vege() {
-        return last_was_vege;
+        return lastWasVegetal;
     }
 
 }
