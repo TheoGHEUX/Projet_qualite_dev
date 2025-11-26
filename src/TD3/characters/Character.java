@@ -6,16 +6,18 @@ import TD3.food.Food;
 public abstract class Character {
     protected String name;
     protected Sex sex;
-    protected  int size;
-    protected  int age;
-    protected  int strength;
-    protected  int stamina;
-    protected  int health;
+    protected int size;
+    protected int age;
+    protected int strength;
+    protected int stamina;
+    protected int health;
     protected int maxHealth;
-    protected  int hunger;
-    protected  int belligerence ;
-    protected  int potionLevel;
-    protected  boolean lastWasVegetal;
+    protected int hunger;
+    protected int belligerence ;
+    protected int potionLevel;
+    protected boolean lastWasVegetal;
+    protected String nationality; // Gaul, Roman ou Creature
+    protected String type; // correspond au métier d'un humain ou à l'espèce d'une créature
 
     public Character(String name, Sex sex, int size, int age, int strength, int stamina, int health) {
         this.name = name;
@@ -30,6 +32,8 @@ public abstract class Character {
         this.belligerence = 0;
         this.potionLevel = 0;
         this.lastWasVegetal = false;
+        this.nationality = "Undefined";
+        this.type = "Undefined";
     }
 
     // Méthodes
@@ -143,12 +147,20 @@ public abstract class Character {
         return belligerence;
     }
 
-    public int getPotion_level() {
+    public int getPotionLevel() {
         return potionLevel;
     }
 
-    public boolean getLast_was_vege() {
+    public boolean getLastWasVegetal() {
         return lastWasVegetal;
+    }
+
+    public String getNationality() {
+        return nationality;
+    }
+
+    public String getType() {
+        return type;
     }
 
     public void showCharacterVitalData(){
@@ -156,7 +168,7 @@ public abstract class Character {
     }
 
     public void showCharacterInfos(){
-        System.out.println(this.getName() + " | Age: " + this.getAge() + " | Size: " + this.getSize() + "cm" + " | Strength: " + this.getStrength());
+        System.out.println(this.getName() + " | Nationality: " + this.getNationality() + " | Type: " + this.getType() +" | Age: " + this.getAge() + " | Size: " + this.getSize() + "cm" + " | Strength: " + this.getStrength());
     }
 
 }

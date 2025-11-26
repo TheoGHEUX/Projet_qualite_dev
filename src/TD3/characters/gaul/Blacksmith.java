@@ -8,10 +8,12 @@ public class Blacksmith extends Gaul {
     // Constructeur personnalisé
     public Blacksmith(String name, Sex sex, int size, int age, int strength, int stamina, int health) {
         super(name, sex, size, age, strength, stamina, health);
+        this.type = "Blacksmith";
     }
 
     // Constructeur avec des stats par défaut
     public Blacksmith(String name, Sex sex) {
         super(name, sex,randomBetween(170,185),randomBetween(30,50),75,65,120);
+        this.type = "Blacksmith";
     }
 }
