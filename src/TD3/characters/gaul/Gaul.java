@@ -17,7 +17,7 @@ public abstract class Gaul extends Character {
 
     // Constructeur avec des stats par défaut pour un citoyen sans métier implémenté par une classe
     public Gaul(String name, Sex sex) {
-        super(name, sex,randomBetween(150,200),randomBetween(20,90),40,40,100);
+        super(name, sex,randomBetween(150,200),randomBetween(20,90),10,40,100);
         this.nationality = "Gaul";
     }
 

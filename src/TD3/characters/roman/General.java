@@ -16,7 +16,7 @@ public class General extends Roman implements Leader, Fighter {
 
     // Constructeur avec des stats par défaut
     public General(String name, Sex sex) {
-        super(name, sex, randomBetween(175,185), randomBetween(45,60),50,55,110);
+        super(name, sex, randomBetween(175,185), randomBetween(45,60),15,55,110);
         this.type = "General";
     }
 

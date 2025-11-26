@@ -19,7 +19,7 @@ public class Druid extends Gaul implements Worker, Leader, Fighter {
 
     // Constructeur avec des stats par défaut
     public Druid(String name, Sex sex) {
-        super(name, sex, randomBetween(165,180), randomBetween(50,90),35,65,100);
+        super(name, sex, randomBetween(165,180), randomBetween(50,90),10,65,100);
         this.type = "Druid";
     }
 

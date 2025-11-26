@@ -14,7 +14,7 @@ public class Innkeeper extends Gaul implements Worker {
 
     // Constructeur avec des stats par défaut
     public Innkeeper(String name, Sex sex) {
-        super(name, sex, randomBetween(165,185), randomBetween(30,50),50,70,110);
+        super(name, sex, randomBetween(165,185), randomBetween(30,50),10,70,110);
         this.type = "Innkeeper";
     }
 

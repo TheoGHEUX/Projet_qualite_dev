@@ -14,7 +14,7 @@ public class Blacksmith extends Gaul implements Worker {
 
     // Constructeur avec des stats par défaut
     public Blacksmith(String name, Sex sex) {
-        super(name, sex,randomBetween(170,185),randomBetween(30,50),75,65,120);
+        super(name, sex,randomBetween(170,185),randomBetween(30,50),15,65,120);
         this.type = "Blacksmith";
     }
 

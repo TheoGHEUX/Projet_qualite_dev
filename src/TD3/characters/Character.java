@@ -8,7 +8,7 @@ public abstract class Character {
     protected Sex sex;
     protected int size;
     protected int age;
-    protected int strength;
+    protected int strength; // Dégats de base d'une attaque
     protected int stamina;
     protected int health;
     protected int maxHealth;
@@ -16,6 +16,7 @@ public abstract class Character {
     protected int belligerence ;
     protected int potionLevel;
     protected boolean lastWasVegetal;
+    protected boolean isAlive;
     protected String nationality; // Gaul, Roman ou Creature
     protected String type; // correspond au métier d'un humain ou à l'espèce d'une créature
 
@@ -32,18 +33,23 @@ public abstract class Character {
         this.belligerence = 0;
         this.potionLevel = 0;
         this.lastWasVegetal = false;
+        this.isAlive = true;
         this.nationality = "Undefined";
         this.type = "Undefined";
     }
 
     // Méthodes
 
+    // Fight => attaque de base (Dégâts : force du perso, Coût : 10 de stamina)
     public void fight (Character enemy) {
-
-    }
-
-    public void beTreated (int sum){
-        this.health += sum;
+        if((this.stamina - 10) < 0){
+            System.out.println(this.name + " can't attack " + enemy.name + " | Not enough stamina !" );
+        }
+        else {
+            System.out.println(this.name + " attacks " + enemy.name + " | Damage: " + this.strength + " | Remaining health: " + (enemy.getHealth()-this.strength));
+            enemy.updateHealth(-this.strength);
+            this.stamina -= 10 ;
+        }
     }
 
     public void updateHealth(int health) {
@@ -103,6 +109,8 @@ public abstract class Character {
     }
 
     public void decease (){
+        System.out.println(this.name + " died");
+        this.isAlive = false;
     }
 
     // Getters
@@ -163,8 +171,12 @@ public abstract class Character {
         return type;
     }
 
+    public boolean isAlive() {
+        return isAlive;
+    }
+
     public void showCharacterVitalData(){
-        System.out.println(this.getName() + " | Health: " + this.getHealth() + "/" + this.maxHealth + " | Hunger: " + this.getHunger() + "%" + " | Stamine: " + this.getStamina() );
+        System.out.println(this.getName() + " | Health: " + this.getHealth() + "/" + this.maxHealth + " | Hunger: " + this.getHunger() + "%" + " | Stamina: " + this.getStamina() + " | Alive: " + this.isAlive());
     }
 
     public void showCharacterInfos(){

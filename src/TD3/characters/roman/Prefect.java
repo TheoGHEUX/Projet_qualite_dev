@@ -15,7 +15,7 @@ public class Prefect extends Roman implements Leader {
 
     // Constructeur avec des stats par défaut
     public Prefect(String name, Sex sex) {
-        super(name, sex, randomBetween(175,185), randomBetween(35,50),70,60,100);
+        super(name, sex, randomBetween(175,185), randomBetween(35,50),15,60,100);
         this.type = "Prefect";
     }
 

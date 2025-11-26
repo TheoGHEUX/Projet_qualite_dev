@@ -18,7 +18,7 @@ public class Creature extends Character {
 
     // Constructeur avec des stats par défaut pour une créature sans espèce implémentée par une classe
     public Creature(String name, Sex sex) {
-        super(name, sex,randomBetween(150,200),randomBetween(20,90),40,40,100);
+        super(name, sex,randomBetween(150,200),randomBetween(20,90),10,40,100);
         this.nationality = "Creature";
     }
 

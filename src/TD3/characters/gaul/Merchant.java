@@ -14,7 +14,7 @@ public class Merchant extends Gaul implements Worker {
 
     // Constructeur avec des stats par défaut
     public Merchant(String name, Sex sex) {
-        super(name, sex, randomBetween(160,175), randomBetween(30,60),40,60,100);
+        super(name, sex, randomBetween(160,175), randomBetween(30,60),10,60,100);
         this.type = "Merchant";
     }
 
