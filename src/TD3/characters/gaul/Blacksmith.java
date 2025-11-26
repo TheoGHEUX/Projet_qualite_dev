@@ -1,9 +1,10 @@
 package TD3.characters.gaul;
 
 import TD3.enums.Sex;
+import TD3.interfaces.Worker;
 
 // Forgerons
-public class Blacksmith extends Gaul {
+public class Blacksmith extends Gaul implements Worker {
 
     // Constructeur personnalisé
     public Blacksmith(String name, Sex sex, int size, int age, int strength, int stamina, int health) {
@@ -15,5 +16,9 @@ public class Blacksmith extends Gaul {
     public Blacksmith(String name, Sex sex) {
         super(name, sex,randomBetween(170,185),randomBetween(30,50),75,65,120);
         this.type = "Blacksmith";
+    }
+
+    public void work() {
+        System.out.println("Blacksmith" + this.name + " works");
     }
 }

@@ -1,9 +1,10 @@
 package TD3.characters.gaul;
 
 import TD3.enums.Sex;
+import TD3.interfaces.Worker;
 
 // Gaulois marchants
-public class Merchant extends Gaul{
+public class Merchant extends Gaul implements Worker {
 
     // Constructeur personnalisé
     public Merchant(String name, Sex sex, int size, int age, int strength, int stamina, int health) {
@@ -15,5 +16,9 @@ public class Merchant extends Gaul{
     public Merchant(String name, Sex sex) {
         super(name, sex, randomBetween(160,175), randomBetween(30,60),40,60,100);
         this.type = "Merchant";
+    }
+
+    public void work() {
+        System.out.println("Merchant " + this.name + " works");
     }
 }

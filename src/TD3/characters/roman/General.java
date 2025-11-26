@@ -1,9 +1,12 @@
 package TD3.characters.roman;
 
+import TD3.characters.Character;
 import TD3.enums.Sex;
+import TD3.interfaces.Fighter;
+import TD3.interfaces.Leader;
 
 // Généraux
-public class General extends Roman {
+public class General extends Roman implements Leader, Fighter {
 
     // Constructeur personnalisé
     public General(String name, Sex sex, int size, int age, int strength, int stamina, int health) {
@@ -15,5 +18,13 @@ public class General extends Roman {
     public General(String name, Sex sex) {
         super(name, sex, randomBetween(175,185), randomBetween(45,60),50,55,110);
         this.type = "General";
+    }
+
+    public void lead(Character follower) {
+        System.out.println("General" + this.name + " leads" + follower.getName());
+    }
+
+    public void combat(Character enemy) {
+        System.out.println("Druid" + this.name + " combats" + enemy.getName());
     }
 }

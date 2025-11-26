@@ -1,6 +1,7 @@
 package TD3.interfaces;
 
-public interface Leader {
+import TD3.characters.Character;
 
-    void lead();
+public interface Leader {
+    void lead(Character follower);
 }
