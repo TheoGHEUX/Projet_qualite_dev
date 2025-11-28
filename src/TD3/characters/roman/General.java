@@ -25,6 +25,15 @@ public class General extends Roman implements Leader, Fighter {
     }
 
     public void combat(Character enemy) {
-        System.out.println("Druid" + this.name + " combats" + enemy.getName());
+        int cost = 45;
+        if (this.stamina < cost) {
+            System.out.println("General " + this.name + " n'a pas assez d'endurance pour activer Flammes vitales.");
+            return;
+        }
+        System.out.println("General " + this.name + " utilise Flammes vitales.");
+        this.stamina -= cost;
+        this.stamina += 10;
+        this.strength += 5;
+        System.out.println("General " + this.name + " : stamina actuelle = " + this.stamina + ", force = " + this.strength + ".");
     }
 }
