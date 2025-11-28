@@ -20,6 +20,14 @@ public class Legionary extends Roman implements Fighter {
     }
 
     public void combat(Character enemy) {
-        System.out.println("Legionary" + this.name + " combats" + enemy.getName());
+        if (this.stamina < 40) {
+            System.out.println("Legionary " + this.name + " n'a pas assez d'endurance pour activer Coup décisif.");
+            return;
+        }
+        System.out.println("Werewolf " + this.name + " utilise Coup décisif.");
+        int damage = 40;
+        System.out.println("Legionary " + this.name + "combat" + enemy.getName());
+        enemy.updateHealth(-damage);
+        this.stamina -= 40;
     }
 }

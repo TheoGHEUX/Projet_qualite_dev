@@ -23,4 +23,3 @@ public class Werewolf extends Creature implements Fighter {
         System.out.println("Werewolf" + this.name + " combats" + enemy.getName());
     }
 }
-

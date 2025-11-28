@@ -28,4 +28,18 @@ public class Place {
         return surface;
     }
 
+
+    public List<Character> getThe_characters_present() {
+        return the_characters_present;
+    }
+    public String[] getThe_aliments_present() {
+        return the_aliments_present;
+    }
+
+    public void showPlaceInfos(){
+        System.out.println(this.getName() + " | Surface: " + this.getSurface() + " | liste des personnages: " + this.getThe_characters_present() + " | Liste des aliments: " + this.getThe_aliments_present());
+    }
+
+
+
 }
