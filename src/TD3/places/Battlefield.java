@@ -1,6 +1,8 @@
 package TD3.places;
 
 import TD3.characters.Character;
+import TD3.food.Food;
+
 //champ de bataille
 public class Battlefield extends Place {
 
@@ -9,9 +11,7 @@ public class Battlefield extends Place {
     }
 
     public boolean canAccept(Character character) {
-        // Accepte tous types de personnages
-        return true;
+        return false;
     }
-
 
 }
