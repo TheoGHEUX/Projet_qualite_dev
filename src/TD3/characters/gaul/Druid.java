@@ -32,7 +32,15 @@ public class Druid extends Gaul implements Worker, Leader, Fighter {
     }
 
     public void combat(Character enemy) {
-        System.out.println("Druid" + this.name + " combats" + enemy.getName());
+        if (this.stamina < 35) {
+            System.out.println("Druid " + this.name + " n'a pas assez d'endurance pour activer cette attaque");
+        }
+        int stealRequested = randomBetween(5, 35);
+        int stealActual = Math.min(stealRequested, enemy.getHealth());
+        System.out.println("Druid " + this.name + " vole " + stealActual + " PV.");
+        enemy.updateHealth(-stealActual);
+        this.updateHealth(stealActual);
+        this.stamina -= 35;
     }
 
 }
