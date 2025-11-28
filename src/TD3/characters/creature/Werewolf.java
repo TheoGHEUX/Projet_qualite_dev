@@ -20,6 +20,15 @@ public class Werewolf extends Creature implements Fighter {
     }
 
     public void combat(Character enemy) {
-        System.out.println("Werewolf" + this.name + " combats" + enemy.getName());
+        int currentHunger = this.getHunger();
+        if (currentHunger <= 50) {
+            System.out.println("Werewolf " + this.name + " n'a pas assez faim pour activer Contrainte infinie");
+            return;
+        }
+        System.out.println("Werewolf " + this.name + " utilise Contrainte infinie.");
+        int hungerCost = 50;
+        System.out.println("Werewolf " + this.name + " combats " + enemy.getName());
+        enemy.updateHealth(-50);
+        updateHunger(-hungerCost);
     }
 }
