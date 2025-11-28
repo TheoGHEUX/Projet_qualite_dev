@@ -12,4 +12,6 @@ public class Battlefield extends Place {
         // Accepte tous types de personnages
         return true;
     }
+
+
 }

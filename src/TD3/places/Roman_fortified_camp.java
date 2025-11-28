@@ -13,7 +13,7 @@ public class Roman_fortified_camp extends Place_with_clan_chief {
 
     public boolean canAccept(Character character) {
         // Accepte seulement les combattants romains et les créatures magiques
-        return ((character instanceof Roman))        // ############# conditions à rajouter est combattants
+        return ((character instanceof Roman))        // ############# conditions à rajouter : est combattants
                 || (character instanceof Creature);
     }
 }
