@@ -12,6 +12,7 @@ public abstract class Character {
     protected int stamina;
     protected int health;
     protected int maxHealth;
+    protected int maxStamina ;
     protected int hunger;
     protected int belligerence ;
     protected int potionLevel;
@@ -29,6 +30,7 @@ public abstract class Character {
         this.stamina = stamina;
         this.health = health;
         this.maxHealth = health;
+        this.maxStamina = stamina;
         this.hunger = 100;
         this.belligerence = 0;
         this.potionLevel = 0;
@@ -42,14 +44,23 @@ public abstract class Character {
 
     // Fight => attaque de base (Dégâts : force du perso, Coût : 10 de stamina)
     public void fight (Character enemy) {
-        if((this.stamina - 10) < 0){
-            System.out.println(this.name + " can't attack " + enemy.name + " | Not enough stamina !" );
+        if(this.isAlive || enemy.isAlive) {
+            if(!this.asEnoughStamina(-10)){
+                System.out.println(this.name + " can't use this attack ! | Not enough stamina !" );
+            }
+            else {
+                System.out.println(this.name + " attacks " + enemy.name + " | Damage: " + this.strength + " | Remaining health: " + (enemy.getHealth()-this.strength));
+                enemy.updateHealth(-this.strength);
+                this.updateStamina(-10);
+            }
         }
-        else {
-            System.out.println(this.name + " attacks " + enemy.name + " | Damage: " + this.strength + " | Remaining health: " + (enemy.getHealth()-this.strength));
-            enemy.updateHealth(-this.strength);
-            this.stamina -= 10 ;
+        else if(this.isAlive) {
+            System.out.println(this.name + " can't attack ! | The enemy is already dead ! " );
         }
+        else{
+            System.out.println(this.name + " can't attack ! | He is dead :( " );
+        }
+
     }
 
     public void updateHealth(int health) {
@@ -74,6 +85,26 @@ public abstract class Character {
         if(this.hunger <= 0){
             this.decease();
         }
+    }
+
+    // Si stamina < 0, toujours utiliser cette méthode après avoir si this.asEnoughStamina !!
+    public void updateStamina(int stamina) {
+        if (this.stamina + stamina < 0) {
+            throw new IllegalArgumentException(this.name + " can't have a negative stamina !");
+        }
+        else if(this.stamina + stamina >= maxStamina){
+            this.stamina = maxStamina;
+        }
+        else{
+            this.stamina += stamina;
+        }
+    }
+
+    public boolean asEnoughStamina(int cout_stamina){
+        if (cout_stamina > 0) {
+            throw new IllegalArgumentException("Le coût de stamina doit être un nombre négatif ou nul !");
+        }
+        return this.stamina + cout_stamina >= 0;
     }
 
     public void eat(Food food){
@@ -147,6 +178,10 @@ public abstract class Character {
         return maxHealth;
     }
 
+    public int getMaxStamina() {
+        return maxStamina;
+    }
+
     public int getHunger() {
         return hunger;
     }
@@ -176,7 +211,7 @@ public abstract class Character {
     }
 
     public void showCharacterVitalData(){
-        System.out.println(this.getName() + " | Health: " + this.getHealth() + "/" + this.maxHealth + " | Hunger: " + this.getHunger() + "%" + " | Stamina: " + this.getStamina() + " | Alive: " + this.isAlive());
+        System.out.println(this.getName() + " | Health: " + this.getHealth() + "/" + this.maxHealth + " | Hunger: " + this.getHunger() + "%" + " | Stamina: " + this.getStamina() + "/" + this.maxStamina + " | Alive: " + this.isAlive());
     }
 
     public void showCharacterInfos(){

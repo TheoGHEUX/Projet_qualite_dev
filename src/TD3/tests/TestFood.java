@@ -10,7 +10,7 @@ class FoodTest {
 
     @Test
     void testConstructorAndGetters() {
-        Food food = new Food(FoodType.WILD_BOAR, 10, 20, false);
+        Food food = new Food(FoodType.WILD_BOAR, 10, 20, 30,false);
 
         assertEquals(FoodType.WILD_BOAR, food.getFoodType());
         assertEquals(10, food.getHealthEffect());

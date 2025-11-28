@@ -4,9 +4,10 @@ public class Food {
     private FoodType foodType;
     private int healthEffect;
     private int hungerEffect;
+    private int staminaEffect;
     private boolean isVege;
 
-    public Food(FoodType foodtype, int healthEffect, int hungerEffect, boolean isVege) {
+    public Food(FoodType foodtype, int healthEffect, int hungerEffect, int staminaEffect, boolean isVege) {
         this.foodType = foodtype;
         this.healthEffect = healthEffect;
         this.hungerEffect = hungerEffect;
@@ -27,5 +28,9 @@ public class Food {
 
     public boolean isVege() {
         return isVege;
+    }
+
+    public int getStaminaEffect() {
+        return staminaEffect;
     }
 }
