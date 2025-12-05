@@ -12,7 +12,7 @@ import java.awt.*;
 public class Druid extends Gaul implements Worker, Leader, Fighter {
 
     // Constructeur personnalisé
-    public Druid(String name, Sex sex, int size, int age, int strength, int stamina, int health) {
+    public Druid(String name, Sex sex, int size, int age, int strength, int stamina, double health) {
         super(name, sex, size, age, strength, stamina, health);
         this.type = "Druid";
     }

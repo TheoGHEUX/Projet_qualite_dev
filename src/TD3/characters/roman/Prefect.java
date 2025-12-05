@@ -8,7 +8,7 @@ import TD3.interfaces.Leader;
 public class Prefect extends Roman implements Leader {
 
     // Constructeur personnalisé
-    public Prefect(String name, Sex sex, int size, int age, int strength, int stamina, int health) {
+    public Prefect(String name, Sex sex, int size, int age, int strength, int stamina, double health) {
         super(name, sex, size, age, strength, stamina, health);
         this.type = "Prefect";
     }

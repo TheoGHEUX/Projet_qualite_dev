@@ -8,7 +8,7 @@ import TD3.interfaces.Fighter;
 public class Legionary extends Roman implements Fighter {
 
     // Constructeur personnalisé
-    public Legionary(String name, Sex sex, int size, int age, int strength, int stamina, int health) {
+    public Legionary(String name, Sex sex, int size, int age, int strength, int stamina, double health) {
         super(name, sex, size, age, strength, stamina, health);
         this.type = "Legionary";
     }
