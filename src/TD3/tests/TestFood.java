@@ -1,7 +1,7 @@
 package TD3.tests;
 
 import TD3.food.Food;
-import TD3.food.FoodType;
+import TD3.enums.FoodType;
 import TD3.food.FoodStats;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;

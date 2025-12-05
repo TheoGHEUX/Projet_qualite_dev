@@ -1,5 +1,7 @@
 package TD3.food;
 
+import TD3.enums.FoodType;
+
 public class FoodStats {
     public static Food newFood(FoodType foodType){
         switch (foodType) {

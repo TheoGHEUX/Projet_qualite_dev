@@ -38,7 +38,7 @@ public class Druid extends Gaul implements Worker, Leader, Fighter {
         }
         System.out.println("Druid " + this.name + " utilise Appel de l'étoile.");
         int stealRequested = randomBetween(5, 35);
-        int stealActual = Math.min(stealRequested, enemy.getHealth());
+        double stealActual = Math.min(stealRequested, enemy.getHealth());
         System.out.println("Druid " + this.name + " vole " + stealActual + " PV.");
         enemy.updateHealth(-stealActual);
         this.updateHealth(stealActual);
