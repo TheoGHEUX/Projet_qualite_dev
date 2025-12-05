@@ -8,7 +8,7 @@ import TD3.interfaces.Fighter;
 public class Werewolf extends Creature implements Fighter {
 
     // Constructeur personnalisé
-    public Werewolf(String name, Sex sex, int size, int age, int strength, int stamina, int health) {
+    public Werewolf(String name, Sex sex, int size, int age, int strength, int stamina, double health) {
         super(name, sex, size, age, strength, stamina, health);
         this.type = "Werewolf";
     }

@@ -11,7 +11,7 @@ public abstract class Roman extends Character {
     protected static final Random RANDOM = new Random();
 
     // Constructeur personnalisé pour un citoyen sans métier implémenté par une classe
-    public Roman(String name, Sex sex, int size, int age, int strength, int stamina, int health) {
+    public Roman(String name, Sex sex, int size, int age, int strength, int stamina, double health) {
         super(name, sex, size, age, strength, stamina, health);
         this.nationality = "Roman";
     }

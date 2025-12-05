@@ -10,8 +10,8 @@ public abstract class Character {
     protected int age;
     protected int strength; // Dégats de base d'une attaque
     protected int stamina;
-    protected int health;
-    protected int maxHealth;
+    protected double health;
+    protected double maxHealth;
     protected int hunger;
     protected int belligerence ;
     protected int potionLevel;
@@ -20,7 +20,7 @@ public abstract class Character {
     protected String nationality; // Gaul, Roman ou Creature
     protected String type; // correspond au métier d'un humain ou à l'espèce d'une créature
 
-    public Character(String name, Sex sex, int size, int age, int strength, int stamina, int health) {
+    public Character(String name, Sex sex, int size, int age, int strength, int stamina, double health) {
         this.name = name;
         this.sex = sex;
         this.size = size;
@@ -52,7 +52,7 @@ public abstract class Character {
         }
     }
 
-    public void updateHealth(int health) {
+    public void updateHealth(double health) {
         if(this.health + health >= maxHealth){
             this.health = maxHealth;
         }
@@ -139,11 +139,11 @@ public abstract class Character {
         return stamina;
     }
 
-    public int getHealth() {
+    public double getHealth() {
         return health;
     }
 
-    public int getMaxHealth() {
+    public double getMaxHealth() {
         return maxHealth;
     }
 
