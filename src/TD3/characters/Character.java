@@ -19,7 +19,7 @@ public abstract class Character {
     protected int age; // âge
     protected String nationality; // Gaul, Roman ou Creature
     protected String type; // correspond au métier d'un humain ou à l'espèce d'une créature
-    protected Place place; // lieu d'habitation
+    protected Place place; // lieu qu'il occupe
     // Informations sur les statistiques vitales
     protected int strength; // Dégâts d'une attaque (methode fight())
     protected int baseStrength; // Dégâts de base
