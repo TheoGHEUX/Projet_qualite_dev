@@ -64,7 +64,7 @@ public abstract class Place {
         return the_characters_present.contains(character);
     }
 
-    //SOINS
+    //GESTION DU SOINS
 
     /**
      * Soigne un personnage spécifique d'un montant donné
@@ -92,7 +92,7 @@ public abstract class Place {
     }
 
 
-    //NOURIR
+    //GESTION DU NOURRICEMENT
 
     /**
      * Nourrit un personnage avec un aliment spécifique du lieu
@@ -179,7 +179,7 @@ public abstract class Place {
         return true;
     }
 
-    // ========== GETTERS ==========
+    //GETTERS
 
     public String getName() {
         return name;
