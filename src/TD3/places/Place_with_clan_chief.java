@@ -11,11 +11,9 @@ public abstract class Place_with_clan_chief extends Place {
         if(clan_chief instanceof Leader){
             this.clan_chief = clan_chief;
             clan_chief.modifyCurrentPlace(this);
-            this.numberOfPeople = 1 ;
         }
         else{
             this.clan_chief = null;
-            this.numberOfPeople = 0 ;
             System.out.println("Ce personnage n'est pas autorisé à diriger ! Le lieu a été créé mais n'a pas encore de chef !");
         }
 
@@ -31,7 +29,6 @@ public abstract class Place_with_clan_chief extends Place {
             if(character instanceof Leader){
                 if(!character.isAClanChief()){
                     this.clan_chief = character;
-                    this.numberOfPeople++ ;
                     character.modifyCurrentPlace(this);
                 }
                 else{

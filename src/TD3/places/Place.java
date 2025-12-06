@@ -8,7 +8,6 @@ import java.util.ArrayList;
 public abstract class Place {
     protected String name;
     protected int surface; //superficie
-    protected int numberOfPeople;
     protected ArrayList<Character> the_characters_present;
     protected ArrayList<Food> the_aliments_present;
 
@@ -17,7 +16,6 @@ public abstract class Place {
         this.surface = surface;
         this.the_characters_present = new ArrayList<>();
         this.the_aliments_present = new ArrayList<>();
-        this.numberOfPeople = 0;
     }
 
     public abstract boolean canAccept(Character character);
@@ -43,7 +41,6 @@ public abstract class Place {
         the_characters_present.add(character);
         character.modifyCurrentPlace(this);
         System.out.println(character.getName() + " entre dans " + this.name);
-        this.numberOfPeople++;
         return true;
     }
 
@@ -59,7 +56,6 @@ public abstract class Place {
             return true;
         }
         System.out.println(character.getName() + " n'est pas dans " + this.name);
-        this.numberOfPeople--;
         return false;
     }
 
@@ -208,10 +204,6 @@ public abstract class Place {
 
     public int getNumberOfFood() {
         return the_aliments_present.size();
-    }
-
-    public int getNumberOfPeople() {
-        return numberOfPeople;
     }
 
     // AFFICHAGE
