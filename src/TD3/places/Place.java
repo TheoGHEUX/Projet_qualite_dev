@@ -83,9 +83,9 @@ public abstract class Place {
             return false;
         }
 
-        int oldHealth = character.getHealth();
+        double oldHealth = character.getHealth();
         character.updateHealth(healAmount);
-        int newHealth = character.getHealth();
+        double newHealth = character.getHealth();
 
         System.out.println(character.getName() + " a été soigné de " + (newHealth - oldHealth) + " PV dans " + this.name);
         return true;
