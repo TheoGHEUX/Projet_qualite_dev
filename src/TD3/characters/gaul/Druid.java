@@ -2,11 +2,13 @@ package TD3.characters.gaul;
 
 import TD3.characters.Character;
 import TD3.enums.Sex;
+import TD3.food.Food;
 import TD3.interfaces.Fighter;
 import TD3.interfaces.Leader;
 import TD3.interfaces.Worker;
 
-import java.awt.*;
+import java.util.List;
+
 
 // Druides
 public class Druid extends Gaul implements Worker, Leader, Fighter {
@@ -44,5 +46,4 @@ public class Druid extends Gaul implements Worker, Leader, Fighter {
         this.updateHealth(stealActual);
         this.stamina -= 35;
     }
-
 }

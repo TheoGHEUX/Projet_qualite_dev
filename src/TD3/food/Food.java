@@ -3,16 +3,17 @@ package TD3.food;
 import TD3.enums.FoodType;
 
 public class Food {
-    private FoodType foodType;
-    private int healthEffect;
-    private int hungerEffect;
-    private int staminaEffect;
-    private boolean isVege;
+    private final FoodType foodType;
+    private final int healthEffect;
+    private final int hungerEffect;
+    private final int staminaEffect;
+    private final boolean isVege;
 
     public Food(FoodType foodtype, int healthEffect, int hungerEffect, int staminaEffect, boolean isVege) {
         this.foodType = foodtype;
         this.healthEffect = healthEffect;
         this.hungerEffect = hungerEffect;
+        this.staminaEffect = staminaEffect;
         this.isVege = isVege;
     }
 

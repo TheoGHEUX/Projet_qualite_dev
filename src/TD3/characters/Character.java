@@ -1,24 +1,44 @@
 package TD3.characters;
 
+import TD3.enums.PotionEffect;
 import TD3.enums.Sex;
 import TD3.food.Food;
+import TD3.places.Place;
+import TD3.potion.Potion;
+
+import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public abstract class Character {
-    protected String name;
-    protected Sex sex;
-    protected int size;
-    protected int age;
-    protected int strength; // Dégats de base d'une attaque
-    protected int stamina;
-    protected double health;
-    protected double maxHealth;
-    protected int hunger;
-    protected int belligerence ;
-    protected int potionLevel;
-    protected boolean lastWasVegetal;
-    protected boolean isAlive;
+    // Informations personnelles
+    protected String name; // nom
+    protected Sex sex; // sexe
+    protected int size; // taille (en cm)
+    protected int age; // âge
     protected String nationality; // Gaul, Roman ou Creature
     protected String type; // correspond au métier d'un humain ou à l'espèce d'une créature
+    protected Place place; // lieu d'habitation
+    // Informations sur les statistiques vitales
+    protected int strength; // Dégâts d'une attaque (methode fight())
+    protected int baseStrength; // Dégâts de base
+    protected int stamina; // énergie
+    protected int maxStamina; // énergie max
+    protected double health; // vie
+    protected double maxHealth; // vie max
+    protected int hunger; // faim
+    protected boolean isAlive; // est vivant
+    // Informations concernant les potions
+    protected int potionLevel; // potionLevel >= 4 signifie qu'il possède les effets de force et invincibilité en permanence
+    protected boolean isInvincible; // est invincible => sa vie ne peut pas diminuer
+    protected List<PotionEffect> characterPotionEffectsTemp = new ArrayList<PotionEffect>(); // effets de potions temporaires
+    protected List<PotionEffect> characterPotionEffectsPerm = new ArrayList<PotionEffect>(); // effets de potions permanents
+    private static final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor(); // Pour la gestion de drinkMagicPotion()
+    protected boolean isStatue ; // est une statue (a bu trop de potion), implique qu'il est mort
+    // Autres
+    protected boolean lastWasVegetal; // le dernier aliment qu'il a mangé est végétal
+    protected int belligerence ; // en conflit
 
     public Character(String name, Sex sex, int size, int age, int strength, int stamina, double health) {
         this.name = name;
@@ -26,7 +46,9 @@ public abstract class Character {
         this.size = size;
         this.age = age;
         this.strength = strength;
+        this.baseStrength = strength;
         this.stamina = stamina;
+        this.maxStamina = stamina;
         this.health = health;
         this.maxHealth = health;
         this.hunger = 100;
@@ -36,6 +58,8 @@ public abstract class Character {
         this.isAlive = true;
         this.nationality = "Undefined";
         this.type = "Undefined";
+        this.isInvincible = false;
+        this.isStatue = false;
     }
 
     // Méthodes
@@ -43,37 +67,38 @@ public abstract class Character {
     // Fight => attaque de base (Dégâts : force du perso, Coût : 10 de stamina)
     public void fight (Character enemy) {
         if((this.stamina - 10) < 0){
-            System.out.println(this.name + " can't attack " + enemy.name + " | Not enough stamina !" );
+            System.out.println(this.name + " ne peut pas attaquer " + enemy.name + " | Pas assez d'énergie !" );
         }
         else {
-            System.out.println(this.name + " attacks " + enemy.name + " | Damage: " + this.strength + " | Remaining health: " + (enemy.getHealth()-this.strength));
+            System.out.println(this.name + " attaque " + enemy.name + " | Dégâts: " + this.strength + " | Vie restante: " + (enemy.getHealth()-this.strength));
             enemy.updateHealth(-this.strength);
             this.stamina -= 10 ;
         }
     }
 
     public void updateHealth(double health) {
-        if(this.health + health >= maxHealth){
-            this.health = maxHealth;
+        if(this.isInvincible){
+            return ;
         }
-        else{
-            this.health += health;
-        }
-        if(this.health <= 0){
+
+        this.health = Math.min(maxHealth, Math.max(0, this.health + health));
+
+        if(this.health == 0){
             this.decease();
         }
     }
 
     public void updateHunger(int hunger) {
-        if(this.hunger + hunger >= 100){
-            this.hunger = 100 ;
-        }
-        else{
-            this.hunger += hunger;
-        }
+
+        this.hunger = Math.min(100, Math.max(0, this.hunger + hunger));
+
         if(this.hunger <= 0){
             this.decease();
         }
+    }
+
+    public void updateStamina(int stamina) {
+        this.stamina = Math.min(this.maxStamina, Math.max(0, this.stamina + stamina));
     }
 
     public void eat(Food food){
@@ -104,12 +129,86 @@ public abstract class Character {
         lastWasVegetal = food.isVege();
     }
 
-    public void drinkMagicPotion (int doses){
-        this.potionLevel += doses;
+    public void drinkMagicPotion (Potion potion){
+        if (potion.isEmpty()){
+            System.out.println("La potion est vide ! ");
+            return;
+        }
+
+        potion.takeOneDose();
+        if (potion.isNourishing()){
+            this.updateHealth(potion.getHealthEffect());
+            this.updateHunger(potion.getHungerEffect());
+            this.updateStamina(potion.getStaminaEffect());
+        }
+
+        // Si la potion n'est pas magique :
+        if(!potion.isMagicPotion()){
+            return;
+        }
+
+        // Si la potion est magique :
+
+        // Si le personnage n'a pas les effets permanents:
+        if(!this.characterPotionEffectsPerm.contains(PotionEffect.SUPER_STRENGTH)){
+            // Si le personnage n'a pas les effets temporaires :
+            if(!this.characterPotionEffectsTemp.contains(PotionEffect.SUPER_STRENGTH)){
+                this.strength = baseStrength * 3 ;
+                this.isInvincible = true;
+                this.characterPotionEffectsTemp.add(PotionEffect.SUPER_STRENGTH);
+                this.characterPotionEffectsTemp.add(PotionEffect.INVINCIBILITY);
+            }
+            // Si le personnage n'atteint pas le seuil pour passer d'effet temporaire à permanent :
+            if(this.potionLevel + 1 < 4){
+                this.potionLevel += 1 ;
+                scheduler.schedule(() -> {
+                    synchronized (this) {
+                        if (this.potionLevel < 4) {
+                            this.potionLevel -= 1;
+                            if (this.potionLevel <= 0) {
+                                this.strength = baseStrength;
+                                this.isInvincible = false;
+                                this.characterPotionEffectsTemp.remove(PotionEffect.SUPER_STRENGTH);
+                                this.characterPotionEffectsTemp.remove(PotionEffect.INVINCIBILITY);
+                            }
+                        }
+                    }
+                }, 3, TimeUnit.SECONDS);
+            }
+            // Si les effets deviennent permanents :
+            else {
+                this.potionLevel = 4 ;
+                this.characterPotionEffectsPerm.add(PotionEffect.SUPER_STRENGTH);
+                this.characterPotionEffectsTemp.remove(PotionEffect.SUPER_STRENGTH);
+                this.characterPotionEffectsPerm.add(PotionEffect.INVINCIBILITY);
+                this.characterPotionEffectsTemp.remove(PotionEffect.INVINCIBILITY);
+            }
+
+        }
+        // Si la personne avait déjà des effets permanents, il faut s'assurer qu'elle ne boit pas une deuxième marmite (sinon elle se transforme en statue)
+        else {
+            synchronized (this) {
+                if (this.potionLevel < 8) {
+                    this.potionLevel += 1;
+                }
+
+                if (this.potionLevel >= 8) {
+                    if (!this.isStatue) {
+                        this.transformStatue();
+                        this.isStatue = true;
+                    }
+                }
+            }
+        }
+    }
+
+    public void transformStatue(){
+        this.isStatue = true;
+        this.decease();
     }
 
     public void decease (){
-        System.out.println(this.name + " died");
+        System.out.println(this.name + " est mort !");
         this.isAlive = false;
     }
 
@@ -151,12 +250,12 @@ public abstract class Character {
         return hunger;
     }
 
-    public int getBelligerence() {
-        return belligerence;
+    public int potionLevel() {
+        return potionLevel;
     }
 
-    public int getPotionLevel() {
-        return potionLevel;
+    public int getBelligerence() {
+        return belligerence;
     }
 
     public boolean getLastWasVegetal() {
@@ -175,12 +274,19 @@ public abstract class Character {
         return isAlive;
     }
 
+    public List<PotionEffect> getCharacterPotionEffectsTemp() {
+        return characterPotionEffectsTemp;
+    }
+    public List<PotionEffect> getCharacterPotionEffectsPerm() {
+        return characterPotionEffectsPerm;
+    }
+
     public void showCharacterVitalData(){
-        System.out.println(this.getName() + " | Health: " + this.getHealth() + "/" + this.maxHealth + " | Hunger: " + this.getHunger() + "%" + " | Stamina: " + this.getStamina() + " | Alive: " + this.isAlive());
+        System.out.println(this.getName() + " | Vie: " + this.getHealth() + "/" + this.maxHealth + " | Faim: " + this.getHunger() + "%" + " | Energie: " + this.getStamina() + " | Vivant: " + this.isAlive());
     }
 
     public void showCharacterInfos(){
-        System.out.println(this.getName() + " | Nationality: " + this.getNationality() + " | Type: " + this.getType() +" | Age: " + this.getAge() + " | Size: " + this.getSize() + "cm" + " | Strength: " + this.getStrength());
+        System.out.println(this.getName() + " | Nationalité: " + this.getNationality() + " | Type: " + this.getType() +" | Age: " + this.getAge() + " | Taille: " + this.getSize() + "cm" + " | Force: " + this.getStrength());
     }
 
 }
