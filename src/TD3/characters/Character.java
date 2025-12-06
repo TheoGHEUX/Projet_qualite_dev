@@ -1,5 +1,6 @@
 package TD3.characters;
 
+import TD3.enums.FoodType;
 import TD3.enums.PotionEffect;
 import TD3.enums.Sex;
 import TD3.food.Food;
@@ -78,7 +79,11 @@ public abstract class Character {
 
     public void updateHealth(double health) {
         if(this.isInvincible){
-            return ;
+            if(health < 0){
+                return ;
+            }
+            this.health = Math.min(maxHealth, this.health + health);
+            return;
         }
 
         this.health = Math.min(maxHealth, Math.max(0, this.health + health));
@@ -200,6 +205,20 @@ public abstract class Character {
                 }
             }
         }
+        // Gestion des autres effets
+
+        if(!this.characterPotionEffectsPerm.contains(PotionEffect.DUPLICATION)){
+            if(potion.getEffects().contains(PotionEffect.DUPLICATION)){
+                this.characterPotionEffectsPerm.add(PotionEffect.DUPLICATION);
+            }
+        }
+
+        if(!this.characterPotionEffectsPerm.contains(PotionEffect.METAMORPHOSIS)){
+            if(potion.getEffects().contains(PotionEffect.METAMORPHOSIS)){
+                this.characterPotionEffectsPerm.add(PotionEffect.METAMORPHOSIS);
+            }
+        }
+
     }
 
     public void transformStatue(){

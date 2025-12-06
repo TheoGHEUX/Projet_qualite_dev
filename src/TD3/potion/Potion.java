@@ -55,7 +55,7 @@ public class Potion {
         if (hasUnicornMilk) {
             potionEffects.add(PotionEffect.DUPLICATION);
         }
-        if (hasDogmatixHair) {
+        if (hasDogmatixHair && hasUnicornMilk) {
             potionEffects.add(PotionEffect.METAMORPHOSIS);
         }
 
