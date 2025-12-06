@@ -2,6 +2,7 @@ package TD3.characters.creature;
 
 import TD3.characters.Character;
 import TD3.enums.Sex;
+import TD3.places.Place;
 
 import java.util.Random;
 
@@ -12,13 +13,13 @@ public class Creature extends Character {
 
     // Constructeur personnalisé pour une créature sans espèce implémentée par une classe
     public Creature(String name, Sex sex, int size, int age, int strength, int stamina, double health) {
-        super(name, sex, size, age, strength, stamina, health);
+        super(name, sex, size, age, strength, stamina, health, null);
         this.nationality = "Creature";
     }
 
     // Constructeur avec des stats par défaut pour une créature sans espèce implémentée par une classe
     public Creature(String name, Sex sex) {
-        super(name, sex,randomBetween(150,200),randomBetween(20,90),10,40,100);
+        super(name, sex,randomBetween(150,200),randomBetween(20,90),10,40,100, null);
         this.nationality = "Creature";
     }
 

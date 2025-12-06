@@ -20,7 +20,7 @@ public abstract class Character {
     protected int age; // âge
     protected String nationality; // Gaul, Roman ou Creature
     protected String type; // correspond au métier d'un humain ou à l'espèce d'une créature
-    protected Place place; // lieu qu'il occupe
+    protected Place currentPlace; // lieu qu'il occupe
     // Informations sur les statistiques vitales
     protected int strength; // Dégâts d'une attaque (methode fight())
     protected int baseStrength; // Dégâts de base
@@ -41,7 +41,7 @@ public abstract class Character {
     protected boolean lastWasVegetal; // le dernier aliment qu'il a mangé est végétal
     protected int belligerence ; // en conflit
 
-    public Character(String name, Sex sex, int size, int age, int strength, int stamina, double health) {
+    public Character(String name, Sex sex, int size, int age, int strength, int stamina, double health, Place place) {
         this.name = name;
         this.sex = sex;
         this.size = size;
@@ -61,6 +61,7 @@ public abstract class Character {
         this.type = "Undefined";
         this.isInvincible = false;
         this.isStatue = false;
+        this.currentPlace = place;
     }
 
     // Méthodes
@@ -231,6 +232,10 @@ public abstract class Character {
         this.isAlive = false;
     }
 
+    public void modifyCurrentPlace(Place place){
+        this.currentPlace = place;
+    }
+
     // Getters
 
     public String getName() {
@@ -279,6 +284,10 @@ public abstract class Character {
 
     public boolean getLastWasVegetal() {
         return lastWasVegetal;
+    }
+
+    public Place getPlace() {
+        return currentPlace;
     }
 
     public String getNationality() {

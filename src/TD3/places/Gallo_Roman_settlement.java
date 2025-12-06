@@ -7,7 +7,7 @@ import TD3.characters.roman.Roman;
 //bougarde galo-romaine
 public class Gallo_Roman_settlement extends Place_with_clan_chief {
 
-    public Gallo_Roman_settlement(String name, int surface, String clan_chief) {
+    public Gallo_Roman_settlement(String name, int surface, Character clan_chief) {
         super(name, surface, clan_chief);
     }
 

@@ -6,7 +6,7 @@ import TD3.characters.creature.Creature;
 
 public class Roman_town extends Place_with_clan_chief{
 
-    public Roman_town(String name, int surface, String clan_chief) {
+    public Roman_town(String name, int surface, Character clan_chief) {
         super(name, surface, clan_chief);
     }
 

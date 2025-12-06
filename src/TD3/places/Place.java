@@ -39,6 +39,7 @@ public abstract class Place {
         }
 
         the_characters_present.add(character);
+        character.modifyCurrentPlace(this);
         System.out.println(character.getName() + " entre dans " + this.name);
         return true;
     }
@@ -51,6 +52,7 @@ public abstract class Place {
     public boolean removeCharacter(Character character) {
         if (the_characters_present.remove(character)) {
             System.out. println(character.getName() + " quitte " + this.name);
+            character.modifyCurrentPlace(null);
             return true;
         }
         System.out.println(character.getName() + " n'est pas dans " + this.name);
@@ -189,8 +191,7 @@ public abstract class Place {
         return surface;
     }
 
-    public ArrayList<Character> getThe_characters_present() {
-        return the_characters_present;
+    public ArrayList<Character> getThe_characters_present() { return the_characters_present;
     }
 
     public ArrayList<Food> getThe_aliments_present() {
