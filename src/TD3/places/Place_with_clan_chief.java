@@ -1,6 +1,6 @@
 package TD3.places;
 
-public class Place_with_clan_chief extends Place {
+public abstract class Place_with_clan_chief extends Place {
     protected String clan_chief;
 
     public Place_with_clan_chief(String name, int surface, String clan_chief) {
