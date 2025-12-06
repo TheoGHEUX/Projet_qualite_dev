@@ -7,7 +7,7 @@ import TD3.interfaces.Worker;
 public class Blacksmith extends Gaul implements Worker {
 
     // Constructeur personnalisé
-    public Blacksmith(String name, Sex sex, int size, int age, int strength, int stamina, int health) {
+    public Blacksmith(String name, Sex sex, int size, int age, int strength, int stamina, double health) {
         super(name, sex, size, age, strength, stamina, health);
         this.type = "Blacksmith";
     }

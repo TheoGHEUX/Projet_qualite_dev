@@ -1,4 +1,4 @@
-package TD3.food;
+package TD3.enums;
 
 public enum FoodType {
     WILD_BOAR,

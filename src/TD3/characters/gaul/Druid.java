@@ -12,7 +12,7 @@ import java.awt.*;
 public class Druid extends Gaul implements Worker, Leader, Fighter {
 
     // Constructeur personnalisé
-    public Druid(String name, Sex sex, int size, int age, int strength, int stamina, int health) {
+    public Druid(String name, Sex sex, int size, int age, int strength, int stamina, double health) {
         super(name, sex, size, age, strength, stamina, health);
         this.type = "Druid";
     }
@@ -38,7 +38,7 @@ public class Druid extends Gaul implements Worker, Leader, Fighter {
         }
         System.out.println("Druid " + this.name + " utilise Appel de l'étoile.");
         int stealRequested = randomBetween(5, 35);
-        int stealActual = Math.min(stealRequested, enemy.getHealth());
+        double stealActual = Math.min(stealRequested, enemy.getHealth());
         System.out.println("Druid " + this.name + " vole " + stealActual + " PV.");
         enemy.updateHealth(-stealActual);
         this.updateHealth(stealActual);

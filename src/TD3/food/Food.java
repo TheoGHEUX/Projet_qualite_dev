@@ -1,5 +1,7 @@
 package TD3.food;
 
+import TD3.enums.FoodType;
+
 public class Food {
     private FoodType foodType;
     private int healthEffect;

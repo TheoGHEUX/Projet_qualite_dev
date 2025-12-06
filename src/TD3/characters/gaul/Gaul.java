@@ -10,7 +10,7 @@ public abstract class Gaul extends Character {
     protected static final Random RANDOM = new Random();
 
     // Constructeur personnalisé pour un citoyen sans métier implémenté par une classe
-    public Gaul(String name, Sex sex, int size, int age, int strength, int stamina, int health) {
+    public Gaul(String name, Sex sex, int size, int age, int strength, int stamina, double health) {
         super(name, sex, size, age, strength, stamina, health);
         this.nationality = "Gaul";
     }

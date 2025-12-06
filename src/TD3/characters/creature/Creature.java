@@ -11,7 +11,7 @@ public class Creature extends Character {
     protected static final Random RANDOM = new Random();
 
     // Constructeur personnalisé pour une créature sans espèce implémentée par une classe
-    public Creature(String name, Sex sex, int size, int age, int strength, int stamina, int health) {
+    public Creature(String name, Sex sex, int size, int age, int strength, int stamina, double health) {
         super(name, sex, size, age, strength, stamina, health);
         this.nationality = "Creature";
     }

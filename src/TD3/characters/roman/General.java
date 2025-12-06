@@ -9,7 +9,7 @@ import TD3.interfaces.Leader;
 public class General extends Roman implements Leader, Fighter {
 
     // Constructeur personnalisé
-    public General(String name, Sex sex, int size, int age, int strength, int stamina, int health) {
+    public General(String name, Sex sex, int size, int age, int strength, int stamina, double health) {
         super(name, sex, size, age, strength, stamina, health);
         this.type = "General";
     }
