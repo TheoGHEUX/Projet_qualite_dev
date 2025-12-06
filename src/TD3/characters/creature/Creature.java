@@ -17,12 +17,6 @@ public class Creature extends Character {
         this.nationality = "Creature";
     }
 
-    // Constructeur avec des stats par défaut pour une créature sans espèce implémentée par une classe
-    public Creature(String name, Sex sex) {
-        super(name, sex,randomBetween(150,200),randomBetween(20,90),10,40,100, null);
-        this.nationality = "Creature";
-    }
-
     // Méthode pour générer aléatoirement un nombre dans un intervalle (utilisée pour générer la taille et l'âge)
     protected static int randomBetween(int min, int max) {
         return RANDOM.nextInt(max - min + 1) + min;

@@ -8,7 +8,7 @@ import TD3.interfaces.Fighter;
 public class Legionary extends Roman implements Fighter {
 
     // Constructeur personnalisé
-    public Legionary(String name, Sex sex, int size, int age, int strength, int stamina, double health) {
+    public Legionary(String name, Sex sex, int size, int age, double strength, int stamina, double health) {
         super(name, sex, size, age, strength, stamina, health);
         this.type = "Legionary";
     }
@@ -20,14 +20,13 @@ public class Legionary extends Roman implements Fighter {
     }
 
     public void combat(Character enemy) {
+        // Coup décisif : Inflige 30 dégâts à l'ennemi + 25% de la force du légionnaire
         if (this.stamina < 40) {
-            System.out.println("Legionary " + this.name + " n'a pas assez d'énergie pour activer Coup décisif.");
+            System.out.println("Legionary " + this.name + " n'a pas assez d'énergie pour activer \"Coup décisif\" !");
             return;
         }
-        System.out.println("Legionary " + this.name + " utilise Coup décisif.");
-        int damage = 40;
-        System.out.println("Legionary " + this.name + "combat" + enemy.getName());
-        enemy.updateHealth(-damage);
+        System.out.println("Legionary " + this.name + " utilise \"Coup décisif\" sur " + enemy.getType() + " " + enemy.getName() + " !");
+        enemy.updateHealth(-(30+(this.strength/4)));
         this.stamina -= 40;
     }
 }

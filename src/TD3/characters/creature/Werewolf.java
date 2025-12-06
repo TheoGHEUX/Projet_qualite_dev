@@ -20,15 +20,16 @@ public class Werewolf extends Creature implements Fighter {
     }
 
     public void combat(Character enemy) {
+        // Dents de la bête : Inflige 50 dégâts à l'ennemi contre 50 de faim et se soigne de 20
         int currentHunger = this.getHunger();
         if (currentHunger <= 50) {
-            System.out.println("Werewolf " + this.name + " n'a pas assez faim pour activer Contrainte infinie");
+            System.out.println("Werewolf " + this.name + " n'a pas assez faim pour activer \"Dents de la bête\" !");
             return;
         }
-        System.out.println("Werewolf " + this.name + " utilise Contrainte infinie.");
+        System.out.println("Werewolf " + this.name + " utilise \"Dents de la bête\" sur " + enemy.getType() + " " + enemy.getName() + " !");
         int hungerCost = 50;
-        System.out.println("Werewolf " + this.name + " combats " + enemy.getName());
         enemy.updateHealth(-50);
-        updateHunger(-hungerCost);
+        this.updateHunger(-hungerCost);
+        this.updateHealth(20);
     }
 }

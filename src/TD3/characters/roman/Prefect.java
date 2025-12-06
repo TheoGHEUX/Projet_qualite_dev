@@ -4,11 +4,13 @@ import TD3.characters.Character;
 import TD3.enums.Sex;
 import TD3.interfaces.Leader;
 
+import java.util.List;
+
 // Prefets
 public class Prefect extends Roman implements Leader {
 
     // Constructeur personnalisé
-    public Prefect(String name, Sex sex, int size, int age, int strength, int stamina, double health) {
+    public Prefect(String name, Sex sex, int size, int age, double strength, int stamina, double health) {
         super(name, sex, size, age, strength, stamina, health);
         this.type = "Prefect";
     }
@@ -19,7 +21,22 @@ public class Prefect extends Roman implements Leader {
         this.type = "Prefect";
     }
 
-    public void lead(Character follower) {
-        System.out.println("Prefect" + this.name + " leads" + follower.getName());
+    public void lead(List<Character> followers) {
+        // Clarté : Régénère entièrement l'énergie des personnages du lieu pour lequel il est le chef de clan
+        if(!this.isAClanChief){
+            System.out.println("Prefect " + this.name + " ne peut pas utiliser \"Clarté\" car il n'est pas un chef de clan !");
+            return;
+        }
+        if (this.stamina < 45) {
+            System.out.println("Prefect " + this.name + " n'a pas assez d'énergie pour utiliser \"Clarté\" !");
+            return;
+        }
+        for(Character c : followers){
+            if(c != this) {
+                c.updateStamina(c.getMaxStamina());
+            }
+        }
+        System.out.println("Prefect " + this.name + " utilise \"Clarté\" !");
+        this.stamina -= 45;
     }
 }

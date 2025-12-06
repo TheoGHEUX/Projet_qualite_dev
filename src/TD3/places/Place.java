@@ -3,13 +3,14 @@ package TD3.places;
 import TD3.characters.Character;
 import TD3.food.Food;
 import java.util.ArrayList;
+import java.util.List;
 
 //lieu
 public abstract class Place {
     protected String name;
     protected int surface; //superficie
-    protected ArrayList<Character> the_characters_present;
-    protected ArrayList<Food> the_aliments_present;
+    protected List<Character> the_characters_present;
+    protected List<Food> the_aliments_present;
 
     public Place(String name, int surface) {
         this.name = name;
@@ -191,10 +192,10 @@ public abstract class Place {
         return surface;
     }
 
-    public ArrayList<Character> getThe_characters_present() { return the_characters_present;
+    public List<Character> getThe_characters_present() { return the_characters_present;
     }
 
-    public ArrayList<Food> getThe_aliments_present() {
+    public List<Food> getThe_aliments_present() {
         return the_aliments_present;
     }
 
@@ -213,7 +214,12 @@ public abstract class Place {
         System.out.println("Surface: " + surface + " m² | Personnages: " + getNumberOfCharacters() + " | Aliments: " + getNumberOfFood());
 
         if (this instanceof Place_with_clan_chief) {
-            System.out. println("Chef: " + ((Place_with_clan_chief) this).getClanChief());
+            if(((Place_with_clan_chief) this).getClanChief() != null) {
+                System.out. println("Chef: " + ((Place_with_clan_chief) this).getClanChief().getName());
+            }
+            else{
+                System.out.println("Chef: pas de chef");
+            }
         }
 
         System.out.println("\nPersonnages (" + getNumberOfCharacters() + ") :");

@@ -9,12 +9,20 @@ public abstract class Place_with_clan_chief extends Place {
     public Place_with_clan_chief(String name, int surface, Character clan_chief) {
         super(name, surface);
         if(clan_chief instanceof Leader){
-            this.clan_chief = clan_chief;
-            clan_chief.modifyCurrentPlace(this);
+            if(this.canAccept(clan_chief)){
+                this.clan_chief = clan_chief;
+                clan_chief.modifyCurrentPlace(this);
+                clan_chief.modifyIsAClanChief(true);
+                this.the_characters_present.add(clan_chief);
+            }
+            else{
+                this.clan_chief = null;
+                System.out.println("Ce personnage n'est pas autorisé à diriger ce lieu ! Le lieu a été créé mais n'a pas encore de chef !");
+            }
         }
         else{
             this.clan_chief = null;
-            System.out.println("Ce personnage n'est pas autorisé à diriger ! Le lieu a été créé mais n'a pas encore de chef !");
+            System.out.println("Ce personnage ne peut pas diriger ! Le lieu a été créé mais n'a pas encore de chef !");
         }
 
     }
@@ -30,6 +38,8 @@ public abstract class Place_with_clan_chief extends Place {
                 if(!character.isAClanChief()){
                     this.clan_chief = character;
                     character.modifyCurrentPlace(this);
+                    character.modifyIsAClanChief(true);
+                    this.the_characters_present.add(clan_chief);
                 }
                 else{
                     System.out.println("Ce personnage est déjà le chef de clan d'un autre lieu !");

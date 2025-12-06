@@ -23,8 +23,8 @@ public abstract class Character {
     protected Place currentPlace; // lieu qu'il occupe
     protected boolean isAClanChief;
     // Informations sur les statistiques vitales
-    protected int strength; // Dégâts d'une attaque (methode fight())
-    protected int baseStrength; // Dégâts de base
+    protected double strength; // Dégâts d'une attaque (methode fight())
+    protected double baseStrength; // Dégâts de base
     protected int stamina; // énergie
     protected int maxStamina; // énergie max
     protected double health; // vie
@@ -42,7 +42,7 @@ public abstract class Character {
     protected boolean lastWasVegetal; // le dernier aliment qu'il a mangé est végétal
     protected int belligerence ; // en conflit
 
-    public Character(String name, Sex sex, int size, int age, int strength, int stamina, double health, Place place) {
+    public Character(String name, Sex sex, int size, int age, double strength, int stamina, double health, Place place) {
         this.name = name;
         this.sex = sex;
         this.size = size;
@@ -238,6 +238,14 @@ public abstract class Character {
         this.currentPlace = place;
     }
 
+    public void modifyIsAClanChief(boolean isAClanChief){
+        this.isAClanChief = isAClanChief;
+    }
+
+    public void gainStrength(int strength){
+        this.strength += strength;
+    }
+
     // Getters
 
     public String getName() {
@@ -256,12 +264,16 @@ public abstract class Character {
         return age;
     }
 
-    public int getStrength() {
+    public double getStrength() {
         return strength;
     }
 
     public int getStamina() {
         return stamina;
+    }
+
+    public int getMaxStamina() {
+        return maxStamina;
     }
 
     public double getHealth() {

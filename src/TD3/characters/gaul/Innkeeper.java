@@ -7,7 +7,7 @@ import TD3.interfaces.Worker;
 public class Innkeeper extends Gaul implements Worker {
 
     // Constructeur personnalisé
-    public Innkeeper(String name, Sex sex, int size, int age, int strength, int stamina, double health) {
+    public Innkeeper(String name, Sex sex, int size, int age, double strength, int stamina, double health) {
         super(name, sex, size, age, strength, stamina, health);
         this.type = "Innkeeper";
     }
