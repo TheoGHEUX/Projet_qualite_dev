@@ -21,6 +21,7 @@ public abstract class Character {
     protected String nationality; // Gaul, Roman ou Creature
     protected String type; // correspond au métier d'un humain ou à l'espèce d'une créature
     protected Place currentPlace; // lieu qu'il occupe
+    protected boolean isAClanChief;
     // Informations sur les statistiques vitales
     protected int strength; // Dégâts d'une attaque (methode fight())
     protected int baseStrength; // Dégâts de base
@@ -62,6 +63,7 @@ public abstract class Character {
         this.isInvincible = false;
         this.isStatue = false;
         this.currentPlace = place;
+        this.isAClanChief = false;
     }
 
     // Méthodes
@@ -300,6 +302,10 @@ public abstract class Character {
 
     public boolean isAlive() {
         return isAlive;
+    }
+
+    public boolean isAClanChief() {
+        return isAClanChief;
     }
 
     public List<PotionEffect> getCharacterPotionEffectsTemp() {
