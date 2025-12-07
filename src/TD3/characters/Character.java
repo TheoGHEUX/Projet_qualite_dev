@@ -288,7 +288,7 @@ public abstract class Character {
         return hunger;
     }
 
-    public int potionLevel() {
+    public int getPotionLevel() {
         return potionLevel;
     }
 
