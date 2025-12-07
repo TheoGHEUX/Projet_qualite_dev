@@ -40,10 +40,10 @@ public class ClanChief {
         return place;
     }
 
-    public Character createCharacter(String name, Sex sex, CharacterType type){
+    public void createCharacter(String name, Sex sex, CharacterType type){
         if(place == null){
             System.out.println("Le chef " + this.name + " n'est relié à aucun lieu : impossible de créer un personnage.");
-            return null;
+            return;
         }
         Character newCharacter;
          switch(type){
@@ -73,15 +73,14 @@ public class ClanChief {
                  break;
              default:
                  System.out.println("Type de personnage inconnu : " + type);
-                 return null;
+                 return;
          }
 
          if(!place.canAccept(newCharacter)){
              System.out.println("Le nouveau personnage " + newCharacter.getName() + " a été créé mais n'est pas autorisé à entrer dans votre lieu ! Il est parti :(  ");
-             return newCharacter;
+             return;
          }
          place.addCharacter(newCharacter);
-        return newCharacter;
     }
 
     public String getName() {
