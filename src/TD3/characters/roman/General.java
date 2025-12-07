@@ -25,8 +25,8 @@ public class General extends Roman implements Leader, Fighter {
     @Override
     public void lead(List<Character> followers) {
         // Volonté : octroie +10 de force aux personnages présents dans le lieu pour lequel il est le chef de clan
-        if(!this.isAClanChief){
-            System.out.println("General " + this.name + " ne peut pas utiliser \"Volonté\" car il n'est pas un chef de clan !");
+        if(this.currentPlace == null){
+            System.out.println("General " + this.name + " ne peut pas utiliser \"Volonté\" car il n'est pas dans un lieu!");
             return;
         }
         if (this.stamina < 35) {

@@ -116,8 +116,8 @@ public class Druid extends Gaul implements Worker, Leader, Fighter {
     @Override
     public void lead(List<Character> followers) {
         // Appel de l'étoile : Soigne 75 de vie à tous les membres présents dans le lieu pour lequel il est le chef de clan
-        if(!this.isAClanChief){
-            System.out.println("Druid " + this.name + " ne peut pas utiliser \"Appel de l'étoile\" car il n'est pas un chef de clan !");
+        if(this.currentPlace == null){
+            System.out.println("Druid " + this.name + " ne peut pas utiliser \"Appel de l'étoile\" car il n'est pas dans un lieu !");
             return;
         }
         if (this.stamina < 50) {

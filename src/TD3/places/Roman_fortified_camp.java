@@ -3,12 +3,13 @@ package TD3.places;
 import TD3.characters.Character;
 import TD3.characters.roman.Roman;
 import TD3.characters.creature.Creature;
+import TD3.clan_chief.ClanChief;
 import TD3.interfaces.Fighter;
 
 //camp retranché romain
 public class Roman_fortified_camp extends Place_with_clan_chief {
 
-    public Roman_fortified_camp(String name, int surface, Character clan_chief) {
+    public Roman_fortified_camp(String name, int surface, ClanChief clan_chief) {
         super(name, surface, clan_chief);
     }
 
