@@ -16,6 +16,7 @@ public class Potion {
     private final int healthEffect ;
     private final int hungerEffect ;
     private final int staminaEffect ;
+    private final boolean isMagic ;
 
     public Potion(List<Food> ingredients) {
         this.ingredients = Collections.unmodifiableList(ingredients);
@@ -60,6 +61,9 @@ public class Potion {
 
         this.effects = potionEffects;
         this.remainingDoses = 4 ;
+
+        this.isMagic = this.isMagicPotion();
+
     }
 
     public void showPotionInfos(){
@@ -79,17 +83,8 @@ public class Potion {
     }
 
     public boolean isMagicPotion(){
-        List<FoodType> recipe = new ArrayList<>();
-        recipe.add(FoodType.MISTLETOE);
-        recipe.add(FoodType.CARROT);
-        recipe.add(FoodType.SALT);
-        recipe.add(FoodType.FRESH_FOUR_LEAF_CLOVER);
-        recipe.add(FoodType.PASSABLE_FRESH_FISH);
-        recipe.add(FoodType.ROCKFISH_OIL);
-        recipe.add(FoodType.HONEY);
-        recipe.add(FoodType.MEAD);
-        recipe.add(FoodType.SECRET_INGREDIENT);
-
+        PotionRecipe p_recipe = new PotionRecipe();
+        List<FoodType> recipe = p_recipe.getRecipe();
 
         List<FoodType> ingredients = new ArrayList<>();
         for (Food food : this.ingredients) {
@@ -156,6 +151,10 @@ public class Potion {
 
     public Set<PotionEffect> getEffects() {
         return effects;
+    }
+
+    public boolean isMagic() {
+        return isMagic;
     }
 
 }

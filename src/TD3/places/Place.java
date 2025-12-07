@@ -3,6 +3,9 @@ package TD3.places;
 import TD3.characters.Character;
 import TD3.enums.FoodType;
 import TD3.food.Food;
+import TD3.potion.Potion;
+import TD3.potion.PotionRecipe;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,12 +15,14 @@ public abstract class Place {
     protected int surface; //superficie
     protected List<Character> the_characters_present;
     protected List<Food> the_aliments_present;
+    protected List<Potion> potion_present;
 
     public Place(String name, int surface) {
         this.name = name;
         this.surface = surface;
         this.the_characters_present = new ArrayList<>();
         this.the_aliments_present = new ArrayList<>();
+        this.potion_present = new ArrayList<>();
     }
 
     public abstract boolean canAccept(Character character);
@@ -180,16 +185,34 @@ public abstract class Place {
         return true;
     }
 
+    public boolean addPotion(Potion potion) {
+        if (potion == null) {
+            System.out.println("Erreur : potion null");
+            return false;
+        }
+        potion_present.add(potion);
+        System.out. println("Potion ajouté à " + this.name);
+        return true;
+    }
+
     /**
      * Retire un aliment du lieu
      */
-    public boolean removeFood(int index) {
-        if (index < 0 || index >= the_aliments_present.size()) {
-            System.out.println("Index invalide");
+    public boolean removeFood(Food food) {
+        if(!the_aliments_present.contains(food)) {
+            System.out.println(food.getFoodType() + " n'est pas dans " + this.name);
             return false;
         }
-        Food removed = the_aliments_present. remove(index);
-        System. out.println(removed.getFoodType() + " retiré de " + this.name);
+        the_aliments_present.remove(food);
+        System.out.println(food.getFoodType() + " retiré de " + this.name);
+        return true;
+    }
+
+    public boolean removeFoodWithoutPrint(Food food) {
+        if(!the_aliments_present.contains(food)) {
+            return false;
+        }
+        the_aliments_present.remove(food);
         return true;
     }
 
@@ -197,21 +220,10 @@ public abstract class Place {
 
     public boolean hasEnoughToMakeAMagicPotion() {
         boolean hasEnough = true;
-        List<FoodType> recipe = new ArrayList<>();
-        recipe.add(FoodType.MISTLETOE);
-        recipe.add(FoodType.CARROT);
-        recipe.add(FoodType.SALT);
-        recipe.add(FoodType.FRESH_FOUR_LEAF_CLOVER);
-        recipe.add(FoodType.PASSABLE_FRESH_FISH);
-        recipe.add(FoodType.ROCKFISH_OIL);
-        recipe.add(FoodType.HONEY);
-        recipe.add(FoodType.MEAD);
-        recipe.add(FoodType.SECRET_INGREDIENT);
+        PotionRecipe p_recipe = new PotionRecipe();
+        List<FoodType> recipe = p_recipe.getRecipe();
 
-        List<FoodType> ingredients = new ArrayList<>();
-        for (Food food : this.the_aliments_present) {
-            ingredients.add(food.getFoodType());
-        }
+        List<FoodType> ingredients = this.showTheAlimentsPresent();
 
         for (FoodType food : recipe) {
             if (food == FoodType.ROCKFISH_OIL) {
@@ -246,6 +258,27 @@ public abstract class Place {
 
     public List<Food> getThe_aliments_present() {
         return the_aliments_present;
+    }
+
+    public List<FoodType> showTheAlimentsPresent(){
+        List<FoodType> ingredients = new ArrayList<>();
+        for (Food food : this.the_aliments_present) {
+            ingredients.add(food.getFoodType());
+        }
+        return ingredients;
+    }
+
+    public List<Potion> getPotion_present() {
+        return potion_present;
+    }
+
+    public void showPotionPresent() {
+        System.out.println("=== Potion Present ===");
+        int c = 0 ;
+        for (Potion potion : potion_present) {
+            c += 1;
+            System.out.println("Potion" + c + " :\n" + "Dose restantes: " + potion.getRemainingDoses() + " | Vie: " + potion.getHealthEffect() + " | Faim: " + potion.getHungerEffect() + " | Energie: " + potion.getStaminaEffect() + " | Est magique: " + potion.isMagic());
+        }
     }
 
     public int getNumberOfCharacters() {

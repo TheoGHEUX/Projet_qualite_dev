@@ -26,11 +26,11 @@ public class Blacksmith extends Gaul implements Worker {
     public void work() {
         // Le forgeron fabrique une arme pour augmenter la force d'un membre actuellement présent dans le même lieu que lui
         if(this.currentPlace == null){
-            System.out.println("Blacksmith " + this.name + " ne peut pas travailler car il n'est actuellement pas dans un lieu !");
+            System.out.println("Blacksmith " + this.name + " ne peut pas forger une arme car il n'est actuellement pas dans un lieu !");
             return;
         }
         if(this.getStamina() < 10){
-            System.out.println("Blacksmith " + this.name + " ne peut pas travailler car il est fatigué !");
+            System.out.println("Blacksmith " + this.name + " ne peut pas forger une arme car il est fatigué !");
             return;
         }
 

@@ -1,11 +1,16 @@
 package TD3.characters.gaul;
 
 import TD3.characters.Character;
+import TD3.enums.FoodType;
 import TD3.enums.Sex;
+import TD3.food.Food;
 import TD3.interfaces.Fighter;
 import TD3.interfaces.Leader;
 import TD3.interfaces.Worker;
+import TD3.potion.Potion;
+import TD3.potion.PotionRecipe;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -25,9 +30,86 @@ public class Druid extends Gaul implements Worker, Leader, Fighter {
     }
 
     public void work() {
-        // Le druide prépare de la potion magique !
+        // Le druide prépare de la potion magique basique ! (sans effet de duplication et métamorphosis)
+        if(this.currentPlace == null){
+            System.out.println("Druid " + this.name + " ne peut pas préparer de potion magique car il n'est actuellement pas dans un lieu !");
+            return;
+        }
+        if(this.getStamina() < 20){
+            System.out.println("Druid " + this.name + " ne peut pas préparer de potion magique car il est fatigué !");
+            return;
+        }
+        if(!this.getPlace().hasEnoughToMakeAMagicPotion()){
+            System.out.println("Druid " + this.name + " ne peut pas préparer de potion magique car il n'y a pas assez d'ingrédients à " + this.getPlace().getName() + " !");
+            return;
+        }
 
+        List<FoodType> availabletype = this.getPlace().showTheAlimentsPresent(); // types des aliments disponibles
+        List<Food> available = this.getPlace().getThe_aliments_present(); // aliments disponibles
+        PotionRecipe p_recipe = new PotionRecipe(); // Recette de la potion
+        List<FoodType> recipe = p_recipe.getRecipe(); // Recette de la potion avec foodtype
+        List<Food> used = new ArrayList<>(); // Aliments utilisés
+        // Gestion de la suppression des aliments de base :
+        if (availabletype.contains(FoodType.BEET_JUICE)){
+            for(FoodType foodtype : recipe){
+                if (foodtype != FoodType.ROCKFISH_OIL){
+                    for(Food food : available){
+                        if(food.getFoodType() == foodtype){
+                            used.add(food);
+                            this.getPlace().removeFoodWithoutPrint(food);
+                            break;
+                        }
+                    }
+                }
+                else{
+                    for(Food food : available){
+                        if(food.getFoodType() == FoodType.BEET_JUICE){
+                            used.add(food);
+                            this.getPlace().removeFoodWithoutPrint(food);
+                            break;
+                        }
+                    }
+                }
 
+            }
+        }
+        else {
+            for (FoodType foodtype : recipe) {
+                for (Food food : available) {
+                    if (food.getFoodType() == foodtype) {
+                        used.add(food);
+                        this.getPlace().removeFoodWithoutPrint(food);
+                        break;
+                    }
+                }
+            }
+        }
+        // Gestion de la suppression des autres aliments nourrissant (s'il y en a, le druide les met automatiquement dans la potion)
+        if (availabletype.contains(FoodType.STRAWBERRY)){
+            for (Food food : available) {
+                if (food.getFoodType() == FoodType.STRAWBERRY) {
+                    used.add(food);
+                    this.getPlace().removeFoodWithoutPrint(food);
+                    break;
+                }
+            }
+        }
+        if (availabletype.contains(FoodType.LOBSTER)){
+            for (Food food : available) {
+                if (food.getFoodType() == FoodType.LOBSTER) {
+                    used.add(food);
+                    this.getPlace().removeFoodWithoutPrint(food);
+                    break;
+                }
+            }
+        }
+
+        Potion potion = new Potion(used);
+
+        System.out.println("Potion créé avec succès ! Aliments utilisés : " + potion.showIngredients());
+
+        this.getPlace().addPotion(potion);
+        this.stamina -= 20 ;
     }
 
     public void lead(List<Character> followers) {

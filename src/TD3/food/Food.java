@@ -1,5 +1,7 @@
 package TD3.food;
 
+// Créer un objet Food : Food food = new FoodStats.newFood(FoodType.<type dans l'enum>);
+
 import TD3.enums.FoodType;
 
 public class Food {
@@ -8,6 +10,7 @@ public class Food {
     private final int hungerEffect;
     private final int staminaEffect;
     private final boolean isVege;
+
 
     public Food(FoodType foodtype, int healthEffect, int hungerEffect, int staminaEffect, boolean isVege) {
         this.foodType = foodtype;

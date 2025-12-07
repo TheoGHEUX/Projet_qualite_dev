@@ -151,7 +151,7 @@ public abstract class Character {
         }
 
         // Si la potion n'est pas magique :
-        if(!potion.isMagicPotion()){
+        if(!potion.isMagic()){
             return;
         }
 
