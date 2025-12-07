@@ -12,7 +12,11 @@ import TD3.characters.roman.Prefect;
 import TD3.enums.CharacterType;
 import TD3.enums.Sex;
 import TD3.food.Food;
+import TD3.places.Battlefield;
+import TD3.places.Enclosure;
+import TD3.places.Place;
 import TD3.places.Place_with_clan_chief;
+import TD3.potion.Potion;
 
 import java.util.Random;
 
@@ -96,9 +100,12 @@ public class ClanChief {
             return;
         }
 
-        System.out.println("======\n" + name + " nourrit sa population : ");
-
         for (Character character : place.getThe_characters_present()) {
+
+            if (!character.isAlive()) {
+                System.out.println(character.getName() + " est mort, il ne peut pas manger.");
+                continue;
+            }
 
             if (place.getThe_aliments_present().isEmpty()) {
                 System.out.println("Il n'y a plus de nourriture disponible.");
@@ -111,8 +118,95 @@ public class ClanChief {
             System.out.println(character.getName() + " a mangé " + food.getFoodType());
         }
 
-        System.out.println("======");
     }
+
+    public void askDruidToMakePotion(){
+        if (place == null) {
+            System.out.println("Le chef " + name + " n'est associé à aucun lieu !");
+            return;
+        }
+        if(!place.isGallo()){
+            System.out.println(place.getName() + " n'autorise pas l'accès aux gaulois, il ne peut donc pas y avoir de druide !");
+            return;
+        }
+
+        Druid druid = null;
+
+        for (Character character : place.getThe_characters_present()) {
+            if (character instanceof Druid) {
+                druid = (Druid) character;
+                break;
+            }
+        }
+
+        if (druid == null) {
+            System.out.println("Aucun druide présent dans " + place.getName() + ".");
+            return;
+        }
+
+        if (!place.hasEnoughToMakeAMagicPotion()) {
+            System.out.println("Il n'y a pas assez d'ingrédients pour produire une potion magique dans " + place.getName() + ".");
+            return;
+        }
+
+        druid.work(); // préparation de la potion
+
+        System.out.println("Le chef " + name + " a demandé au druide " + druid.getName() + " de préparer une potion magique dans " + place.getName() + ".");
+    }
+
+    public void makeCharactersDrinkMagicPotion(Potion potion) {
+        if (place == null) {
+            System.out.println("Le chef " + name + " n'est associé à aucun lieu, impossible de donner une potion.");
+            return;
+        }
+
+        if (potion == null || potion.isEmpty()) {
+            System.out.println("La potion est vide ou inexistante !");
+            return;
+        }
+
+        for (Character character : place.getThe_characters_present()) {
+            if (!character.isAlive()) {
+                System.out.println(character.getName() + " est mort, il ne peut pas boire la potion.");
+                continue;
+            }
+
+            System.out.println("Le chef " + name + " fait boire une potion magique à " + character.getName() + " !");
+            character.drinkMagicPotion(potion);
+        }
+    }
+
+    public void transferCharacter(Character character, Place newPlace) {
+        if (this.place == null) {
+            System.out.println("Le chef " + this.name + " n'est associé à aucun lieu !");
+            return;
+        }
+
+        if (character == null || !this.place.containsCharacter(character)) {
+            System.out.println(character.getName() + " n'est pas dans " + this.place.getName());
+            return;
+        }
+
+        if (!(newPlace instanceof Battlefield || newPlace instanceof Enclosure)) {
+            System.out.println("Le lieu de destination doit être un champ de bataille ou un enclos !");
+            return;
+        }
+
+        if (!newPlace.canAccept(character)) {
+            System.out.println(character.getName() + " ne peut pas entrer dans " + newPlace.getName());
+            return;
+        }
+
+        // Retirer du lieu actuel
+        this.place.removeCharacter(character);
+
+        // Ajouter au nouveau lieu
+        if (newPlace.addCharacter(character)) {
+            System.out.println(character.getName() + " a été transféré de " + this.place.getName() + " vers " + newPlace.getName());
+        }
+    }
+
+
 
     public Place_with_clan_chief getPlace() {
         return place;

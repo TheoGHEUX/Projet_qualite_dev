@@ -36,10 +36,6 @@ public class Druid extends Gaul implements Worker, Leader, Fighter {
             System.out.println("Druid " + this.name + " ne peut pas préparer de potion magique car il n'est actuellement pas dans un lieu !");
             return;
         }
-        if(this.getStamina() < 20){
-            System.out.println("Druid " + this.name + " ne peut pas préparer de potion magique car il est fatigué !");
-            return;
-        }
         if(!this.getPlace().hasEnoughToMakeAMagicPotion()){
             System.out.println("Druid " + this.name + " ne peut pas préparer de potion magique car il n'y a pas assez d'ingrédients à " + this.getPlace().getName() + " !");
             return;
@@ -110,7 +106,6 @@ public class Druid extends Gaul implements Worker, Leader, Fighter {
         System.out.println("Potion créé avec succès ! Aliments utilisés : " + potion.showIngredients());
 
         this.getPlace().addPotion(potion);
-        this.stamina -= 20 ;
     }
 
     @Override
