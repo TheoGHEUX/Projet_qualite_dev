@@ -12,7 +12,7 @@ import java.util.List;
 
 public abstract class Place_with_clan_chief extends Place {
     protected ClanChief clan_chief;
-    protected boolean isRoman ;
+    protected boolean isGallo;
 
     public Place_with_clan_chief(String name, int surface, ClanChief clan_chief) {
         super(name, surface);
@@ -62,8 +62,8 @@ public abstract class Place_with_clan_chief extends Place {
         return clan_chief;
     }
 
-    public boolean isRoman() {
-        return isRoman;
+    public boolean isGallo() {
+        return isGallo;
     }
 
     public void showInfos() {
