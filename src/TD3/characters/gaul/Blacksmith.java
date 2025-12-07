@@ -3,6 +3,11 @@ package TD3.characters.gaul;
 import TD3.enums.Sex;
 import TD3.interfaces.Worker;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import TD3.characters.Character;
+
 // Forgerons
 public class Blacksmith extends Gaul implements Worker {
 
@@ -19,6 +24,28 @@ public class Blacksmith extends Gaul implements Worker {
     }
 
     public void work() {
-        System.out.println("Blacksmith" + this.name + " works");
+        // Le forgeron fabrique une arme pour augmenter la force d'un membre actuellement présent dans le même lieu que lui
+        if(this.currentPlace == null){
+            System.out.println("Blacksmith " + this.name + " ne peut pas travailler car il n'est actuellement pas dans un lieu !");
+            return;
+        }
+        if(this.getStamina() < 10){
+            System.out.println("Blacksmith " + this.name + " ne peut pas travailler car il est fatigué !");
+            return;
+        }
+
+        List<Character> others = new ArrayList<>();
+
+        for (Character c : this.getPlace().getThe_characters_present()) {
+            if (c != this) {
+                others.add(c);
+            }
+        }
+
+        if (others.isEmpty()) return;
+
+        Character chosen = others.get(new Random().nextInt(others.size()));
+        chosen.gainStrength(5);
+        this.stamina -= 10 ;
     }
 }

@@ -3,7 +3,6 @@ package TD3.potion;
 import TD3.enums.FoodType;
 import TD3.enums.PotionEffect;
 import TD3.food.Food;
-import TD3.food.FoodStats;
 
 import java.util.*;
 

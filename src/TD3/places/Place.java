@@ -1,6 +1,7 @@
 package TD3.places;
 
 import TD3.characters.Character;
+import TD3.enums.FoodType;
 import TD3.food.Food;
 import java.util.ArrayList;
 import java.util.List;
@@ -169,6 +170,16 @@ public abstract class Place {
         return true;
     }
 
+    public boolean addFood(List<Food> foods) {
+        if (foods == null) {
+            System.out.println("Erreur : aliment null");
+            return false;
+        }
+        the_aliments_present.addAll(foods);
+        System.out. println("Aliments ajouté à " + this.name);
+        return true;
+    }
+
     /**
      * Retire un aliment du lieu
      */
@@ -180,6 +191,44 @@ public abstract class Place {
         Food removed = the_aliments_present. remove(index);
         System. out.println(removed.getFoodType() + " retiré de " + this.name);
         return true;
+    }
+
+    // Vérifie si le lieu a de quoi faire une potion magique :
+
+    public boolean hasEnoughToMakeAMagicPotion() {
+        boolean hasEnough = true;
+        List<FoodType> recipe = new ArrayList<>();
+        recipe.add(FoodType.MISTLETOE);
+        recipe.add(FoodType.CARROT);
+        recipe.add(FoodType.SALT);
+        recipe.add(FoodType.FRESH_FOUR_LEAF_CLOVER);
+        recipe.add(FoodType.PASSABLE_FRESH_FISH);
+        recipe.add(FoodType.ROCKFISH_OIL);
+        recipe.add(FoodType.HONEY);
+        recipe.add(FoodType.MEAD);
+        recipe.add(FoodType.SECRET_INGREDIENT);
+
+        List<FoodType> ingredients = new ArrayList<>();
+        for (Food food : this.the_aliments_present) {
+            ingredients.add(food.getFoodType());
+        }
+
+        for (FoodType food : recipe) {
+            if (food == FoodType.ROCKFISH_OIL) {
+                if (!ingredients.contains(FoodType.ROCKFISH_OIL) && !ingredients.contains(FoodType.BEET_JUICE)) {
+                    hasEnough = false;
+                    break;
+                }
+            } else {
+                if (!ingredients.contains(food)) {
+                    hasEnough = false;
+                    break;
+                }
+            }
+        }
+
+        return hasEnough;
+
     }
 
     //GETTERS

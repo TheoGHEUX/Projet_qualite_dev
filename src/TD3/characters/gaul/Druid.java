@@ -25,7 +25,9 @@ public class Druid extends Gaul implements Worker, Leader, Fighter {
     }
 
     public void work() {
-        System.out.println("Druid" + this.name + " works");
+        // Le druide prépare de la potion magique !
+
+
     }
 
     public void lead(List<Character> followers) {
