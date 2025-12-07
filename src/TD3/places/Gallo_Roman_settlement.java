@@ -10,7 +10,6 @@ public class Gallo_Roman_settlement extends Place_with_clan_chief {
 
     public Gallo_Roman_settlement(String name, int surface, ClanChief clan_chief) {
         super(name, surface, clan_chief);
-        this.isRoman = false;
     }
 
     public boolean canAccept(Character character) {

@@ -10,7 +10,6 @@ public class Gallic_village extends Place_with_clan_chief {
 
     public Gallic_village(String name, int surface, ClanChief clan_chief) {
         super(name, surface, clan_chief);
-        this.isRoman = false;
     }
 
     public boolean canAccept(Character character) {

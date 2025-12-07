@@ -11,7 +11,6 @@ public class Roman_fortified_camp extends Place_with_clan_chief {
 
     public Roman_fortified_camp(String name, int surface, ClanChief clan_chief) {
         super(name, surface, clan_chief);
-        this.isRoman = true;
     }
 
     public boolean canAccept(Character character) {
