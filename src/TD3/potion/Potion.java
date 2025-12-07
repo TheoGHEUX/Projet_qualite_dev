@@ -66,8 +66,8 @@ public class Potion {
 
     }
 
-    public void showPotionInfos(){
-        System.out.println("=== Infos potion === \nDoses restantes: " + this.getRemainingDoses() + "\nRégénération de vie: " + this.getHealthEffect() + " \nRégénération d'énergie: " + this.getStaminaEffect() + " \nEffet de faim: " + this.getHungerEffect() + " \nPouvoirs: " + this.getEffects() + " \nIngrédients: " + this.showIngredients());
+    public void showInfos(){
+        System.out.println("[INFOS] Potion | Doses restantes: " + this.getRemainingDoses() + "| Régénération de vie: " + this.getHealthEffect() + " | Régénération d'énergie: " + this.getStaminaEffect() + " | Effet de faim: " + this.getHungerEffect() + " | Pouvoirs: " + this.getEffects() + " | Ingrédients: " + this.showIngredients());
     }
 
     public List<FoodType> showIngredients() {

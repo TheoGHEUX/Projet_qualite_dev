@@ -1,5 +1,15 @@
 package TD3.clan_chief;
 
+import TD3.characters.Character;
+import TD3.characters.creature.Werewolf;
+import TD3.characters.gaul.Blacksmith;
+import TD3.characters.gaul.Druid;
+import TD3.characters.gaul.Innkeeper;
+import TD3.characters.gaul.Merchant;
+import TD3.characters.roman.General;
+import TD3.characters.roman.Legionary;
+import TD3.characters.roman.Prefect;
+import TD3.enums.CharacterType;
 import TD3.enums.Sex;
 import TD3.places.Place_with_clan_chief;
 
@@ -18,8 +28,60 @@ public class ClanChief {
         this.sex = sex ;
     }
 
+    public void examinePlace(){
+        if(place == null){
+            System.out.println(name + " n'a pas de lieu à examiner");
+            return;
+        }
+        place.showInfos();
+    }
+
     public Place_with_clan_chief getPlace() {
         return place;
+    }
+
+    public Character createCharacter(String name, Sex sex, CharacterType type){
+        if(place == null){
+            System.out.println("Le chef " + this.name + " n'est relié à aucun lieu : impossible de créer un personnage.");
+            return null;
+        }
+        Character newCharacter;
+         switch(type){
+             case WEREWOLF:
+                 newCharacter = new Werewolf(name, sex);
+                 break;
+             case BLACKSMITH:
+                 newCharacter = new Blacksmith(name, sex);
+                 break;
+             case DRUID:
+                 newCharacter = new Druid(name, sex);
+                 break;
+             case INNKEEPER:
+                 newCharacter = new Innkeeper(name, sex);
+                 break;
+             case MERCHANT:
+                 newCharacter = new Merchant(name, sex);
+                 break;
+             case GENERAL:
+                 newCharacter = new General(name,sex);
+                 break;
+             case LEGIONARY:
+                 newCharacter = new Legionary(name,sex);
+                 break;
+             case PREFECT:
+                 newCharacter = new Prefect(name,sex);
+                 break;
+             default:
+                 System.out.println("Type de personnage inconnu : " + type);
+                 return null;
+         }
+
+         if(!place.canAccept(newCharacter)){
+             System.out.println("Le nouveau personnage " + newCharacter.getName() + " a été créé mais n'est pas autorisé à entrer dans votre lieu ! Il est parti :(  ");
+             return newCharacter;
+         }
+         place.addCharacter(newCharacter);
+        return newCharacter;
     }
 
     public String getName() {

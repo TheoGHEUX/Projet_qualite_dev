@@ -9,6 +9,7 @@ public class Roman_town extends Place_with_clan_chief{
 
     public Roman_town(String name, int surface, ClanChief clan_chief) {
         super(name, surface, clan_chief);
+        this.isRoman = true;
     }
 
     public boolean canAccept(Character character) {

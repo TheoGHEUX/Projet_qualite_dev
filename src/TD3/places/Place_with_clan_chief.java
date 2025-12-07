@@ -2,10 +2,17 @@ package TD3.places;
 
 import TD3.characters.Character;
 import TD3.clan_chief.ClanChief;
+import TD3.enums.FoodType;
+import TD3.food.Food;
 import TD3.interfaces.Leader;
+import TD3.potion.Potion;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Place_with_clan_chief extends Place {
     protected ClanChief clan_chief;
+    protected boolean isRoman ;
 
     public Place_with_clan_chief(String name, int surface, ClanChief clan_chief) {
         super(name, surface);
@@ -55,11 +62,23 @@ public abstract class Place_with_clan_chief extends Place {
         return clan_chief;
     }
 
+    public boolean isRoman() {
+        return isRoman;
+    }
+
     public void showInfos() {
+        List<String> noms = new ArrayList<>();
+        for (Character character : this.getThe_characters_present()){
+            noms.add(character.getName());
+        }
+        List<FoodType> foodTypes = new ArrayList<>();
+        for (Food foods : this.getThe_aliments_present()){
+            foodTypes.add(foods.getFoodType());
+        }
         if(clan_chief != null) {
-            System.out.println("[INFOS] Lieu: " + name + " | Chef de clan: " + clan_chief.getName());
+            System.out.println("[INFOS] Lieu: " + name + " | Chef de clan: " + clan_chief.getName() + " | Personnages présents: " + noms + " | Aliments: " + foodTypes);
             return;
         }
-        System.out.println("[INFOS] Lieu: " + name + " | Chef de clan: aucun");
+        System.out.println("[INFOS] Lieu: " + name + " | Chef de clan: aucun" + " | Personnages présents: " + noms + " | Aliments: " + foodTypes);
     }
 }
