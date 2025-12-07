@@ -3,6 +3,8 @@ package TD3.characters.gaul;
 import TD3.enums.Sex;
 import TD3.interfaces.Worker;
 
+import static TD3.food.FoodSort.foodSort;
+
 // Aubergistes
 public class Innkeeper extends Gaul implements Worker {
 
@@ -18,7 +20,19 @@ public class Innkeeper extends Gaul implements Worker {
         this.type = "Innkeeper";
     }
 
+    // L'aubgergiste range l'inventaire des aliments du lieu dans lequel il est du plus au moins nourrissant
     public void work() {
-        System.out.println("Innkeeper " + this.name + " works");
+        if(this.currentPlace == null){
+            System.out.println("Innkeeper " + this.name + " ne peut pas trier des aliments car il n'est actuellement pas dans un lieu !");
+            return;
+        }
+        if(this.getStamina() < 20){
+            System.out.println("Innkeeper " + this.name + " ne peut pas trier les aliments car il est fatigué !");
+            return;
+        }
+
+        foodSort(this.getPlace().getThe_aliments_present());
+        System.out.println("L'inventaire des aliments de " + this.getPlace().getName() + " a été trié avec succès !");
+        this.stamina -= 20 ;
     }
 }
