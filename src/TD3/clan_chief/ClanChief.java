@@ -11,6 +11,7 @@ import TD3.characters.roman.Legionary;
 import TD3.characters.roman.Prefect;
 import TD3.enums.CharacterType;
 import TD3.enums.Sex;
+import TD3.food.Food;
 import TD3.places.Place_with_clan_chief;
 
 import java.util.Random;
@@ -34,10 +35,6 @@ public class ClanChief {
             return;
         }
         place.showInfos();
-    }
-
-    public Place_with_clan_chief getPlace() {
-        return place;
     }
 
     public void createCharacter(String name, Sex sex, CharacterType type){
@@ -82,6 +79,45 @@ public class ClanChief {
          }
          place.addCharacter(newCharacter);
     }
+
+    public void feedCharacters(){
+        if (this.place == null) {
+            System.out.println("Le chef " + name + " n'est associé à aucun lieu.");
+            return;
+        }
+
+        if (place.getThe_characters_present().isEmpty()) {
+            System.out.println("Il n'y a aucun personnage à nourrir dans " + place.getName() + ".");
+            return;
+        }
+
+        if (place.getThe_aliments_present().isEmpty()) {
+            System.out.println("Il n'y a aucune nourriture disponible dans " + place.getName() + ".");
+            return;
+        }
+
+        System.out.println("======\n" + name + " nourrit sa population : ");
+
+        for (Character character : place.getThe_characters_present()) {
+
+            if (place.getThe_aliments_present().isEmpty()) {
+                System.out.println("Il n'y a plus de nourriture disponible.");
+                return;
+            }
+
+            Food food = place.getThe_aliments_present().removeFirst(); // prend le premier aliment disponible
+            character.eat(food);
+
+            System.out.println(character.getName() + " a mangé " + food.getFoodType());
+        }
+
+        System.out.println("======");
+    }
+
+    public Place_with_clan_chief getPlace() {
+        return place;
+    }
+
 
     public String getName() {
         return name;
