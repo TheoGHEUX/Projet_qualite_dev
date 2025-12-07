@@ -21,6 +21,7 @@ public class Prefect extends Roman implements Leader {
         this.type = "Prefect";
     }
 
+    @Override
     public void lead(List<Character> followers) {
         // Clarté : Régénère entièrement l'énergie des personnages présents dans le lieu pour lequel il est le chef de clan
         if(!this.isAClanChief){

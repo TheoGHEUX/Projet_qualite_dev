@@ -29,6 +29,7 @@ public class Druid extends Gaul implements Worker, Leader, Fighter {
         this.type = "Druid";
     }
 
+    @Override
     public void work() {
         // Le druide prépare de la potion magique basique ! (sans effet de duplication et métamorphosis)
         if(this.currentPlace == null){
@@ -112,6 +113,7 @@ public class Druid extends Gaul implements Worker, Leader, Fighter {
         this.stamina -= 20 ;
     }
 
+    @Override
     public void lead(List<Character> followers) {
         // Appel de l'étoile : Soigne 75 de vie à tous les membres présents dans le lieu pour lequel il est le chef de clan
         if(!this.isAClanChief){
@@ -132,6 +134,7 @@ public class Druid extends Gaul implements Worker, Leader, Fighter {
 
     }
 
+    @Override
     public void combat(Character enemy) {
         // Transfusion : Inflige au hasard de 5 à 35 dégâts à l'ennemi et le druide se régénère le montant de ces dégâts
         if (this.stamina < 35) {

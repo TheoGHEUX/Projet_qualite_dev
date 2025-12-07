@@ -19,6 +19,7 @@ public class Werewolf extends Creature implements Fighter {
         this.type = "Werewolf";
     }
 
+    @Override
     public void combat(Character enemy) {
         // Dents de la bête : Inflige 50 dégâts à l'ennemi contre 50 de faim et se soigne de 20
         int currentHunger = this.getHunger();

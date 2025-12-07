@@ -22,6 +22,7 @@ public class General extends Roman implements Leader, Fighter {
         this.type = "General";
     }
 
+    @Override
     public void lead(List<Character> followers) {
         // Volonté : octroie +10 de force aux personnages présents dans le lieu pour lequel il est le chef de clan
         if(!this.isAClanChief){
@@ -42,6 +43,7 @@ public class General extends Roman implements Leader, Fighter {
 
     }
 
+    @Override
     public void combat(Character enemy) {
         // Justice : Divise la vie actuelle de l'ennemi par 2
         if (this.stamina < 45) {

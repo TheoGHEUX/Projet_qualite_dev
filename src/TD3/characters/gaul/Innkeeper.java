@@ -20,8 +20,9 @@ public class Innkeeper extends Gaul implements Worker {
         this.type = "Innkeeper";
     }
 
-    // L'aubgergiste range l'inventaire des aliments du lieu dans lequel il est du plus au moins nourrissant
+    @Override
     public void work() {
+        // L'aubgergiste range l'inventaire des aliments du lieu dans lequel il est du plus au moins nourrissant
         if(this.currentPlace == null){
             System.out.println("Innkeeper " + this.name + " ne peut pas trier des aliments car il n'est actuellement pas dans un lieu !");
             return;
@@ -32,7 +33,7 @@ public class Innkeeper extends Gaul implements Worker {
         }
 
         foodSort(this.getPlace().getThe_aliments_present());
-        System.out.println("L'inventaire des aliments de " + this.getPlace().getName() + " a été trié avec succès !");
+        System.out.println("Inkeeper " + this.name + " a trié l'inventaire des aliments de " + this.getPlace().getName() + " !");
         this.stamina -= 20 ;
     }
 }

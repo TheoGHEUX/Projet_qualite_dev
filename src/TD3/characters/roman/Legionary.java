@@ -19,6 +19,7 @@ public class Legionary extends Roman implements Fighter {
         this.type = "Legionary";
     }
 
+    @Override
     public void combat(Character enemy) {
         // Coup décisif : Inflige 30 dégâts à l'ennemi + 25% de la force du légionnaire
         if (this.stamina < 40) {
