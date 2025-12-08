@@ -26,6 +26,11 @@ public class ClanChief {
     private final Sex sex;
     private Place_with_clan_chief place;
 
+    /**
+     * Crée un nouveau chef de clan.
+     * @param name
+     * @param sex
+     */
     public ClanChief(String name, Sex sex) {
         this.name = name;
         this.age = new Random().nextInt(61) + 30;
@@ -33,6 +38,9 @@ public class ClanChief {
         this.sex = sex ;
     }
 
+    /**
+     * Le chef de clan affiche les informations de son lieu s'il en a un.
+     */
     public void examinePlace(){
         if(place == null){
             System.out.println(name + " n'a pas de lieu à examiner");
@@ -41,6 +49,12 @@ public class ClanChief {
         place.showInfos();
     }
 
+    /**
+     * Le chef de clan crée un personnage dans son lieu s'il en a un.
+     * @param name
+     * @param sex
+     * @param type
+     */
     public void createCharacter(String name, Sex sex, CharacterType type){
         if(place == null){
             System.out.println("Le chef " + this.name + " n'est relié à aucun lieu : impossible de créer un personnage.");
@@ -84,6 +98,9 @@ public class ClanChief {
          place.addCharacter(newCharacter);
     }
 
+    /**
+     * Le chef de clan nourrit les personnes dans son lieu s'il en a un, si possible.
+     */
     public void feedCharacters(){
         if (this.place == null) {
             System.out.println("Le chef " + name + " n'est associé à aucun lieu.");
@@ -120,6 +137,9 @@ public class ClanChief {
 
     }
 
+    /**
+     * Le chef de clan demande à un druide de préparer une potion magique pour son lieu s'il en a un, si le lieu accepte les gaulois et possède un druide.
+     */
     public void askDruidToMakePotion(){
         if (place == null) {
             System.out.println("Le chef " + name + " n'est associé à aucun lieu !");
@@ -154,6 +174,10 @@ public class ClanChief {
         System.out.println("Le chef " + name + " a demandé au druide " + druid.getName() + " de préparer une potion magique dans " + place.getName() + ".");
     }
 
+    /**
+     * Le chef de clan fait boire de la potion magique aux personnes de son lieu s'il en a un, si possible.
+     * @param potion
+     */
     public void makeCharactersDrinkMagicPotion(Potion potion) {
         if (place == null) {
             System.out.println("Le chef " + name + " n'est associé à aucun lieu, impossible de donner une potion.");
@@ -176,6 +200,11 @@ public class ClanChief {
         }
     }
 
+    /**
+     * Le chef de clan transfert un personnage de son lieu s'il en a un, vers un champ de bataille ou un enclos.
+     * @param character
+     * @param newPlace
+     */
     public void transferCharacter(Character character, Place newPlace) {
         if (this.place == null) {
             System.out.println("Le chef " + this.name + " n'est associé à aucun lieu !");
