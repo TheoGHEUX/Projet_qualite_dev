@@ -13,18 +13,36 @@ import java.util.Random;
 // Gaulois marchants
 public class Merchant extends Gaul implements Worker {
 
-    // Constructeur personnalisé
+    /**
+     * Crée un nouveau marchand avec plus de choix de paramètres.
+     * @param name
+     * @param sex
+     * @param size
+     * @param age
+     * @param strength
+     * @param stamina
+     * @param health
+     */
     public Merchant(String name, Sex sex, int size, int age, double strength, int stamina, double health) {
         super(name, sex, size, age, strength, stamina, health);
         this.type = "Merchant";
     }
 
-    // Constructeur avec des stats par défaut
+    /**
+     * Crée un nouveau marchand
+     * @param name
+     * @param sex
+     */
     public Merchant(String name, Sex sex) {
         super(name, sex, randomBetween(160,175), randomBetween(30,60),10,60,100);
         this.type = "Merchant";
     }
 
+    /**
+     * Le marchand travaille.
+     * Le marchand vend 6 aliments aléatoires au lieu où il se trouve
+     * Coûte 30 d'énergie.
+     */
     @Override
     public void work() {
         if(this.currentPlace == null){

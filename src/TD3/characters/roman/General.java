@@ -10,21 +10,39 @@ import java.util.List;
 // Généraux
 public class General extends Roman implements Leader, Fighter {
 
-    // Constructeur personnalisé
+    /**
+     * Crée un nouveau général avec plus de choix de paramètres.
+     * @param name
+     * @param sex
+     * @param size
+     * @param age
+     * @param strength
+     * @param stamina
+     * @param health
+     */
     public General(String name, Sex sex, int size, int age, double strength, int stamina, double health) {
         super(name, sex, size, age, strength, stamina, health);
         this.type = "General";
     }
 
-    // Constructeur avec des stats par défaut
+    /**
+     * Crée un nouveau général.
+     * @param name
+     * @param sex
+     */
     public General(String name, Sex sex) {
         super(name, sex, randomBetween(175,185), randomBetween(45,60),15,55,110);
         this.type = "General";
     }
 
+    /**
+     * Le général dirige.
+     * Volonté : octroie +10 de force aux personnages présents dans le lieu pour lequel il est le chef de clan
+     * Coûte 35 d'énergie.
+     * @param followers
+     */
     @Override
     public void lead(List<Character> followers) {
-        // Volonté : octroie +10 de force aux personnages présents dans le lieu pour lequel il est le chef de clan
         if(this.currentPlace == null){
             System.out.println("General " + this.name + " ne peut pas utiliser \"Volonté\" car il n'est pas dans un lieu!");
             return;
@@ -43,9 +61,15 @@ public class General extends Roman implements Leader, Fighter {
 
     }
 
+    /**
+     * Le général combat un ennemi.
+     * Justice : Divise la vie actuelle de l'ennemi par 2.
+     * Coûte 45 d'énergie.
+     * @param enemy
+     */
     @Override
     public void combat(Character enemy) {
-        // Justice : Divise la vie actuelle de l'ennemi par 2
+        //
         if (this.stamina < 45) {
             System.out.println("General " + this.name + " n'a pas assez d'énergie pour utiliser \"Justice\" !");
             return;
