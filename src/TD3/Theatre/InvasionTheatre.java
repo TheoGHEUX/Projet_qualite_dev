@@ -1,11 +1,14 @@
 package TD3.Theatre;
 
 import TD3.characters.Character;
+import TD3.clan_chief.ClanChief;
+import TD3.enums.CharacterType;
 import TD3.interfaces. Fighter;
 import TD3.places.*;
 import TD3.enums.FoodType;
 import TD3.food.Food;
 import TD3.food.FoodStats;
+import TD3.enums.*;
 
 import java.util.*;
 
@@ -14,30 +17,26 @@ public class InvasionTheatre {
     private final String name;
     private final int maxPlaces;
     private final List<Place> places = new ArrayList<>();
-    private final List<Character> clanChiefs = new ArrayList<>();
+    private final List<ClanChief> clanChiefs = new ArrayList<>();
     private final Map<Character, Place> originalPlaces = new HashMap<>();
     private final Random random = new Random();
 
     private int currentTurn = 0;
 
-    // -------------------------------------------------------
-    // CONSTRUCTEUR
-    // -------------------------------------------------------
+    //CONSTRUCTEUR
     public InvasionTheatre(String name, int maxPlaces) {
         this.name = name;
         this.maxPlaces = maxPlaces;
     }
 
-    // -------------------------------------------------------
-    // INITIALISATION DU MONDE (à appeler depuis Main)
-    // -------------------------------------------------------
+    //INITIALISATION DU MONDE (a appeler dans le main par la suite)
     public void initializeWorld() {
         System.out.println("=== INITIALISATION DU MONDE ===\n");
 
         // 1. Créer les chefs de clan
         ClanChief abraracourcix = new ClanChief("Abraracourcix", Sex.MALE);
         ClanChief centurion = new ClanChief("Caius Bonus", Sex.MALE);
-        ClanChief prefet = new ClanChief("Julius Pompus", Sex. MALE);
+        ClanChief prefet = new ClanChief("Julius Pompus", Sex.MALE);
 
         // 2. Créer les lieux avec leurs chefs
         Place villageGaulois = new Gallic_village("Village Gaulois", 1000, abraracourcix);
@@ -46,37 +45,37 @@ public class InvasionTheatre {
         Place battlefield = new Battlefield("Plaine de combat", 1500);
         Place enclos = new Enclosure("Enclos des créatures", 500);
 
-        // 3. Ajouter les lieux au théâtre
+        // 3. Ajouter les lieux
         addPlace(villageGaulois);
         addPlace(campRomain);
         addPlace(villeRomaine);
         addPlace(battlefield);
         addPlace(enclos);
 
-        // 4. Créer des personnages initiaux
+        // 4. Créer des personnages
         // Village gaulois
         abraracourcix.createCharacter("Astérix", Sex.MALE, CharacterType.DRUID);
-        abraracourcix.createCharacter("Obélix", Sex. MALE, CharacterType.BLACKSMITH);
+        abraracourcix.createCharacter("Obélix", Sex.MALE, CharacterType.BLACKSMITH);
         abraracourcix.createCharacter("Panoramix", Sex.MALE, CharacterType.DRUID);
         abraracourcix.createCharacter("Assurancetourix", Sex.MALE, CharacterType.MERCHANT);
         abraracourcix.createCharacter("Bonemine", Sex.FEMALE, CharacterType.INNKEEPER);
 
         // Camp romain
-        centurion. createCharacter("Marcus", Sex.MALE, CharacterType.LEGIONARY);
+        centurion.createCharacter("Marcus", Sex.MALE, CharacterType.LEGIONARY);
         centurion.createCharacter("Brutus", Sex.MALE, CharacterType.LEGIONARY);
-        centurion.createCharacter("Cesar", Sex. MALE, CharacterType.GENERAL);
+        centurion.createCharacter("Cesar", Sex.MALE, CharacterType.GENERAL);
 
         // Ville romaine
         prefet.createCharacter("Claudius", Sex.MALE, CharacterType.PREFECT);
         prefet.createCharacter("Gracchus", Sex.MALE, CharacterType.LEGIONARY);
 
-        // 5. Ajouter des aliments initiaux
-        villageGaulois.addFood(FoodStats. newFood(FoodType. BOAR));
-        villageGaulois.addFood(FoodStats.newFood(FoodType.BOAR));
+        // 5. Ajouter des aliments
+        villageGaulois.addFood(FoodStats.newFood(FoodType.WILD_BOAR));
+        villageGaulois.addFood(FoodStats.newFood(FoodType.WILD_BOAR));
         villageGaulois.addFood(FoodStats.newFood(FoodType.WINE));
         villageGaulois.addFood(FoodStats.newFood(FoodType.PASSABLE_FRESH_FISH));
 
-        campRomain.addFood(FoodStats.newFood(FoodType.BOAR));
+        campRomain.addFood(FoodStats.newFood(FoodType.WILD_BOAR));
         campRomain.addFood(FoodStats.newFood(FoodType.HONEY));
         campRomain.addFood(FoodStats.newFood(FoodType.MEAD));
         campRomain.addFood(FoodStats.newFood(FoodType.WINE));
@@ -87,13 +86,13 @@ public class InvasionTheatre {
 
         // 6. Ingrédients pour potion magique
         villageGaulois.addFood(FoodStats.newFood(FoodType.MISTLETOE));
-        villageGaulois.addFood(FoodStats.newFood(FoodType.CARROTS));
+        villageGaulois.addFood(FoodStats.newFood(FoodType.CARROT));
         villageGaulois.addFood(FoodStats.newFood(FoodType.SALT));
         villageGaulois.addFood(FoodStats.newFood(FoodType.FRESH_FOUR_LEAF_CLOVER));
-        villageGaulois. addFood(FoodStats.newFood(FoodType.ROCK_OIL));
+        villageGaulois.addFood(FoodStats.newFood(FoodType.ROCKFISH_OIL));
         villageGaulois.addFood(FoodStats.newFood(FoodType.HONEY));
         villageGaulois.addFood(FoodStats.newFood(FoodType.MEAD));
-        villageGaulois. addFood(FoodStats.newFood(FoodType.SECRET_INGREDIENT));
+        villageGaulois.addFood(FoodStats.newFood(FoodType.SECRET_INGREDIENT));
 
         System.out.println("\n=== MONDE INITIALISÉ ===");
         System.out.println("Lieux créés : " + places.size());
@@ -101,9 +100,8 @@ public class InvasionTheatre {
         System.out.println("Personnages totaux : " + getTotalCharacterCount());
     }
 
-    // -------------------------------------------------------
-    // GESTION DES LIEUX
-    // -------------------------------------------------------
+
+    //GESTION DES LIEUX
     public boolean addPlace(Place place) {
         if (places.size() >= maxPlaces) return false;
         places.add(place);
@@ -115,11 +113,21 @@ public class InvasionTheatre {
     }
 
     public List<Place> getPlaces() { return places; }
-    public List<Character> getClanChiefs() { return clanChiefs; }
+    public List<ClanChief> getClanChiefs() { return clanChiefs; }
 
-    // -------------------------------------------------------
+    public int getTotalCharacterCount() {
+        int total = 0;
+        for (Place p : places) {
+            total += p.getThe_characters_present().size();
+        }
+        return total;
+    }
+
+    public String getName() { return name; }
+    public int getCurrentTurn() { return currentTurn; }
+
+
     // SIMULATION
-    // -------------------------------------------------------
     public void simulateTurn() {
         currentTurn++;
 
@@ -136,9 +144,9 @@ public class InvasionTheatre {
         }
     }
 
-    // -------------------------------------------------------
-    // LOGIQUE : COMBATS
-    // -------------------------------------------------------
+
+    //COMBATS
+
     private void fight() {
         for (Place place : places) {
             if (!(place instanceof Battlefield)) continue;
@@ -173,9 +181,7 @@ public class InvasionTheatre {
         }
     }
 
-    // -------------------------------------------------------
-    // LOGIQUE : RETOUR AU LIEU D'ORIGINE
-    // -------------------------------------------------------
+    //RETOUR AU LIEU D'ORIGINE
     private void returnToOriginalPlaces() {
         for (Place battlefield : places) {
             if (!(battlefield instanceof Battlefield)) continue;
@@ -195,9 +201,8 @@ public class InvasionTheatre {
         }
     }
 
-    // -------------------------------------------------------
-    // LOGIQUE : MODIFICATION ALÉATOIRE
-    // -------------------------------------------------------
+    //MODIFICATION ALÉATOIRE
+
     private void modifyCharactersState() {
         for (Place p : places) {
             for (Character c : p.getThe_characters_present()) {
@@ -211,9 +216,7 @@ public class InvasionTheatre {
         }
     }
 
-    // -------------------------------------------------------
-    // LOGIQUE : APPARITION ALIMENTS
-    // -------------------------------------------------------
+    //APPARITION ALIMENTS
     private void spawnFood() {
         for (Place p : places) {
             if (p instanceof Battlefield) continue;
@@ -225,12 +228,8 @@ public class InvasionTheatre {
         }
     }
 
-    // -------------------------------------------------------
-    // LOGIQUE : VIEILLISSEMENT ALIMENTS
-    // -------------------------------------------------------
-    /**
-     * Fait vieillir les aliments (change frais en pas frais)
-     */
+    //VIEILLISSEMENT DES ALIMENTS
+
     private void ageFood() {
         System.out.println("\n=== VIEILLISSEMENT DES ALIMENTS ===");
 
