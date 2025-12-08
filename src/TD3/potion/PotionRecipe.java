@@ -9,6 +9,9 @@ import java.util.List;
 public class PotionRecipe {
     public List<FoodType> recipe = new ArrayList<>();
 
+    /**
+     * Recette minimale d'une potion magique.
+     */
     public PotionRecipe() {
         recipe.add(FoodType.MISTLETOE);
         recipe.add(FoodType.CARROT);

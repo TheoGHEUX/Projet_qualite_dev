@@ -18,6 +18,10 @@ public class Potion {
     private final int staminaEffect ;
     private final boolean isMagic ;
 
+    /**
+     * Crée une nouvelle potion.
+     * @param ingredients
+     */
     public Potion(List<Food> ingredients) {
         this.ingredients = Collections.unmodifiableList(ingredients);
 
