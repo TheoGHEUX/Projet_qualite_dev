@@ -21,7 +21,6 @@ public abstract class Character {
     protected String nationality; // Gaul, Roman ou Creature
     protected String type; // correspond au métier d'un humain ou à l'espèce d'une créature
     protected Place currentPlace; // lieu qu'il occupe
-    protected boolean isAClanChief;
     // Informations sur les statistiques vitales
     protected double strength; // Dégâts d'une attaque (methode fight())
     protected double baseStrength; // Dégâts de base
@@ -42,6 +41,17 @@ public abstract class Character {
     protected boolean lastWasVegetal; // le dernier aliment qu'il a mangé est végétal
     protected int belligerence ; // en conflit
 
+    /**
+     * Crée un nouveau personnage.
+     * @param name
+     * @param sex
+     * @param size
+     * @param age
+     * @param strength
+     * @param stamina
+     * @param health
+     * @param place
+     */
     public Character(String name, Sex sex, int size, int age, double strength, int stamina, double health, Place place) {
         this.name = name;
         this.sex = sex;
@@ -63,12 +73,16 @@ public abstract class Character {
         this.isInvincible = false;
         this.isStatue = false;
         this.currentPlace = place;
-        this.isAClanChief = false;
     }
 
     // Méthodes
 
-    // Fight => attaque de base (Dégâts : force du perso, Coût : 10 de stamina)
+    /**
+     * Attaque un ennemi.
+     * Diminue la vie de l'ennemi à hauteur de la force du lanceur de l'attaque.
+     * Coûte 10 d'énergie
+     * @param enemy
+     */
     public void fight (Character enemy) {
         if((this.stamina - 10) < 0){
             System.out.println(this.name + " ne peut pas attaquer " + enemy.name + " | Pas assez d'énergie !" );
@@ -80,9 +94,15 @@ public abstract class Character {
         }
     }
 
+    /**
+     * Met à jour la vie du personnage.
+     * Il meurt si sa vie descend en dessous de 1.
+     * Ses points de vies ne peuvent pas dépasser le maximum de vie du personnage.
+     * @param health
+     */
     public void updateHealth(double health) {
         if(this.isInvincible){
-            if(health < 0){
+            if(health <=  0){
                 return ;
             }
             this.health = Math.min(maxHealth, this.health + health);
@@ -91,11 +111,17 @@ public abstract class Character {
 
         this.health = Math.min(maxHealth, Math.max(0, this.health + health));
 
-        if(this.health == 0){
+        if(this.health <= 0){
             this.decease();
         }
     }
 
+    /**
+     * Met à jour la faim du personnage.
+     * Il meurt si sa faim descend en dessous de 1.
+     * Sa barre de faim ne peut pas dépasser 100%.
+     * @param hunger
+     */
     public void updateHunger(int hunger) {
 
         this.hunger = Math.min(100, Math.max(0, this.hunger + hunger));
@@ -105,10 +131,21 @@ public abstract class Character {
         }
     }
 
+    /**
+     * Met à jour l'énergie du personnage.
+     * Sa barre d'énergie ne peut pas dépasser l'énergie max du personnage.
+     * @param stamina
+     */
     public void updateStamina(int stamina) {
         this.stamina = Math.min(this.maxStamina, Math.max(0, this.stamina + stamina));
     }
 
+    /**
+     * Le persoonage mange un aliment.
+     * Met à jour sa vie, sa faim et son énergie.
+     * S'il mange deux végétaux d'affilée, il perd des points de vie.
+     * @param food
+     */
     public void eat(Food food){
         // Gestion de la faim
         if(hunger + food.getHungerEffect() >= 100){
@@ -137,6 +174,14 @@ public abstract class Character {
         lastWasVegetal = food.isVege();
     }
 
+    /**
+     * Le personnage boit une potion.
+     * Met à jour sa vie, sa faim et son énergie.
+     * S'il s'agit d'une potion magique, il gagne des effets temporaires.
+     * S'il boit beaucoup de potion magique, les effets deviennent permanents.
+     * S'il boit trop de potion magique, il se transforme en statue.
+     * @param potion
+     */
     public void drinkMagicPotion (Potion potion){
         if (potion.isEmpty()){
             System.out.println("La potion est vide ! ");
@@ -224,24 +269,34 @@ public abstract class Character {
 
     }
 
+    /**
+     * Le personnage se transforme en statue et meurt.
+     */
     public void transformStatue(){
         this.isStatue = true;
         this.decease();
     }
 
+    /**
+     * Le personnage meurt.
+     */
     public void decease (){
         System.out.println(this.name + " est mort !");
         this.isAlive = false;
     }
 
+    /**
+     * Met à jour le lieu actuel du personnage.
+     * @param place
+     */
     public void modifyCurrentPlace(Place place){
         this.currentPlace = place;
     }
 
-    public void modifyIsAClanChief(boolean isAClanChief){
-        this.isAClanChief = isAClanChief;
-    }
-
+    /**
+     * Modifie la force du personnage.
+     * @param strength
+     */
     public void gainStrength(int strength){
         this.strength += strength;
     }
@@ -314,10 +369,6 @@ public abstract class Character {
 
     public boolean isAlive() {
         return isAlive;
-    }
-
-    public boolean isAClanChief() {
-        return isAClanChief;
     }
 
     public List<PotionEffect> getCharacterPotionEffectsTemp() {

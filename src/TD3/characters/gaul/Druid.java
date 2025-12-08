@@ -17,26 +17,40 @@ import java.util.List;
 // Druides
 public class Druid extends Gaul implements Worker, Leader, Fighter {
 
-    // Constructeur personnalisé
+    /**
+     * Crée un nouveau druide avec plus de choix de paramètres.
+     * @param name
+     * @param sex
+     * @param size
+     * @param age
+     * @param strength
+     * @param stamina
+     * @param health
+     */
     public Druid(String name, Sex sex, int size, int age, double strength, int stamina, double health) {
         super(name, sex, size, age, strength, stamina, health);
         this.type = "Druid";
     }
 
-    // Constructeur avec des stats par défaut
+    /**
+     * Crée un nouveau druide
+     * @param name
+     * @param sex
+     */
     public Druid(String name, Sex sex) {
         super(name, sex, randomBetween(165,180), randomBetween(50,90),10,65,100);
         this.type = "Druid";
     }
 
+    /**
+     * Le duide travaille.
+     * Le druide prépare de la potion magique basique ! (sans effet de duplication et métamorphosis)
+     * Coût : ingredients
+     */
+    @Override
     public void work() {
-        // Le druide prépare de la potion magique basique ! (sans effet de duplication et métamorphosis)
         if(this.currentPlace == null){
             System.out.println("Druid " + this.name + " ne peut pas préparer de potion magique car il n'est actuellement pas dans un lieu !");
-            return;
-        }
-        if(this.getStamina() < 20){
-            System.out.println("Druid " + this.name + " ne peut pas préparer de potion magique car il est fatigué !");
             return;
         }
         if(!this.getPlace().hasEnoughToMakeAMagicPotion()){
@@ -109,13 +123,17 @@ public class Druid extends Gaul implements Worker, Leader, Fighter {
         System.out.println("Potion créé avec succès ! Aliments utilisés : " + potion.showIngredients());
 
         this.getPlace().addPotion(potion);
-        this.stamina -= 20 ;
     }
 
+    /**
+     * Le druide dirige.
+     * Appel de l'étoile : Soigne 75 de vie à tous les membres présents dans le même lieu que lui
+     * @param followers
+     */
+    @Override
     public void lead(List<Character> followers) {
-        // Appel de l'étoile : Soigne 75 de vie à tous les membres présents dans le lieu pour lequel il est le chef de clan
-        if(!this.isAClanChief){
-            System.out.println("Druid " + this.name + " ne peut pas utiliser \"Appel de l'étoile\" car il n'est pas un chef de clan !");
+        if(this.currentPlace == null){
+            System.out.println("Druid " + this.name + " ne peut pas utiliser \"Appel de l'étoile\" car il n'est pas dans un lieu !");
             return;
         }
         if (this.stamina < 50) {
@@ -132,8 +150,14 @@ public class Druid extends Gaul implements Worker, Leader, Fighter {
 
     }
 
+    /**
+     * Le duide combat un ennemi
+     * Transfusion : Inflige au hasard de 5 à 35 dégâts à l'ennemi et le druide se régénère le montant de ces dégâts.
+     * Coûte 35 d'énergie.
+     * @param enemy
+     */
+    @Override
     public void combat(Character enemy) {
-        // Transfusion : Inflige au hasard de 5 à 35 dégâts à l'ennemi et le druide se régénère le montant de ces dégâts
         if (this.stamina < 35) {
             System.out.println("Druid " + this.name + " n'a pas assez d'énergie pour activer \"Transfusion\" !");
             return;

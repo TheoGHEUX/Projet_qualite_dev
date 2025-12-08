@@ -7,20 +7,39 @@ import TD3.interfaces.Fighter;
 // Loups-garous
 public class Werewolf extends Creature implements Fighter {
 
-    // Constructeur personnalisé
+    /**
+     * Crée un nouveau loup avec plus de choix de paramètres.
+     * @param name
+     * @param sex
+     * @param size
+     * @param age
+     * @param strength
+     * @param stamina
+     * @param health
+     */
     public Werewolf(String name, Sex sex, int size, int age, int strength, int stamina, double health) {
         super(name, sex, size, age, strength, stamina, health);
         this.type = "Werewolf";
     }
 
-    // Constructeur avec des stats par défaut
+    /**
+     * Crée un nouveau loup
+     * @param name
+     * @param sex
+     */
     public Werewolf(String name, Sex sex) {
         super(name, sex, randomBetween(165,180), randomBetween(50,90),25,65,100);
         this.type = "Werewolf";
     }
 
+    /**
+     * Le loup combar un ennemi
+     * Dents de la bête : Inflige 50 dégâts à l'ennemi contre 50 de faim et se soigne de 20
+     * Coûte 50 de faim.
+     * @param enemy
+     */
+    @Override
     public void combat(Character enemy) {
-        // Dents de la bête : Inflige 50 dégâts à l'ennemi contre 50 de faim et se soigne de 20
         int currentHunger = this.getHunger();
         if (currentHunger <= 50) {
             System.out.println("Werewolf " + this.name + " n'a pas assez faim pour activer \"Dents de la bête\" !");

@@ -1,5 +1,8 @@
 package TD3.enums;
 
+/**
+ * Les types d'aliments possibles.
+ */
 public enum FoodType {
     WILD_BOAR,
     PASSABLE_FRESH_FISH,
