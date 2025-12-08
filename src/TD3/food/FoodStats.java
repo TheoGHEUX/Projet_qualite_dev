@@ -3,6 +3,11 @@ package TD3.food;
 import TD3.enums.FoodType;
 
 public class FoodStats {
+    /**
+     * Crée un nouvel aliment uniquement avec son type.
+     * @param foodType
+     * @return
+     */
     public static Food newFood(FoodType foodType){
         switch (foodType) {
             case WILD_BOAR:

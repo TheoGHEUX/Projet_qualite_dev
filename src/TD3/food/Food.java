@@ -12,6 +12,14 @@ public class Food {
     private final boolean isVege;
 
 
+    /**
+     * Crée un nouvel aliment.
+     * @param foodtype
+     * @param healthEffect
+     * @param hungerEffect
+     * @param staminaEffect
+     * @param isVege
+     */
     public Food(FoodType foodtype, int healthEffect, int hungerEffect, int staminaEffect, boolean isVege) {
         this.foodType = foodtype;
         this.healthEffect = healthEffect;

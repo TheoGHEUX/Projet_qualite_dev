@@ -5,7 +5,10 @@ import java.util.List;
 // Classe qui implémente un tri à bulles pour ranger les aliments d'une List<Food> du moins au plus nourrissant
 public class FoodSort {
 
-    // méthode de tri
+    /**
+     * Méthode de tri à bulles qui tri les aliments d'une liste du moins au plus nourrissant.
+     * @param foods
+     */
     public static void foodSort(List<Food> foods) {
         int n = foods.size();
 
