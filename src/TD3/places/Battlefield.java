@@ -11,7 +11,7 @@ public class Battlefield extends Place {
     }
 
     public boolean canAccept(Character character) {
-        return false;
+        return true;
     }
 
 }
