@@ -227,7 +227,7 @@ public abstract class Character {
                             }
                         }
                     }
-                }, 3, TimeUnit.SECONDS);
+                }, 3, TimeUnit.MINUTES);
             }
             // Si les effets deviennent permanents :
             else {
@@ -241,18 +241,21 @@ public abstract class Character {
         }
         // Si la personne avait déjà des effets permanents, il faut s'assurer qu'elle ne boit pas une deuxième marmite (sinon elle se transforme en statue)
         else {
-            synchronized (this) {
-                if (this.potionLevel < 8) {
-                    this.potionLevel += 1;
-                }
+            this.potionLevel += 1 ;
+            scheduler.schedule(() -> {
+                synchronized (this) {
+                    if (this.potionLevel < 8) {
+                        this.potionLevel -= 1;
+                    }
 
-                if (this.potionLevel >= 8) {
-                    if (!this.isStatue) {
-                        this.transformStatue();
-                        this.isStatue = true;
+                    if (this.potionLevel >= 8) {
+                        if (!this.isStatue) {
+                            this.transformStatue();
+                            this.isStatue = true;
+                        }
                     }
                 }
-            }
+            }, 3, TimeUnit.MINUTES);
         }
         // Gestion des autres effets
 
@@ -377,6 +380,14 @@ public abstract class Character {
 
     public String getType() {
         return type;
+    }
+
+    public boolean isInvincible() {
+        return isInvincible;
+    }
+
+    public boolean isStatue() {
+        return isStatue;
     }
 
     public boolean isAlive() {

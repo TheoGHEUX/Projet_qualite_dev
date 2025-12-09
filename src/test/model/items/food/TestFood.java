@@ -6,7 +6,7 @@ import main.model.items.food.FoodStats;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-class TestFood {
+public class TestFood {
 
     @Test
     void testConstructorAndGetters() {
