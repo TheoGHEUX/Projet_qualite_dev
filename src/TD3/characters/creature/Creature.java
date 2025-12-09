@@ -8,9 +8,6 @@ import java.util.Random;
 
 public class Creature extends Character {
 
-    // Variable utile à la génération de l'âge et la taille aléatoire
-    protected static final Random RANDOM = new Random();
-
     /**
      * Crée une nouvelle créature.
      * @param name
@@ -26,13 +23,5 @@ public class Creature extends Character {
         this.nationality = "Creature";
     }
 
-    /**
-     * Génère aléatoirement un nombre dans un intervalle
-     * @param min
-     * @param max
-     * @return
-     */
-    protected static int randomBetween(int min, int max) {
-        return RANDOM.nextInt(max - min + 1) + min;
-    }
+
 }

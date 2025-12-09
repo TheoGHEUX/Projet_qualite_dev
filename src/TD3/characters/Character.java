@@ -40,6 +40,8 @@ public abstract class Character {
     // Autres
     protected boolean lastWasVegetal; // le dernier aliment qu'il a mangé est végétal
     protected int belligerence ; // en conflit
+    // Variable utile à la génération de l'âge et la taille aléatoire
+    protected static final Random RANDOM = new Random();
 
     /**
      * Crée un nouveau personnage.
@@ -376,6 +378,16 @@ public abstract class Character {
     }
     public List<PotionEffect> getCharacterPotionEffectsPerm() {
         return characterPotionEffectsPerm;
+    }
+
+    /**
+     * Génère aléatoirement un nombre dans un intervalle
+     * @param min
+     * @param max
+     * @return
+     */
+    protected static int randomBetween(int min, int max) {
+        return RANDOM.nextInt(max - min + 1) + min;
     }
 
     public void showCharacterVitalData(){
