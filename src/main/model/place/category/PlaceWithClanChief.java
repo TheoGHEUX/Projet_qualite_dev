@@ -63,7 +63,7 @@ public abstract class PlaceWithClanChief extends Place {
     }
 
     public void showInfos() {
-        List<String> noms = this.showCharactersNames();
+        List<String> noms = this.showPresentCharactersNames();
         List<FoodType> foodTypes = this.showTypesOfAlimentsPresent();
 
         if(clan_chief != null) {

@@ -1,5 +1,8 @@
 package main.model.items.food;
 
+import main.enums.FoodType;
+
+import java.util.ArrayList;
 import java.util.List;
 
 // Classe qui implémente un tri à bulles pour ranger les aliments d'une List<Food> du moins au plus nourrissant
