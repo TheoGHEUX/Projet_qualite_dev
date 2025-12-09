@@ -4,6 +4,9 @@ package main.model.items.food;
 
 import main.enums.FoodType;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Food {
     private final FoodType foodType;
     private final int healthEffect;
@@ -28,6 +31,20 @@ public class Food {
         this.isVege = isVege;
     }
 
+
+    /**
+     * Renvoie la liste contenant le type d'aliment de chaque aliment de celle passée en paramètre.
+     * @param list
+     * @return
+     */
+    public static List<FoodType> showFoodTypes(List<Food> list){
+        List<FoodType> food = new ArrayList<>();
+        for (Food aliment : list) {
+            food.add(aliment.getFoodType());
+        }
+        return food;
+    }
+
     public FoodType getFoodType() {
         return foodType;
     }
@@ -47,4 +64,5 @@ public class Food {
     public int getStaminaEffect() {
         return staminaEffect;
     }
+
 }

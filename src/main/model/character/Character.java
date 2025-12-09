@@ -302,6 +302,17 @@ public abstract class Character {
         this.strength += strength;
     }
 
+    /**
+     *
+     * @return
+     */
+    public static List<String> showCharactersNames(List<Character> characters){
+        List<String> noms = new ArrayList<>();
+        for (Character character : characters){
+            noms.add(character.getName());
+        }
+        return noms;
+    }
     // Getters
 
     public String getName() {

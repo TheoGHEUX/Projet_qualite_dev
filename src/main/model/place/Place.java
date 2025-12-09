@@ -10,6 +10,9 @@ import main.model.items.potion.PotionRecipe;
 import java.util.ArrayList;
 import java.util.List;
 
+import static main.model.character.Character.showCharactersNames;
+import static main.model.items.food.Food.showFoodTypes;
+
 //lieu
 public abstract class Place {
     protected String name;
@@ -262,20 +265,11 @@ public abstract class Place {
     }
 
     public List<FoodType> showTypesOfAlimentsPresent(){
-        List<FoodType> ingredients = new ArrayList<>();
-        for (Food food : this.the_aliments_present) {
-            ingredients.add(food.getFoodType());
-        }
-        return ingredients;
-
+        return showFoodTypes(this.getThe_aliments_present());
     }
 
-    public List<String> showCharactersNames(){
-        List<String> noms = new ArrayList<>();
-        for (Character character : this.getThe_characters_present()){
-            noms.add(character.getName());
-        }
-        return noms;
+    public List<String> showPresentCharactersNames(){
+        return showCharactersNames(this.getThe_characters_present());
     }
 
     public List<Potion> getPotion_present() {

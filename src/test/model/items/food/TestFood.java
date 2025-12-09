@@ -6,7 +6,7 @@ import main.model.items.food.FoodStats;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-class FoodTest {
+class TestFood {
 
     @Test
     void testConstructorAndGetters() {
@@ -34,5 +34,32 @@ class FoodTest {
 
         Food lobster = FoodStats.newFood(FoodType.LOBSTER);
         assertFalse(lobster.isVege());
+    }
+
+    @Test
+    void testHungerEffect() {
+        Food carrot = FoodStats.newFood(FoodType.CARROT);
+        assertEquals(10, carrot.getHungerEffect());
+
+        Food salt = FoodStats.newFood(FoodType.SALT);
+        assertEquals(1, salt.getHungerEffect());
+    }
+
+    @Test
+    void testHealthEffect() {
+        Food mistletoe = FoodStats.newFood(FoodType.MISTLETOE);
+        assertEquals(5, mistletoe.getHealthEffect());
+
+        Food mead = FoodStats.newFood(FoodType.MEAD);
+        assertEquals(3, mead.getHealthEffect());
+    }
+
+    @Test
+    void testStaminaEffect() {
+        Food unicornMilk = FoodStats.newFood(FoodType.TWO_HEADS_UNICORN_MILK);
+        assertEquals(20, unicornMilk.getStaminaEffect());
+
+        Food dogmatixHair = FoodStats.newFood(FoodType.DOGMATIX_HAIR);
+        assertEquals(0,dogmatixHair.getStaminaEffect());
     }
 }
