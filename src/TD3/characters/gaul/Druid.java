@@ -58,7 +58,7 @@ public class Druid extends Gaul implements Worker, Leader, Fighter {
             return;
         }
 
-        List<FoodType> availabletype = this.getPlace().showTheAlimentsPresent(); // types des aliments disponibles
+        List<FoodType> availabletype = this.getPlace().showTypesOfAlimentsPresent(); // types des aliments disponibles
         List<Food> available = this.getPlace().getThe_aliments_present(); // aliments disponibles
         PotionRecipe p_recipe = new PotionRecipe(); // Recette de la potion
         List<FoodType> recipe = p_recipe.getRecipe(); // Recette de la potion avec foodtype

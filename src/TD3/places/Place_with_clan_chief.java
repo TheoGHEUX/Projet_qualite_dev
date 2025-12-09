@@ -67,14 +67,9 @@ public abstract class Place_with_clan_chief extends Place {
     }
 
     public void showInfos() {
-        List<String> noms = new ArrayList<>();
-        for (Character character : this.getThe_characters_present()){
-            noms.add(character.getName());
-        }
-        List<FoodType> foodTypes = new ArrayList<>();
-        for (Food foods : this.getThe_aliments_present()){
-            foodTypes.add(foods.getFoodType());
-        }
+        List<String> noms = this.showCharactersNames();
+        List<FoodType> foodTypes = this.showTypesOfAlimentsPresent();
+
         if(clan_chief != null) {
             System.out.println("[INFOS] Lieu: " + name + " | Chef de clan: " + clan_chief.getName() + " | Personnages présents: " + noms + " | Aliments: " + foodTypes);
             return;

@@ -223,7 +223,7 @@ public abstract class Place {
         PotionRecipe p_recipe = new PotionRecipe();
         List<FoodType> recipe = p_recipe.getRecipe();
 
-        List<FoodType> ingredients = this.showTheAlimentsPresent();
+        List<FoodType> ingredients = this.showTypesOfAlimentsPresent();
 
         for (FoodType food : recipe) {
             if (food == FoodType.ROCKFISH_OIL) {
@@ -260,12 +260,21 @@ public abstract class Place {
         return the_aliments_present;
     }
 
-    public List<FoodType> showTheAlimentsPresent(){
+    public List<FoodType> showTypesOfAlimentsPresent(){
         List<FoodType> ingredients = new ArrayList<>();
         for (Food food : this.the_aliments_present) {
             ingredients.add(food.getFoodType());
         }
         return ingredients;
+
+    }
+
+    public List<String> showCharactersNames(){
+        List<String> noms = new ArrayList<>();
+        for (Character character : this.getThe_characters_present()){
+            noms.add(character.getName());
+        }
+        return noms;
     }
 
     public List<Potion> getPotion_present() {

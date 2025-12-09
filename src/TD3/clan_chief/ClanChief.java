@@ -235,12 +235,9 @@ public class ClanChief {
         }
     }
 
-
-
     public Place_with_clan_chief getPlace() {
         return place;
     }
-
 
     public String getName() {
         return name;
