@@ -397,4 +397,27 @@ public abstract class Character {
         System.out.println(this.getName() + " | Nationalité: " + this.getNationality() + " | Type: " + this.getType() +" | Age: " + this.getAge() + " | Taille: " + this.getSize() + "cm" + " | Force: " + this.getStrength());
     }
 
+    public void restoreAllStats() {
+        this.health = this.maxHealth;
+        this.stamina = this.maxStamina;
+        this.hunger = 100;
+        this.belligerence = 0;
+        this.lastWasVegetal = false;
+        this.isInvincible = false;
+        this.isAlive = true;
+        this.potionLevel = 0;
+        this.characterPotionEffectsTemp.clear();
+        this.characterPotionEffectsPerm.clear();
+    }
+
+
+    protected static int generateAge() {
+        return randomBetween(18, 60);
+    }
+
+    protected static int generateSize() {
+        return randomBetween(150, 190);
+    }
+
+
 }

@@ -1,16 +1,17 @@
 package main;
 
+import main.model.place.category.place_with_clan_chief.*;
 import main.theatre.InvasionTheatre;
 import main.model.clan_chief.ClanChief;
 import main.model.character.Character;
 import main.model.place.Place;
 import main.model.place.category.PlaceWithClanChief;
-import main.model.place.category.Battlefield;
-import main.model.place.category.Enclosure;
+import main.model.place.category. Battlefield;
+import main.model. place.category. Enclosure;
 import main.enums.CharacterType;
 import main.enums.Sex;
 
-import java.util.Scanner;
+import java.util. Scanner;
 import java.util.List;
 
 /**
@@ -28,24 +29,30 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("=== SIMULATION D'ENVAHISSEMENT DE L'ARMORIQUE ===\n");
 
-        // Creation et initialisation du theatre d'envahissement
+        // Creation du theatre d'envahissement
         InvasionTheatre theatre = new InvasionTheatre("Armorique", 10);
-        theatre.initializeWorld();
+
+        // Creation des chefs de clan de manière interactive
+        createClanChiefsInteractively(theatre);
+
+        // Initialisation automatique des personnages et aliments
+        theatre.initializeRandomCharactersAndItems();
+
 
         // Boucle principale de simulation
         boolean continueSimulation = true;
         while (continueSimulation) {
-            System.out.println("\n" + "=".repeat(60));
+            System.out.println("\n" + "=". repeat(60));
             System.out.println("TOUR " + (theatre.getCurrentTurn() + 1));
-            System.out.println("=". repeat(60));
+            System.out. println("=".repeat(60));
 
             // Execution de la simulation automatique (combats, aliments, etc.)
-            theatre.simulateTurn();
+            theatre. simulateTurn();
 
             // Affichage de l'etat actuel du monde
             displayTheatreStatus(theatre);
 
-            // Phase interactive : les chefs de clan agissent
+            // Phase interactive :  les chefs de clan agissent
             manageClanChiefs(theatre);
 
             // Demander si l'utilisateur veut continuer
@@ -57,6 +64,96 @@ public class Main {
     }
 
     /**
+     * Cree plusieurs chefs de clan de manière interactive.
+     * Demande à l'utilisateur le nombre de chefs, puis pour chacun :
+     * - son nom,
+     * - son sexe,
+     * - le type de lieu qu'il dirigera.
+     * Génère ensuite automatiquement le chef, son lieu associé
+     * et l'ajoute au théâtre d'envahissement.
+     */
+    /**
+     * Cree plusieurs chefs de clan de manière interactive.
+     * Demande à l'utilisateur le nombre de chefs, puis pour chacun :
+     * - son nom,
+     * - son sexe,
+     * - le type de lieu qu'il dirigera.
+     * Génère ensuite automatiquement le chef, son lieu associé
+     * et l'ajoute au théâtre d'envahissement.
+     */
+    private static void createClanChiefsInteractively(InvasionTheatre theatre) {
+
+        System.out.print("Combien de chefs de clan souhaitez-vous créer ?   ");
+        int nb = getIntInput();
+
+        for (int i = 1; i <= nb; i++) {
+            System.out. println("\n=== Création du chef de clan " + i + " ===");
+
+            // Choix du nom avec validation
+            String name = "";
+            while (name.trim().isEmpty()) {
+                System.out. print("Nom du chef : ");
+                name = scanner.nextLine().trim();
+
+                if (name.isEmpty()) {
+                    System.out.println(" Le nom ne peut pas être vide !   Veuillez entrer un nom.");
+                }
+            }
+
+            // Choix du sexe avec validation
+            Sex sex = null;
+            while (sex == null) {
+                System.out.println("Sexe (1 = MALE, 2 = FEMALE) : ");
+                int sexChoice = getIntInput();
+
+                if (sexChoice == 1) {
+                    sex = Sex. MALE;
+                } else if (sexChoice == 2) {
+                    sex = Sex.FEMALE;
+                } else {
+                    System.out.println(" Choix invalide !  Veuillez choisir 1 ou 2.");
+                }
+            }
+
+            // Création du chef (AVANT le lieu)
+            ClanChief chief = new ClanChief(name, sex);
+
+            // Choix du type de lieu avec validation
+            Place place = null;
+            while (place == null) {
+                System.out.println("\nChoisir un type de lieu :");
+                System.out. println("1. Village gaulois");
+                System.out.println("2. Camp romain");
+                System.out.println("3. Ville romaine");
+                System.out.println("4. Bourgade gallo-romaine");
+                System.out. println("5. Enclos");
+                System.out.println("6. Champ de bataille");
+                System.out.print("Votre choix :   ");
+
+                int choice = getIntInput();
+
+                place = switch (choice) {
+                    case 1 -> new GallicVillage("Village de " + name, 1000, chief);
+                    case 2 -> new RomanFortifiedCamp("Camp de " + name, 1200, chief);
+                    case 3 -> new RomanTown("Ville de " + name, 1500, chief);
+                    case 4 -> new GalloRomanSettlement("Bourgade de " + name, 1300, chief);
+                    case 5 -> new Enclosure("Enclos " + name, 500);
+                    case 6 -> new Battlefield("Champ de bataille " + name, 1500);
+                    default -> {
+                        System.out.println(" Choix invalide !  Veuillez choisir un nombre entre 1 et 6.");
+                        yield null; // On reste dans la boucle
+                    }
+                };
+            }
+
+            // Ajout au théâtre APRÈS validation complète
+            theatre.addPlace(place);
+
+            System.out. println(" Chef " + name + " créé avec son lieu :   " + place. getName());
+        }
+    }
+
+    /**
      * Affiche l'etat general du theatre d'envahissement.
      * Montre le nombre de lieux, personnages vivants et un resume par lieu.
      * @param theatre le theatre a afficher
@@ -64,15 +161,15 @@ public class Main {
     private static void displayTheatreStatus(InvasionTheatre theatre) {
         System.out.println("\n--- ETAT DU THEATRE " + theatre.getName() + " ---");
         System.out.println("Lieux :  " + theatre.getPlaces().size());
-        System.out. println("Personnages vivants :  " + theatre.getTotalCharacterCount());
-        System.out. println("Chefs de clan :  " + theatre.getClanChiefs().size());
+        System.out.println("Personnages vivants : " + theatre.getTotalCharacterCount());
+        System.out.println("Chefs de clan : " + theatre. getClanChiefs().size());
 
         // Affichage du resume de chaque lieu
         System.out.println("\nResume des lieux :");
-        for (Place place : theatre.getPlaces()) {
+        for (Place place : theatre. getPlaces()) {
             int charCount = place.getThe_characters_present().size();
             int foodCount = place.getThe_aliments_present().size();
-            System. out.println("  - " + place.getName() + " : " + charCount + " personnages, " + foodCount + " aliments");
+            System.out.println("  - " + place.getName() + " : " + charCount + " personnages, " + foodCount + " aliments");
         }
     }
 
@@ -87,7 +184,7 @@ public class Main {
         for (ClanChief chief : theatre.getClanChiefs()) {
             if (chief == null || chief.getPlace() == null) continue;
 
-            System.out. println("\nTour de " + chief.getName() + " (" + chief.getPlace().getName() + ")");
+            System.out.println("\nTour de " + chief.getName() + " (" + chief.getPlace().getName() + ")");
             manageChief(chief, theatre);
         }
     }
@@ -102,7 +199,7 @@ public class Main {
         int actionsRemaining = MAX_ACTIONS_PER_TURN;
 
         while (actionsRemaining > 0) {
-            System.out.println("\nActions restantes : " + actionsRemaining);
+            System.out. println("\nActions restantes : " + actionsRemaining);
             displayChiefMenu();
 
             int choice = getIntInput();
@@ -142,7 +239,7 @@ public class Main {
                     System.out.println("Choix invalide.");
             }
         }
-        System.out.println("Limite d'actions atteinte pour " + chief. getName());
+        System.out.println("Limite d'actions atteinte pour " + chief.getName());
     }
 
     /**
@@ -152,11 +249,11 @@ public class Main {
         System.out.println("1. Examiner le lieu");
         System.out.println("2. Nourrir les personnages");
         System.out.println("3. Soigner les personnages");
-        System.out.println("4. Creer un personnage");
+        System.out. println("4. Creer un personnage");
         System.out.println("5. Faire de la potion magique");
         System.out.println("6. Donner la potion magique");
         System.out.println("7. Transferer un personnage");
-        System.out.println("0. Terminer le tour");
+        System.out. println("0. Terminer le tour");
         System.out.print("Votre choix : ");
     }
 
@@ -179,14 +276,14 @@ public class Main {
         }
 
         // Affichage des personnages disponibles
-        System.out. println("\nPersonnages dans " + place.getName() + " :");
+        System.out.println("\nPersonnages dans " + place.getName() + " :");
         for (int i = 0; i < characters.size(); i++) {
             Character c = characters.get(i);
             System.out.println(i + ". " + c.getName() + " (Sante: " + c.getHealth() + ")");
         }
 
         // Choix du personnage
-        System. out.print("Choisir un personnage (numero) : ");
+        System.out.print("Choisir un personnage (numero) : ");
         int index = getIntInput();
 
         if (index >= 0 && index < characters.size()) {
@@ -195,7 +292,7 @@ public class Main {
             int amount = getIntInput();
             place.healCharacter(character, amount);
         } else {
-            System.out.println("Index invalide.");
+            System.out. println("Index invalide.");
         }
     }
 
@@ -214,14 +311,14 @@ public class Main {
         Sex sex = (sexChoice == 1) ? Sex.MALE : Sex.FEMALE;
 
         // Choix du type de personnage
-        System.out. println("Type de personnage :");
+        System.out.println("Type de personnage :");
         System.out.println("1. DRUID");
-        System.out.println("2. BLACKSMITH");
-        System.out.println("3. MERCHANT");
+        System.out. println("2. BLACKSMITH");
+        System.out. println("3. MERCHANT");
         System.out.println("4. INNKEEPER");
-        System.out.println("5. LEGIONARY");
+        System.out. println("5. LEGIONARY");
         System.out.println("6. PREFECT");
-        System.out.println("7. GENERAL");
+        System.out. println("7. GENERAL");
         System.out.println("8. WEREWOLF");
         System.out.print("Votre choix : ");
 
@@ -272,20 +369,20 @@ public class Main {
 
         List<Character> characters = place.getThe_characters_present();
         if (characters.isEmpty()) {
-            System.out. println("Aucun personnage a transferer.");
+            System.out.println("Aucun personnage a transferer.");
             return;
         }
 
         // Affichage des personnages disponibles
         System.out.println("\nPersonnages :");
         for (int i = 0; i < characters.size(); i++) {
-            System.out. println(i + ". " + characters.get(i).getName());
+            System.out.println(i + ". " + characters.get(i).getName());
         }
-        System.out.print("Choisir un personnage : ");
+        System.out.print("Choisir un personnage :  ");
         int charIndex = getIntInput();
 
         if (charIndex < 0 || charIndex >= characters.size()) {
-            System.out.println("Index invalide.");
+            System. out.println("Index invalide.");
             return;
         }
 
@@ -296,7 +393,7 @@ public class Main {
                 .toList();
 
         for (int i = 0; i < destinations.size(); i++) {
-            System. out.println(i + ".  " + destinations.get(i).getName());
+            System.out.println(i + ". " + destinations. get(i).getName());
         }
         System.out.print("Choisir une destination : ");
         int destIndex = getIntInput();
@@ -313,7 +410,7 @@ public class Main {
      * @return true si l'utilisateur veut continuer, false sinon
      */
     private static boolean askContinue() {
-        System.out.print("\nContinuer la simulation ?  (o/n) : ");
+        System.out.print("\nContinuer la simulation ? (o/n) : ");
         String response = scanner.nextLine().trim().toLowerCase();
         return response.equals("o") || response.equals("oui");
     }
