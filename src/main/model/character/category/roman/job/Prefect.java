@@ -1,0 +1,62 @@
+package main.model.character.category.roman.job;
+
+import main.model.character.Character;
+import main.enums.Sex;
+import main.interfaces.Leader;
+import main.model.character.category.roman.Roman;
+
+import java.util.List;
+
+// Prefets
+public class Prefect extends Roman implements Leader {
+
+    /**
+     * Crée un nouveau préfet avec plus de choix de paramètres.
+     * @param name
+     * @param sex
+     * @param size
+     * @param age
+     * @param strength
+     * @param stamina
+     * @param health
+     */
+    public Prefect(String name, Sex sex, int size, int age, double strength, int stamina, double health) {
+        super(name, sex, size, age, strength, stamina, health);
+        this.type = "Prefect";
+    }
+
+    /**
+     * Crée un nouveau préfet.
+     * @param name
+     * @param sex
+     */
+    public Prefect(String name, Sex sex) {
+        super(name, sex, randomBetween(175,185), randomBetween(35,50),15,60,100);
+        this.type = "Prefect";
+    }
+
+    /**
+     * Le préfet dirige.
+     * Clarté : Régénère entièrement l'énergie des personnages présents dans le lieu pour lequel il est le chef de clan.
+     * Coûte 45 d'énergie.
+     * @param followers
+     */
+    @Override
+    public void lead(List<Character> followers) {
+        if(this.currentPlace == null){
+            System.out.println("Prefect " + this.name + " ne peut pas utiliser \"Clarté\" car il n'est pas un lieu!");
+            return;
+        }
+        if (this.stamina < 45) {
+            System.out.println("Prefect " + this.name + " n'a pas assez d'énergie pour utiliser \"Clarté\" !");
+            return;
+        }
+        for(Character c : followers){
+            if(c != this) {
+                c.updateStamina(c.getMaxStamina());
+            }
+        }
+        System.out.println("Prefect " + this.name + " utilise \"Clarté\" !");
+        this.stamina -= 45;
+    }
+}

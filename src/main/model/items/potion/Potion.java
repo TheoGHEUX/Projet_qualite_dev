@@ -1,0 +1,166 @@
+package main.model.items.potion;
+
+import main.enums.FoodType;
+import main.enums.PotionEffect;
+import main.model.items.food.Food;
+
+import java.util.*;
+
+public class Potion {
+    private int remainingDoses ;
+    private final List<Food> ingredients ;
+    private final Set<PotionEffect> effects ;
+    private final boolean isNourishing ;
+    private final boolean hasUnicornMilk ;
+    private final boolean hasDogmatixHair ;
+    private final int healthEffect ;
+    private final int hungerEffect ;
+    private final int staminaEffect ;
+    private final boolean isMagic ;
+
+    /**
+     * Crée une nouvelle potion.
+     * @param ingredients
+     */
+    public Potion(List<Food> ingredients) {
+        this.ingredients = Collections.unmodifiableList(ingredients);
+
+        boolean hasUnicornMilk = false;
+        boolean hasDogmatixHair = false;
+
+        int healthEffect = 0;
+        int hungerEffect = 0;
+        int staminaEffect = 0;
+
+        for (Food ingredient : ingredients) {
+            FoodType type = ingredient.getFoodType();
+            switch (type) {
+                case LOBSTER, STRAWBERRY, BEET_JUICE:
+                    healthEffect += ingredient.getHealthEffect();
+                    hungerEffect += ingredient.getHungerEffect();
+                    staminaEffect += ingredient.getStaminaEffect();
+                    break;
+                case TWO_HEADS_UNICORN_MILK:
+                    hasUnicornMilk = true;
+                case DOGMATIX_HAIR:
+                    hasDogmatixHair = true;
+                default: {}
+            }
+        }
+
+        this.isNourishing = healthEffect > 0;
+        this.healthEffect = healthEffect;
+        this.hungerEffect = hungerEffect;
+        this.staminaEffect = staminaEffect;
+        this.hasUnicornMilk = hasUnicornMilk;
+        this.hasDogmatixHair = hasDogmatixHair;
+
+        Set<PotionEffect> potionEffects = EnumSet.of(PotionEffect.SUPER_STRENGTH, PotionEffect.INVINCIBILITY);
+        if (hasUnicornMilk) {
+            potionEffects.add(PotionEffect.DUPLICATION);
+        }
+        if (hasDogmatixHair && hasUnicornMilk) {
+            potionEffects.add(PotionEffect.METAMORPHOSIS);
+        }
+
+        this.effects = potionEffects;
+        this.remainingDoses = 4 ;
+
+        this.isMagic = this.isMagicPotion();
+
+    }
+
+    public void showInfos(){
+        System.out.println("[INFOS] Potion | Doses restantes: " + this.getRemainingDoses() + "| Régénération de vie: " + this.getHealthEffect() + " | Régénération d'énergie: " + this.getStaminaEffect() + " | Effet de faim: " + this.getHungerEffect() + " | Pouvoirs: " + this.getEffects() + " | Ingrédients: " + this.showIngredients());
+    }
+
+    public List<FoodType> showIngredients() {
+        List<FoodType> ingredients = new ArrayList<>();
+        for (Food food : this.ingredients) {
+            ingredients.add(food.getFoodType());
+        }
+        return ingredients;
+    }
+
+    public boolean isEmpty(){
+        return this.getRemainingDoses() <= 0;
+    }
+
+    public boolean isMagicPotion(){
+        PotionRecipe p_recipe = new PotionRecipe();
+        List<FoodType> recipe = p_recipe.getRecipe();
+
+        List<FoodType> ingredients = new ArrayList<>();
+        for (Food food : this.ingredients) {
+            ingredients.add(food.getFoodType());
+        }
+
+        boolean contains = true;
+
+        for (FoodType food : recipe){
+            if(food == FoodType.ROCKFISH_OIL) {
+                if(!ingredients.contains(FoodType.ROCKFISH_OIL) && !ingredients.contains(FoodType.BEET_JUICE)) {
+                    contains = false;
+                    break;
+                }
+            }
+            else{
+                if(!ingredients.contains(food)){
+                    contains = false;
+                    break;
+                }
+            }
+        }
+        return contains;
+    }
+
+    public void takeOneDose() {
+        if(!this.isEmpty()){
+            this.remainingDoses--;
+        }
+    }
+
+    // getters
+    public boolean isNourishing() {
+        return isNourishing;
+    }
+
+    public boolean hasUnicornMilk() {
+        return hasUnicornMilk;
+    }
+
+    public boolean hasDogmatixHair() {
+        return hasDogmatixHair;
+    }
+
+    public List<Food> getIngredients() {
+        return ingredients;
+    }
+
+    public int getHealthEffect() {
+        return healthEffect;
+    }
+
+    public int getHungerEffect() {
+        return hungerEffect;
+    }
+
+    public int getStaminaEffect() {
+        return staminaEffect;
+    }
+
+    public int getRemainingDoses() {
+        return remainingDoses;
+    }
+
+    public Set<PotionEffect> getEffects() {
+        return effects;
+    }
+
+    public boolean isMagic() {
+        return isMagic;
+    }
+
+}
+
+
