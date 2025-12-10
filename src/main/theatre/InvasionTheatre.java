@@ -1,5 +1,6 @@
 package main.theatre;
 
+import main.interfaces.Leader;
 import main.model.character.Character;
 import main.model.clan_chief.ClanChief;
 import main.interfaces.Fighter;
@@ -415,7 +416,7 @@ public class InvasionTheatre {
 
         // ===== PHASE 1 : Les Gaulois attaquent =====
         for (Character attacker : g1) {
-            if (! attacker.isAlive()) continue;  // ← ENLEVER "instanceof Fighter"
+            if (! attacker.isAlive()) continue;
 
             Character target = null;
             for (Character potential :  g2) {
@@ -426,7 +427,14 @@ public class InvasionTheatre {
             }
 
             if (target != null) {
-                attacker.fight(target);
+                if(attacker instanceof Fighter) {
+                    ((Fighter) attacker).combat(target);
+                } else if(attacker instanceof Leader){
+                    ((Leader) attacker).lead(g1);
+                    attacker.fight(target);
+                } else {
+                    attacker.fight(target);
+                }
             }
         }
 
@@ -434,7 +442,7 @@ public class InvasionTheatre {
 
         // ===== PHASE 2 : Les Romains ripostent =====
         for (Character attacker : g2) {
-            if (!attacker.isAlive()) continue;  // ← ENLEVER "instanceof Fighter"
+            if (!attacker.isAlive()) continue;
 
             Character target = null;
             for (Character potential : g1) {
@@ -445,7 +453,14 @@ public class InvasionTheatre {
             }
 
             if (target != null) {
-                attacker.fight(target);
+                if(attacker instanceof Fighter) {
+                    ((Fighter) attacker).combat(target);
+                } else if(attacker instanceof Leader){
+                    ((Leader) attacker).lead(g2);
+                    attacker.fight(target);
+                } else {
+                    attacker.fight(target);
+                }
             }
         }
 
