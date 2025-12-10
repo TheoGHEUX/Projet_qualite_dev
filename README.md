@@ -1,5 +1,3 @@
-# Projet_qualite_dev — TD3
-
 Présentation
 ------------
 Simulation Java inspirée de l’univers gaulois. Le projet modélise un théâtre d’envahissement composé de lieux, de personnages (Gaulois, Romains, créatures fantastiques), d’aliments et d’une potion magique. L’objectif est de simuler les interactions, les combats et l’évolution temporelle tout en offrant un contrôle tactique via des chefs de clan.
