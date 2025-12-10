@@ -1,9 +1,9 @@
 package main.ui;
 
-import main.theatre.InvasionTheatre;
+import main.theatre. InvasionTheatre;
 import main.model.clan_chief.ClanChief;
 import main.model.place.Place;
-import main.model.place.category.place_with_clan_chief.*;
+import main.model.place. category.place_with_clan_chief.*;
 import main.enums.Sex;
 
 /**
@@ -12,33 +12,42 @@ import main.enums.Sex;
 public class SetupUI {
 
     public static void createClanChiefsInteractively(InvasionTheatre theatre) {
-        System.out.print("Combien de chefs de clan souhaitez-vous créer ?  ");
-        int nb = main.ui.GameUI.getIntInput();
+        int nb = 0;
+
+        // Validation du nombre de chefs (minimum 1)
+        while (nb < 1) {
+            System.out.print("Combien de chefs de clan souhaitez-vous créer ?  : ");
+            nb = main.ui.GameUI. getIntInput();
+
+            if (nb < 1) {
+                System.out.println("[ERREUR] Vous devez créer au moins 1 chef de clan !");
+            }
+        }
 
         for (int i = 1; i <= nb; i++) {
             System.out.println("\n=== Création du chef de clan " + i + " ===");
 
             // Nom
             String name = "";
-            while (name.trim().isEmpty()) {
+            while (name. trim().isEmpty()) {
                 System.out.print("Nom du chef : ");
                 name = main.ui.GameUI.getScanner().nextLine().trim();
                 if (name.isEmpty()) {
-                    System.out.println(" Le nom ne peut pas être vide !");
+                    System.out.println("Le nom ne peut pas être vide !");
                 }
             }
 
             // Sexe
             Sex sex = null;
             while (sex == null) {
-                System.out.println("Sexe (1 = MALE, 2 = FEMALE) : ");
+                System.out. println("Sexe (1 = MALE, 2 = FEMALE) : ");
                 int sexChoice = main.ui.GameUI.getIntInput();
                 if (sexChoice == 1) {
                     sex = Sex. MALE;
                 } else if (sexChoice == 2) {
-                    sex = Sex.FEMALE;
+                    sex = Sex. FEMALE;
                 } else {
-                    System.out.println(" Choix invalide !");
+                    System.out.println("Choix invalide !  Veuillez choisir 1 ou 2.");
                 }
             }
 
@@ -48,11 +57,11 @@ public class SetupUI {
             Place place = null;
             while (place == null) {
                 System. out.println("\nChoisir un type de lieu :");
-                System. out.println("1. Village gaulois");
-                System.out. println("2. Camp romain");
-                System.out. println("3. Ville romaine");
+                System.out.println("1. Village gaulois");
+                System.out.println("2. Camp romain");
+                System.out.println("3. Ville romaine");
                 System.out. println("4. Bourgade gallo-romaine");
-                System.out. print("Votre choix : ");
+                System.out.print("Votre choix : ");
 
                 int choice = main.ui.GameUI.getIntInput();
 
@@ -62,14 +71,14 @@ public class SetupUI {
                     case 3 -> new RomanTown("Ville de " + name, 1500, chief);
                     case 4 -> new GalloRomanSettlement("Bourgade de " + name, 1300, chief);
                     default -> {
-                        System.out.println(" Choix invalide !");
+                        System.out.println("Choix invalide !  Veuillez choisir un nombre entre 1 et 4.");
                         yield null;
                     }
                 };
             }
 
             theatre.addPlace(place);
-            System.out.println(" Chef " + name + " créé avec son lieu :  " + place.getName());
+            System.out.println(" Chef " + name + " créé avec son lieu : " + place.getName());
         }
     }
 }

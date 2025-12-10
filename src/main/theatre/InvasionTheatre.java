@@ -219,9 +219,7 @@ public class InvasionTheatre {
             this.addPlace(enclosure);
         }
 
-        System.out.println("\n" + "=".repeat(60));
-        System.out.println("Generation terminee : " + battlefieldCount + " champ(s) de bataille et " + enclosureCount + " enclos cree(s)");
-        System.out.println("=".repeat(60));
+        System.out.println("\n Generation terminee : " + battlefieldCount + " champ(s) de bataille et " + enclosureCount + " enclos cree(s)");
     }
 
     /**

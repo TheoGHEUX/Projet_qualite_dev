@@ -32,9 +32,20 @@ public class GameUI {
      * Demande si l'utilisateur veut continuer.
      */
     public static boolean askContinue() {
-        System.out.print("\nContinuer la simulation ? (o/n) : ");
-        String response = scanner. nextLine().trim().toLowerCase();
-        return response.equals("o") || response.equals("oui");
+        System.out.print("\nVoulez-vous continuer la simulation ?  (o/n) : ");
+
+        String response = "";
+        while (true) {
+            response = getScanner().nextLine().trim().toLowerCase();
+
+            if (response.equals("o")) {
+                return true;
+            } else if (response.equals("n")) {
+                return false;
+            } else {
+                System.out.print(" Veuillez entrer 'o' (oui) ou 'n' (non) : ");
+            }
+        }
     }
 
     /**
