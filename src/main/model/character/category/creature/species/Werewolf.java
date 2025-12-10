@@ -6,7 +6,7 @@ import main.model.character.Character;
 import main.enums.Sex;
 import main.interfaces.Fighter;
 import main.model.character.category.creature.Creature;
-import main.model.character.tribu.WerewolfTribu;
+import main.model.character.tribu.WerewolfTribe;
 
 import java.util.Random;
 
@@ -15,7 +15,7 @@ public class Werewolf extends Creature implements Fighter {
     private AgeCategory ageCategory;
     private DominationRank dominationRank;
     private double level;
-    private WerewolfTribu tribu ;
+    private WerewolfTribe tribu ;
 
     /**
      * Crée un nouveau loup avec plus de choix de paramètres.
@@ -186,6 +186,10 @@ public class Werewolf extends Creature implements Fighter {
         }
     }
 
+    public void setTribu(WerewolfTribe tribu) {
+        this.tribu = tribu;
+    }
+
     public AgeCategory getAgeCategory() {
         return ageCategory;
     }
@@ -198,11 +202,57 @@ public class Werewolf extends Creature implements Fighter {
         return level;
     }
 
-    public WerewolfTribu getWerewolfTribu() {
+    public WerewolfTribe getWerewolfTribu() {
         return tribu;
     }
 
-    public void setTribu(WerewolfTribu tribu) {
-        this.tribu = tribu;
+    /**
+     * Calcule le facteur de domination (le nombre de loup qu'il domine moins le nombre loup qui le domine)
+     * @return Le facteur de domination qui est la différence entre le nombre de loups
+     * avec un rang inférieur et ceux avec un rang supérieur.
+     */
+    public double getDominationFactor() {
+        // Le rang du loup actuel
+        DominationRank currentRank = this.dominationRank;
+
+        int countInferior = 0; // Loups avec un rang inférieur
+        int countSuperior = 0; // Loups avec un rang supérieur
+
+        for (Werewolf otherWerewolf : this.tribu.getWerewolves()) {
+            if (otherWerewolf != this) {
+                if (getRankScore(otherWerewolf.getDominationRank()) > getRankScore(currentRank)) {
+                    countSuperior++;
+                } else if (getRankScore(otherWerewolf.getDominationRank()) < getRankScore(currentRank)) {
+                    countInferior++;
+                }
+            }
+        }
+
+        // Le facteur de domination est la différence entre les dominations exercées et subies
+        return countInferior - countSuperior;
+    }
+
+    /**
+     * Fonction qui retourne le score de domination en fonction du rang.
+     * @param rank Le rang de domination à évaluer.
+     * @return Le score de domination sous forme de nombre entier.
+     */
+    private int getRankScore(DominationRank rank) {
+        switch (rank) {
+            case ALPHA:
+                return 6;
+            case BETA:
+                return 5;
+            case GAMMA:
+                return 4;
+            case DELTA:
+                return 3;
+            case EPSILON:
+                return 2;
+            case OMEGA:
+                return 1;
+            default:
+                return 0;
+        }
     }
 }
