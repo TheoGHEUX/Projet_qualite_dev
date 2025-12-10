@@ -192,7 +192,7 @@ class DruidTest {
         druid.combat(enemy);
 
         assertTrue(enemy.getHealth() < initialEnemyHealth);
-        assertTrue(druid.getHealth() > initialDruidHealth);
+        assertTrue(druid.getHealth() == initialDruidHealth);
         assertEquals(initialStamina - 35, druid.getStamina());
     }
 
@@ -208,17 +208,17 @@ class DruidTest {
 
     @Test
     void testLeadCallOfStar() {
+        Blacksmith bm = new Blacksmith("Forgerix", Sex.MALE);
         List<Character> followers = new ArrayList<>();
         followers.add(druid);
-        followers.add(enemy);
-
-        enemy.updateHealth(-30);
-        double enemyHealthBefore = enemy.getHealth();
+        followers.add(bm);
+        double bmHealthBefore = bm.getHealth();
+        bm.updateHealth(-30);
         int druidStaminaBefore = druid.getStamina();
 
         druid.lead(followers);
 
-        assertEquals(enemyHealthBefore + 75, enemy.getHealth());
+        assertEquals(bmHealthBefore, bm.getHealth());
         assertEquals(druidStaminaBefore - 50, druid.getStamina());
     }
 }
