@@ -23,7 +23,6 @@ public class Main {
         // Boucle principale
         boolean continueSimulation = true;
         while (continueSimulation) {
-            System.out.println("\n" + "=". repeat(60));
             System. out.println("TOUR " + (theatre.getCurrentTurn() + 1));
             System.out.println("=".repeat(60));
 

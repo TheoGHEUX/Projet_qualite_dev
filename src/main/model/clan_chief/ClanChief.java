@@ -1,22 +1,22 @@
-package main.model.clan_chief;
+package main. model. clan_chief;
 
-import main.model.character. Character;
-import main.model. character.category.creature.species. Werewolf;
+import main.model.character.Character;
+import main.model.character.category.creature.species.Werewolf;
 import main.model.character.category.gaul.job.Blacksmith;
-import main.model.character. category.gaul.job. Druid;
-import main.model.character.category.gaul. job.Innkeeper;
-import main.model.character.category. gaul.job.Merchant;
-import main.model.character. category.roman.job.General;
-import main.model.character. category.roman.job.Legionary;
-import main.model. character.category.roman.job. Prefect;
-import main. enums.CharacterType;
-import main.enums.Sex;
+import main.model. character.category.gaul.job.Druid;
+import main.model.character.category.gaul.job.Innkeeper;
+import main.model. character.category.gaul.job.Merchant;
+import main. model.character.category.roman.job.General;
+import main.model.character.category.roman.job. Legionary;
+import main.model.character.category.roman.job. Prefect;
+import main.enums.CharacterType;
+import main.enums. Sex;
 import main.enums.FoodType;
 import main.model.items.food.Food;
-import main.model.place.category.Battlefield;
-import main. model.place.category.Enclosure;
-import main.model. place.Place;
-import main. model.place.category.PlaceWithClanChief;
+import main.model.place.category. Battlefield;
+import main.model. place.category.Enclosure;
+import main.model.place. Place;
+import main.model.place.category.PlaceWithClanChief;
 import main.model.items.potion.Potion;
 import main.theatre.InvasionTheatre;
 
@@ -46,7 +46,7 @@ public class ClanChief {
      */
     public void examinePlace() {
         if (place == null) {
-            System.out. println(name + " n'a pas de lieu à examiner");
+            System. out.println(name + " n'a pas de lieu à examiner");
             return;
         }
         place.showInfos();
@@ -60,7 +60,7 @@ public class ClanChief {
      */
     public void createCharacter(String name, Sex sex, CharacterType type) {
         if (place == null) {
-            System. out.println("Le chef " + this.name + " n'est relié à aucun lieu : impossible de créer un personnage.");
+            System.out.println("Le chef " + this.name + " n'est relié à aucun lieu :  impossible de créer un personnage.");
             return;
         }
         Character newCharacter;
@@ -90,12 +90,12 @@ public class ClanChief {
                 newCharacter = new Prefect(name, sex);
                 break;
             default:
-                System.out.println("Type de personnage inconnu : " + type);
+                System.out.println("Type de personnage inconnu :  " + type);
                 return;
         }
 
-        if (!place.canAccept(newCharacter)) {
-            System.out.println("Le nouveau personnage " + newCharacter. getName() + " a été créé mais n'est pas autorisé à entrer dans votre lieu !  Il est parti :(  ");
+        if (! place.canAccept(newCharacter)) {
+            System.out.println("Le nouveau personnage " + newCharacter.getName() + " a été créé mais n'est pas autorisé à entrer dans votre lieu !  Il est parti :(");
             return;
         }
         place.addCharacter(newCharacter);
@@ -103,11 +103,12 @@ public class ClanChief {
 
     /**
      * Menu interactif pour créer un personnage.
+     * @return true si l'action a été effectuée avec succès
      */
-    public void createCharacterInteractive() {
+    public boolean createCharacterInteractive() {
         if (place == null) {
             System.out.println("Le chef " + this.name + " n'est relié à aucun lieu.");
-            return;
+            return false;
         }
 
         // Choix du nom avec validation
@@ -117,7 +118,7 @@ public class ClanChief {
             name = scanner.nextLine().trim();
 
             if (name.isEmpty()) {
-                System.out.println(" Le nom ne peut pas être vide !  Veuillez entrer un nom.");
+                System.out.println("[ERREUR] Le nom ne peut pas être vide !  Veuillez entrer un nom.");
             }
         }
 
@@ -132,7 +133,7 @@ public class ClanChief {
             } else if (sexChoice == 2) {
                 sex = Sex.FEMALE;
             } else {
-                System.out.println(" Choix invalide ! Veuillez choisir 1 ou 2.");
+                System.out.println("[ERREUR] Choix invalide !  Veuillez choisir 1 ou 2.");
             }
         }
 
@@ -153,52 +154,53 @@ public class ClanChief {
             int typeChoice = getIntInput();
 
             type = switch (typeChoice) {
-                case 1 -> CharacterType.DRUID;
-                case 2 -> CharacterType.BLACKSMITH;
-                case 3 -> CharacterType. MERCHANT;
+                case 1 -> CharacterType. DRUID;
+                case 2 -> CharacterType. BLACKSMITH;
+                case 3 -> CharacterType.MERCHANT;
                 case 4 -> CharacterType.INNKEEPER;
                 case 5 -> CharacterType.LEGIONARY;
                 case 6 -> CharacterType.PREFECT;
                 case 7 -> CharacterType.GENERAL;
-                case 8 -> CharacterType.WEREWOLF;
+                case 8 -> CharacterType. WEREWOLF;
                 default -> {
-                    System.out.println(" Choix invalide ! Veuillez choisir un nombre entre 1 et 8.");
+                    System.out.println("[ERREUR] Choix invalide ! Veuillez choisir un nombre entre 1 et 8.");
                     yield null;
                 }
             };
         }
 
         createCharacter(name, sex, type);
+        return true;
     }
 
     /**
      * Le chef de clan nourrit les personnes dans son lieu s'il en a un, si possible.
      */
     public void feedCharacters() {
-        if (this. place == null) {
+        if (this.place == null) {
             System.out.println("Le chef " + name + " n'est associé à aucun lieu.");
             return;
         }
 
         if (place.getThe_characters_present().isEmpty()) {
-            System.out.println("Il n'y a aucun personnage à nourrir dans " + place.getName() + ".");
+            System.out.println("Il n'y a aucun personnage à nourrir dans " + place. getName() + ".");
             return;
         }
 
         if (place.getThe_aliments_present().isEmpty()) {
-            System.out.println("Il n'y a aucune nourriture disponible dans " + place. getName() + ".");
+            System.out.println("Il n'y a aucune nourriture disponible dans " + place.getName() + ".");
             return;
         }
 
         for (Character character : place.getThe_characters_present()) {
 
-            if (!character.isAlive()) {
+            if (! character.isAlive()) {
                 System.out.println(character.getName() + " est mort, il ne peut pas manger.");
                 continue;
             }
 
             if (place.getThe_aliments_present().isEmpty()) {
-                System.out.println("Il n'y a plus de nourriture disponible.");
+                System.out. println("Il n'y a plus de nourriture disponible.");
                 return;
             }
 
@@ -211,22 +213,23 @@ public class ClanChief {
 
     /**
      * Menu interactif pour nourrir les personnages.
+     * @return true si l'action a été effectuée avec succès
      */
-    public void feedCharactersInteractive() {
+    public boolean feedCharactersInteractive() {
         if (place == null) {
             System.out.println("Le chef n'a pas de lieu.");
-            return;
+            return false;
         }
 
         List<Character> characters = place.getThe_characters_present();
         if (characters.isEmpty()) {
             System.out.println("Aucun personnage à nourrir.");
-            return;
+            return false;
         }
 
         if (place.getThe_aliments_present().isEmpty()) {
             System. out.println("Aucun aliment disponible pour nourrir.");
-            return;
+            return false;
         }
 
         // Menu de choix du mode
@@ -239,18 +242,22 @@ public class ClanChief {
         int mode = getIntInput();
 
         if (mode == 1) {
-            feedCharacters(); // Mode automatique existant
+            feedCharacters();
+            return true;
         } else if (mode == 2) {
-            feedManually();
+            return feedManually();
         } else {
             System.out.println("Nourrissage annulé.");
+            return false;
         }
     }
 
     /**
      * Nourrit manuellement les personnages.
+     * @return true si au moins un personnage a été nourri
      */
-    private void feedManually() {
+    private boolean feedManually() {
+        boolean atLeastOneFed = false;
         boolean continueFeeding = true;
 
         while (continueFeeding) {
@@ -277,14 +284,14 @@ public class ClanChief {
             int realCharIndex = charIndex - 1;
 
             if (realCharIndex < 0 || realCharIndex >= characters.size()) {
-                System. out.println(" Index invalide.");
+                System. out. println("[ERREUR] Index invalide.");
                 continue;
             }
 
             Character selectedChar = characters.get(realCharIndex);
 
             if (! selectedChar.isAlive()) {
-                System.out.println( selectedChar.getName() + " est mort, impossible de le nourrir.");
+                System.out.println("[ERREUR] " + selectedChar.getName() + " est mort, impossible de le nourrir.");
                 continue;
             }
 
@@ -295,30 +302,36 @@ public class ClanChief {
             selectedChar.eat(selectedFood);
             foods.remove(realFoodIndex);
 
-            System.out.println("\n✓ " + selectedChar.getName() + " a mangé " + selectedFood.getFoodType());
+            System.out.println("\n[OK] " + selectedChar.getName() + " a mangé " + selectedFood.getFoodType());
             System.out.println("  Nouvel état : PV:  " + (int) selectedChar.getHealth() +
                     " | Energie: " + selectedChar.getStamina() +
                     " | Faim: " + selectedChar.getHunger());
+
+            atLeastOneFed = true;
         }
+
+        return atLeastOneFed;
     }
 
     /**
      * Le chef de clan soigne tous les personnages de son lieu au maximum de leurs points de vie.
+     * @return true si au moins un personnage a été soigné
      */
-    public void healCharacters() {
-        if (this.place == null) {
+    public boolean healCharacters() {
+        if (this. place == null) {
             System.out.println("Le chef " + name + " n'est associé à aucun lieu.");
-            return;
+            return false;
         }
 
         if (place.getThe_characters_present().isEmpty()) {
-            System.out. println("Il n'y a aucun personnage à soigner dans " + place.getName() + ".");
-            return;
+            System.out.println("Il n'y a aucun personnage à soigner dans " + place.getName() + ".");
+            return false;
         }
 
         System.out.println("\n=== SOINS DES PERSONNAGES ===");
+        boolean atLeastOneHealed = false;
 
-        for (Character character : place. getThe_characters_present()) {
+        for (Character character :  place.getThe_characters_present()) {
             if (! character.isAlive()) {
                 System.out.println(character.getName() + " est mort, impossible de le soigner.");
                 continue;
@@ -332,18 +345,21 @@ public class ClanChief {
             } else {
                 double healthToRestore = maxHealth - currentHealth;
                 character.updateHealth(healthToRestore);
-                System.out.println("✓ " + character.getName() + " a été soigné :  PV " + (int)currentHealth + " → " + (int)character.getHealth());
+                System.out.println("[OK] " + character.getName() + " a été soigné :  PV " + (int)currentHealth + " → " + (int)character.getHealth());
+                atLeastOneHealed = true;
             }
         }
+
+        return atLeastOneHealed;
     }
 
     /**
      * Affiche les personnages avec leurs statistiques.
      */
     private void displayCharactersWithStats(List<Character> characters) {
-        System.out.println("\n" + "=".repeat(60));
+        System.out. println("\n" + "=". repeat(60));
         System.out.println("PERSONNAGES DISPONIBLES");
-        System.out. println("=".repeat(60));
+        System.out.println("=".repeat(60));
 
         for (int i = 0; i < characters.size(); i++) {
             Character c = characters.get(i);
@@ -363,7 +379,7 @@ public class ClanChief {
     private int displayAndSelectFood(List<Food> foods) {
         System.out.println("\n" + "=".repeat(60));
         System.out.println("ALIMENTS DISPONIBLES");
-        System.out.println("=". repeat(60));
+        System.out.println("=".repeat(60));
 
         // Grouper les aliments par type
         Map<FoodType, List<Integer>> foodByType = new HashMap<>();
@@ -383,18 +399,18 @@ public class ClanChief {
             Food sampleFood = foods.get(firstIndex);
             System.out.println(displayIndex + ". " + foodType + " (x" + count + ")" +
                     " | Vie: +" + sampleFood.getHealthEffect() +
-                    " | Faim: +" + sampleFood. getHungerEffect() +
-                    " | Energie: +" + sampleFood. getStaminaEffect());
+                    " | Faim: +" + sampleFood.getHungerEffect() +
+                    " | Energie: +" + sampleFood.getStaminaEffect());
 
             displayToRealIndex.put(displayIndex, firstIndex);
             displayIndex++;
         }
 
-        System. out.print("\nChoisir un aliment : ");
+        System.out. print("\nChoisir un aliment : ");
         int foodChoice = getIntInput();
 
         if (! displayToRealIndex.containsKey(foodChoice)) {
-            System.out.println(" Choix invalide.");
+            System.out.println("[ERREUR] Choix invalide.");
             return -1;
         }
 
@@ -403,15 +419,16 @@ public class ClanChief {
 
     /**
      * Le chef de clan demande à un druide de préparer une potion magique pour son lieu s'il en a un, si le lieu accepte les gaulois et possède un druide.
+     * @return true si l'action a été effectuée avec succès
      */
-    public void askDruidToMakePotion() {
+    public boolean askDruidToMakePotion() {
         if (place == null) {
             System.out.println("Le chef " + name + " n'est associé à aucun lieu !");
-            return;
+            return false;
         }
         if (! place.isGallo()) {
             System.out.println(place.getName() + " n'autorise pas l'accès aux gaulois, il ne peut donc pas y avoir de druide !");
-            return;
+            return false;
         }
 
         Druid druid = null;
@@ -425,17 +442,18 @@ public class ClanChief {
 
         if (druid == null) {
             System.out.println("Aucun druide présent dans " + place.getName() + ".");
-            return;
+            return false;
         }
 
-        if (! place.hasEnoughToMakeAMagicPotion()) {
+        if (!place.hasEnoughToMakeAMagicPotion()) {
             System.out.println("Il n'y a pas assez d'ingrédients pour produire une potion magique dans " + place.getName() + ".");
-            return;
+            return false;
         }
 
         druid.work();
 
         System.out.println("Le chef " + name + " a demandé au druide " + druid.getName() + " de préparer une potion magique dans " + place.getName() + ".");
+        return true;
     }
 
     /**
@@ -466,14 +484,16 @@ public class ClanChief {
 
     /**
      * Menu interactif pour donner une potion.
+     * @return true si l'action a été effectuée avec succès
      */
-    public void givePotionInteractive() {
+    public boolean givePotionInteractive() {
         if (place == null || place.getPotion_present().isEmpty()) {
             System.out.println("Aucune potion disponible.");
-            return;
+            return false;
         }
 
         makeCharactersDrinkMagicPotion(place.getPotion_present().get(0));
+        return true;
     }
 
     /**
@@ -487,7 +507,7 @@ public class ClanChief {
             return;
         }
 
-        if (character == null || !  this.place.containsCharacter(character)) {
+        if (character == null || ! this.place.containsCharacter(character)) {
             System.out.println(character.getName() + " n'est pas dans " + this.place.getName());
             return;
         }
@@ -497,19 +517,19 @@ public class ClanChief {
             return;
         }
 
-        if (!  newPlace.canAccept(character)) {
-            System.out.println(character.getName() + " ne peut pas entrer dans " + newPlace.getName());
+        if (! newPlace.canAccept(character)) {
+            System. out.println(character.getName() + " ne peut pas entrer dans " + newPlace.getName());
             return;
         }
 
         // IMPORTANT : Sauvegarder le lieu d'origine
-        character.setOriginPlace(this. place);
+        character.setOriginPlace(this.place);
 
         // Retirer sans affichage
         this.place.getThe_characters_present().remove(character);
 
         // Ajouter sans affichage
-        newPlace.getThe_characters_present().add(character);
+        newPlace. getThe_characters_present().add(character);
         character.modifyCurrentPlace(newPlace);
 
         System.out.println(character.getName() + " a été transféré de " + this. place.getName() + " vers " + newPlace.getName());
@@ -517,14 +537,18 @@ public class ClanChief {
 
     /**
      * Menu interactif pour transférer un personnage.
+     * @return true si l'action a été effectuée avec succès
      */
-    public void transferCharacterInteractive(InvasionTheatre theatre) {
-        if (place == null) return;
+    public boolean transferCharacterInteractive(InvasionTheatre theatre) {
+        if (place == null) {
+            System.out.println("Le chef n'a pas de lieu.");
+            return false;
+        }
 
         List<Character> characters = place.getThe_characters_present();
         if (characters.isEmpty()) {
             System.out.println("Aucun personnage à transférer.");
-            return;
+            return false;
         }
 
         // Affichage des personnages
@@ -532,12 +556,18 @@ public class ClanChief {
         for (int i = 0; i < characters.size(); i++) {
             System.out.println((i + 1) + ". " + characters.get(i).getName());
         }
-        System.out.print("Choisir un personnage :  ");
+        System.out.println("0. Annuler");
+        System.out.print("Choisir un personnage : ");
         int charIndex = getIntInput();
 
+        if (charIndex == 0) {
+            System.out.println("Transfert annulé.");
+            return false;
+        }
+
         if (charIndex < 1 || charIndex > characters.size()) {
-            System. out.println("Index invalide.");
-            return;
+            System. out.println("[ERREUR] Index invalide.");
+            return false;
         }
 
         // Affichage des destinations
@@ -546,16 +576,24 @@ public class ClanChief {
                 .filter(p -> p instanceof Battlefield || p instanceof Enclosure)
                 .toList();
 
-        for (int i = 0; i < destinations.size(); i++) {
+        for (int i = 0; i < destinations. size(); i++) {
             System.out.println((i + 1) + ". " + destinations.get(i).getName());
         }
-        System.out. print("Choisir une destination : ");
+        System.out. println("0. Annuler");
+        System.out.print("Choisir une destination :  ");
         int destIndex = getIntInput();
 
-        if (destIndex >= 1 && destIndex <= destinations.size()) {
+        if (destIndex == 0) {
+            System.out.println("Transfert annulé.");
+            return false;
+        }
+
+        if (destIndex >= 1 && destIndex <= destinations. size()) {
             transferCharacter(characters.get(charIndex - 1), destinations.get(destIndex - 1));
+            return true;
         } else {
-            System.out. println("Index invalide.");
+            System.out. println("[ERREUR] Index invalide.");
+            return false;
         }
     }
 
