@@ -29,6 +29,7 @@ public abstract class Character {
     protected double maxHealth; // vie max
     protected int hunger; // faim
     protected boolean isAlive; // est vivant
+    protected Place originPlace;
     // Informations concernant les potions
     protected int potionLevel; // potionLevel >= 4 signifie qu'il possède les effets de force et invincibilité en permanence
     protected boolean isInvincible; // est invincible => sa vie ne peut pas diminuer
@@ -393,6 +394,10 @@ public abstract class Character {
     public boolean isAlive() {
         return isAlive;
     }
+
+    public Place getOriginPlace() {return originPlace;}
+
+    public void setOriginPlace(Place place) {this.originPlace = place;}
 
     public List<PotionEffect> getCharacterPotionEffectsTemp() {
         return characterPotionEffectsTemp;

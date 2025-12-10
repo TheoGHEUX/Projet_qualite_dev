@@ -2,19 +2,19 @@ package main.theatre;
 
 import main.model.character.Character;
 import main.model.clan_chief.ClanChief;
-import main.enums.CharacterType;
 import main.interfaces.Fighter;
 import main.model.place.*;
-import main.enums.FoodType;
 import main.model.items.food.Food;
 import main.model.items.food.FoodStats;
 import main.enums.*;
 import main.model.place.category.*;
-import main.model.place. category.place_with_clan_chief.GallicVillage;
 import main.model.place.category. PlaceWithClanChief;
-import main.model.place.category.place_with_clan_chief.RomanFortifiedCamp;
-import main.model.place.category.place_with_clan_chief.RomanTown;
-import main.model.place.category.place_with_clan_chief.GalloRomanSettlement;
+import main.model.place.category.place_with_clan_chief.*;
+import main.model.place.category.Battlefield;
+import main. model.place.category.Enclosure;
+
+import main.enums.Sex;
+import java.util.Random;
 
 import java.util.*;
 
@@ -24,7 +24,6 @@ public class InvasionTheatre {
     private final int maxPlaces;
     private final List<Place> places = new ArrayList<>();
     private final List<ClanChief> clanChiefs = new ArrayList<>();
-    private final Map<Character, Place> originalPlaces = new HashMap<>();
     private final Random random = new Random();
 
     private int currentTurn = 0;
@@ -39,79 +38,207 @@ public class InvasionTheatre {
      * Initialise automatiquement des personnages et aliments aléatoires
      * dans chaque lieu avec chef de clan.
      */
+    /**
+     * Initialise aléatoirement des personnages et des aliments dans les lieux avec chefs.
+     */
     public void initializeRandomCharactersAndItems() {
-        System.out.println("\n" + "=".repeat(60));
+        Random random = new Random();
+
+        System.out.println("\n" + "=". repeat(60));
         System.out.println("       INITIALISATION AUTOMATIQUE DU MONDE");
         System.out.println("=".repeat(60));
 
         for (Place place : places) {
-            if (!(place instanceof PlaceWithClanChief placeWithChief)) continue;
-            if (placeWithChief.getClanChief() == null) continue;
+            if (place instanceof PlaceWithClanChief) {
+                PlaceWithClanChief placeWithChief = (PlaceWithClanChief) place;
+                ClanChief chief = placeWithChief.getClanChief();
 
-            ClanChief chief = placeWithChief.getClanChief();
+                System.out.println("\n[Lieu] " + place.getName());
+                System.out.println("  Chef :  " + (chief != null ? chief.getName() : "Aucun"));
+                System.out.println("  " + "-".repeat(50));
 
-            System.out. println("\n[Lieu] " + place.getName());
-            System.out.println("  Chef : " + chief.getName());
-            System.out.println("  " + "-".repeat(50));
+                // Génération des personnages
+                int charCount = random.nextInt(3) + 3; // Entre 3 et 5
+                System.out.println("  [Personnages] Creation de " + charCount + " personnages :");
 
-            // Déterminer les types de personnages autorisés selon le lieu
-            List<CharacterType> allowedTypes = getAllowedCharacterTypes(place);
+                List<Character> characters = new ArrayList<>();
+                for (int i = 0; i < charCount; i++) {
+                    Character character = generateRandomCharacter(place, i + 1);
+                    if (place. canAccept(character)) {
+                        place.getThe_characters_present().add(character);
+                        character.modifyCurrentPlace(place);
+                        characters.add(character);
+                    }
+                }
 
-            // Créer 3 à 5 personnages aléatoires
-            int nbCharacters = random. nextInt(3) + 3;
-            System.out.println("  [Personnages] Création de " + nbCharacters + " personnages :");
+                // Affichage des personnages
+                for (Character c : characters) {
+                    System.out.println("     - " + c.getName() + " (" + c.getType() + ", " + c.getSex() + ")");
+                }
 
-            // Désactiver temporairement les messages de Place. addCharacter()
-            for (int i = 0; i < nbCharacters; i++) {
-                CharacterType type = allowedTypes. get(random.nextInt(allowedTypes.size()));
-                String name = generateRandomName(type) + (i > 0 ?  " " + (i+1) : "");
-                Sex sex = random.nextBoolean() ? Sex.MALE : Sex.FEMALE;
+                // Génération des aliments
+                int foodCount = random.nextInt(6) + 5; // Entre 5 et 10
+                System. out.println("  [Aliments] Ajout de " + foodCount + " aliments :");
 
-                // Affichage propre
-                System. out.print("     • " + name + " (" + type + ", " + sex + ")");
+                Map<FoodType, Integer> foodCounts = new LinkedHashMap<>();
+                for (int i = 0; i < foodCount; i++) {
+                    Food food = createRandomFood();
+                    place.getThe_aliments_present().add(food);
+                    foodCounts.put(food.getFoodType(), foodCounts.getOrDefault(food.getFoodType(), 0) + 1);
+                }
 
-                // Créer le personnage
-                java.io.ByteArrayOutputStream baos = new java. io.ByteArrayOutputStream();
-                java.io.PrintStream oldOut = System.out;
-                System.setOut(new java. io.PrintStream(baos));
-
-                chief.createCharacter(name, sex, type);
-
-                System.setOut(oldOut);
-            }
-
-            // Ajouter 5 à 10 aliments aléatoires
-            int nbFood = random.nextInt(6) + 5;
-            System. out.println("\n  [Aliments] Ajout de " + nbFood + " aliments :");
-
-            // Compter les aliments par type pour avoir un affichage groupé
-            Map<FoodType, Integer> foodCount = new HashMap<>();
-
-            for (int i = 0; i < nbFood; i++) {
-                FoodType foodType = getRandomFoodForPlace(place);
-                foodCount. put(foodType, foodCount. getOrDefault(foodType, 0) + 1);
-
-                // Ajouter sans affichage
-                java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
-                java.io. PrintStream oldOut = System.out;
-                System.setOut(new java.io.PrintStream(baos));
-
-                place.addFood(FoodStats. newFood(foodType));
-
-                System.setOut(oldOut);
-            }
-
-            // Affichage groupé des aliments
-            for (Map.Entry<FoodType, Integer> entry : foodCount.entrySet()) {
-                String foodName = getFoodDisplayName(entry. getKey());
-                System.out.println("     • " + foodName + " x " + entry.getValue());
+                // Affichage des aliments groupés
+                for (Map.Entry<FoodType, Integer> entry : foodCounts.entrySet()) {
+                    System.out. println("     - " + entry. getKey() + " x " + entry.getValue());
+                }
             }
         }
 
         System.out.println("\n" + "=".repeat(60));
-        System.out.println("   INITIALISATION TERMINÉE");
-        System.out.println("   Total : " + getTotalCharacterCount() + " personnages dans " + places.size() + " lieux");
-        System.out.println("=".repeat(60) + "\n");
+    }
+
+    /**
+     * Génère un personnage aléatoire adapté au type de lieu.
+     */
+    private Character generateRandomCharacter(Place place, int index) {
+        Random random = new Random();
+        Sex sex = random.nextBoolean() ? Sex.MALE : Sex. FEMALE;
+
+        // Noms aléatoires
+        String[] gaulNames = {"Astérix", "Obélix", "Agecanonix", "Assurancetourix", "Abraracourcix",
+                "Bonemine", "Falbala", "Panoramix", "Ordralfabétix", "Cétautomatix"};
+        String[] romanNames = {"Julius", "Marcus", "Caius", "Brutus", "Claudius",
+                "Tullius", "Priscus", "Maximus", "Aurelius", "Flavius"};
+
+        String baseName;
+        CharacterType type;
+
+        if (place instanceof GallicVillage || place instanceof GalloRomanSettlement) {
+            // Lieu gaulois ou mixte
+            baseName = gaulNames[random.nextInt(gaulNames.length)];
+            if (index > 1) baseName += " " + index;
+
+            CharacterType[] gaulTypes = {CharacterType. DRUID, CharacterType.BLACKSMITH,
+                    CharacterType.MERCHANT, CharacterType.INNKEEPER};
+            type = gaulTypes[random.nextInt(gaulTypes.length)];
+
+            return switch (type) {
+                case DRUID -> new main.model.character.category.gaul.job.Druid(baseName, sex);
+                case BLACKSMITH -> new main.model.character. category.gaul.job. Blacksmith(baseName, sex);
+                case MERCHANT -> new main.model.character.category.gaul.job.Merchant(baseName, sex);
+                case INNKEEPER -> new main.model. character.category.gaul.job.Innkeeper(baseName, sex);
+                default -> new main.model.character.category.gaul.job.Druid(baseName, sex);
+            };
+        } else {
+            // Lieu romain
+            baseName = romanNames[random.nextInt(romanNames.length)];
+            if (index > 1) baseName += " " + index;
+
+            CharacterType[] romanTypes = {CharacterType.LEGIONARY, CharacterType.GENERAL, CharacterType.PREFECT};
+            type = romanTypes[random.nextInt(romanTypes.length)];
+
+            return switch (type) {
+                case LEGIONARY -> new main. model.character.category.roman. job.Legionary(baseName, sex);
+                case GENERAL -> new main.model.character. category.roman.job.General(baseName, sex);
+                case PREFECT -> new main.model.character.category.roman.job.Prefect(baseName, sex);
+                default -> new main.model.character.category.roman.job.Legionary(baseName, sex);
+            };
+        }
+    }
+
+
+    /**
+     * Initialise des lieux sans chefs (champs de bataille et enclos) avec des personnages et objets.
+     */
+    public void initializePlacesWithoutChiefs() {
+        Random random = new Random();
+
+        System.out.println("\n" + "=". repeat(60));
+        System.out.println("GENERATION DES LIEUX AUTONOMES");
+        System.out.println("=".repeat(60));
+
+        // Créer 2-3 champs de bataille (VIDES au départ)
+        int battlefieldCount = random.nextInt(2) + 2;
+        for (int i = 1; i <= battlefieldCount; i++) {
+            System.out.println("\n[Lieu] Champ de bataille " + i);
+            System.out.println("  Type :  Champ de bataille ");
+            System.out.println("  " + "-".repeat(50));
+            System.out.println("  [Statut] Vide");
+
+            Battlefield battlefield = new Battlefield("Champ de bataille " + i, random.nextInt(500) + 1000);
+            this.addPlace(battlefield);
+        }
+
+        // Créer 1-2 enclos
+        int enclosureCount = random.nextInt(2) + 1;
+        for (int i = 1; i <= enclosureCount; i++) {
+            System.out.println("\n[Lieu] Enclos " + i);
+            System.out. println("  Type : Enclos (accepte uniquement les creatures fantastiques)");
+            System.out.println("  " + "-".repeat(50));
+
+            Enclosure enclosure = new Enclosure("Enclos " + i, random.nextInt(300) + 500);
+
+            // Ajouter des personnages (3-5 créatures uniquement)
+            int charCount = random.nextInt(3) + 3;
+            System. out.println("  [Personnages] Creation de " + charCount + " creatures :");
+
+            List<Character> creatures = new ArrayList<>();
+            for (int j = 1; j <= charCount; j++) {
+                Character character = createCreatureCharacter("Creature-" + i + "-" + j, enclosure, random);
+                if (enclosure.canAccept(character)) {
+                    // Ajouter sans affichage
+                    enclosure.getThe_characters_present().add(character);
+                    character.modifyCurrentPlace(enclosure);
+                    creatures. add(character);
+                }
+            }
+
+            // Afficher toutes les créatures proprement
+            for (Character c : creatures) {
+                System.out.println("     - " + c.getName() + " (" + c.getType() + ", " + c.getSex() + ")");
+            }
+
+            // Ajouter des aliments pour les enclos (5-10 aliments)
+            int foodCount = random.nextInt(6) + 5;
+            System.out. println("  [Aliments] Ajout de " + foodCount + " aliments :");
+
+            Map<FoodType, Integer> foodCounts = new LinkedHashMap<>();
+            for (int j = 0; j < foodCount; j++) {
+                Food food = createRandomFood();
+                // Ajouter sans affichage
+                enclosure.getThe_aliments_present().add(food);
+                foodCounts. put(food.getFoodType(), foodCounts.getOrDefault(food.getFoodType(), 0) + 1);
+            }
+
+            // Afficher les aliments groupés proprement
+            for (Map.Entry<FoodType, Integer> entry : foodCounts.entrySet()) {
+                System.out. println("     - " + entry. getKey() + " x " + entry.getValue());
+            }
+
+            this.addPlace(enclosure);
+        }
+
+        System.out.println("\n" + "=".repeat(60));
+        System.out.println("Generation terminee : " + battlefieldCount + " champ(s) de bataille et " + enclosureCount + " enclos cree(s)");
+        System.out.println("=".repeat(60));
+    }
+
+    /**
+     * Crée une créature fantastique pour un enclos (uniquement créatures).
+     */
+    private Character createCreatureCharacter(String baseName, Place place, Random random) {
+        Sex sex = random.nextBoolean() ? Sex.MALE : Sex.FEMALE;
+        return new main.model.character.category. creature.species.Werewolf(baseName, sex);
+    }
+
+    /**
+     * Crée un aliment aléatoire.
+     */
+    private Food createRandomFood() {
+        Random random = new Random();
+        FoodType[] foodTypes = FoodType. values();
+        FoodType randomType = foodTypes[random.nextInt(foodTypes.length)];
+        return FoodStats.newFood(randomType);
     }
 
     /**
@@ -274,30 +401,87 @@ public class InvasionTheatre {
     private void duelGroups(List<Character> g1, List<Character> g2, Place battlefield) {
         if (g1.isEmpty() || g2.isEmpty()) return;
 
+        // Compter les combattants vivants
+        int aliveG1 = 0;
+        int aliveG2 = 0;
+        for (Character c :  g1) if (c.isAlive()) aliveG1++;
+        for (Character c : g2) if (c.isAlive()) aliveG2++;
+
+        if (aliveG1 == 0 || aliveG2 == 0) return;
+
+        System.out. println("\n[COMBAT] Dans " + battlefield.getName());
+        System.out.println("  Gaulois :  " + aliveG1 + " | Romains : " + aliveG2);
+        System.out.println("  " + "-".repeat(50));
+
+        // ===== PHASE 1 : Les Gaulois attaquent =====
         for (Character attacker : g1) {
-            if (!(attacker instanceof Fighter)) continue;
-            Character target = g2.get(random. nextInt(g2.size()));
-            originalPlaces.putIfAbsent(attacker, attacker.getPlace());
-            originalPlaces.putIfAbsent(target, target.getPlace());
-            attacker.fight(target);
+            if (! attacker.isAlive()) continue;  // ← ENLEVER "instanceof Fighter"
+
+            Character target = null;
+            for (Character potential :  g2) {
+                if (potential.isAlive()) {
+                    target = potential;
+                    break;
+                }
+            }
+
+            if (target != null) {
+                attacker.fight(target);
+            }
         }
+
+        System.out.println();
+
+        // ===== PHASE 2 : Les Romains ripostent =====
+        for (Character attacker : g2) {
+            if (!attacker.isAlive()) continue;  // ← ENLEVER "instanceof Fighter"
+
+            Character target = null;
+            for (Character potential : g1) {
+                if (potential. isAlive()) {
+                    target = potential;
+                    break;
+                }
+            }
+
+            if (target != null) {
+                attacker.fight(target);
+            }
+        }
+
+        System.out.println("  " + "-".repeat(50));
     }
 
-    //RETOUR AU LIEU D'ORIGINE
+    //retour au lieu d'origine
     private void returnToOriginalPlaces() {
+        System.out.println("\n=== RETOUR DES COMBATTANTS ===");
+
         for (Place battlefield : places) {
             if (!(battlefield instanceof Battlefield)) continue;
 
-            for (Character c : new ArrayList<>(battlefield.getThe_characters_present())) {
+            List<Character> toReturn = new ArrayList<>(battlefield.getThe_characters_present());
+
+            for (Character c : toReturn) {
+                // Si le personnage est mort, le retirer du champ de bataille
                 if (! c.isAlive()) {
-                    battlefield.removeCharacter(c);
+                    battlefield.getThe_characters_present().remove(c);
+                    System.out.println(c.getName() + " est mort et reste sur le champ de bataille");
                     continue;
                 }
 
-                if (originalPlaces.containsKey(c)) {
-                    Place origin = originalPlaces.remove(c);
-                    battlefield. removeCharacter(c);
-                    origin.addCharacter(c);
+                // Récupérer le lieu d'origine
+                Place origin = c.getOriginPlace();
+
+                if (origin != null) {
+                    // Retirer du champ de bataille
+                    battlefield.getThe_characters_present().remove(c);
+
+                    // Remettre dans le lieu d'origine
+                    origin.getThe_characters_present().add(c);
+                    c. modifyCurrentPlace(origin);
+                    c.setOriginPlace(null); // Réinitialiser
+
+                    System.out.println(c.getName() + " retourne à " + origin.getName());
                 }
             }
         }
@@ -330,10 +514,10 @@ public class InvasionTheatre {
         }
     }
 
-    //VIEILLISSEMENT DES ALIMENTS
+    //VIEILLISSEMENT ET MODIFICATIONS ALEATOIRES DES ALIMENTS
 
     private void ageFood() {
-        System.out.println("\n=== VIEILLISSEMENT DES ALIMENTS ===");
+        System.out.println("\n=== VIEILLISSEMENT ET MODIFICATIONS ALEATOIRES DES ALIMENTS ===");
 
         for (Place place : places) {
             List<Food> foods = new ArrayList<>(place.getThe_aliments_present());
