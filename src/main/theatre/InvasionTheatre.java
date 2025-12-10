@@ -78,7 +78,7 @@ public class InvasionTheatre {
                 }
 
                 // Génération des aliments
-                int foodCount = random.nextInt(13) + 8; // Entre 8 et 20
+                int foodCount = random.nextInt(14) + 12; // Entre 12 et 25
                 System. out.println("  [Aliments] Ajout de " + foodCount + " aliments :");
 
                 Map<FoodType, Integer> foodCounts = new LinkedHashMap<>();
