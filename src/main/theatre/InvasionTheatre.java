@@ -1,5 +1,6 @@
 package main.theatre;
 
+import main.interfaces.Leader;
 import main.model.character.Character;
 import main.model.clan_chief.ClanChief;
 import main.interfaces.Fighter;
@@ -77,7 +78,7 @@ public class InvasionTheatre {
                 }
 
                 // Génération des aliments
-                int foodCount = random.nextInt(6) + 5; // Entre 5 et 10
+                int foodCount = random.nextInt(13) + 8; // Entre 8 et 20
                 System. out.println("  [Aliments] Ajout de " + foodCount + " aliments :");
 
                 Map<FoodType, Integer> foodCounts = new LinkedHashMap<>();
@@ -418,7 +419,7 @@ public class InvasionTheatre {
             if (! attacker.isAlive()) continue;
 
             Character target = null;
-            for (Character potential : g2) {
+            for (Character potential :  g2) {
                 if (potential.isAlive()) {
                     target = potential;
                     break;
@@ -426,9 +427,11 @@ public class InvasionTheatre {
             }
 
             if (target != null) {
-                // Priorité à combat() si c'est un Fighter, sinon fight()
-                if (attacker instanceof Fighter) {
+                if(attacker instanceof Fighter) {
                     ((Fighter) attacker).combat(target);
+                } else if(attacker instanceof Leader){
+                    ((Leader) attacker).lead(g1);
+                    attacker.fight(target);
                 } else {
                     attacker.fight(target);
                 }
@@ -443,23 +446,25 @@ public class InvasionTheatre {
 
             Character target = null;
             for (Character potential : g1) {
-                if (potential.isAlive()) {
+                if (potential. isAlive()) {
                     target = potential;
                     break;
                 }
             }
 
             if (target != null) {
-                // Priorité à combat() si c'est un Fighter, sinon fight()
-                if (attacker instanceof Fighter) {
+                if(attacker instanceof Fighter) {
                     ((Fighter) attacker).combat(target);
+                } else if(attacker instanceof Leader){
+                    ((Leader) attacker).lead(g2);
+                    attacker.fight(target);
                 } else {
                     attacker.fight(target);
                 }
             }
         }
 
-        System.out.println("  " + "-". repeat(50));
+        System.out.println("  " + "-".repeat(50));
     }
 
     //retour au lieu d'origine
