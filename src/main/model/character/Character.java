@@ -38,7 +38,6 @@ public abstract class Character {
     protected boolean isStatue ; // est une statue (a bu trop de potion), implique qu'il est mort
     // Autres
     protected boolean lastWasVegetal; // le dernier aliment qu'il a mangé est végétal
-    protected int belligerence ; // en conflit
     // Variable utile à la génération de l'âge et la taille aléatoire
     protected static final Random RANDOM = new Random();
 
@@ -65,7 +64,6 @@ public abstract class Character {
         this.health = health;
         this.maxHealth = health;
         this.hunger = 100;
-        this.belligerence = 0;
         this.potionLevel = 0;
         this.lastWasVegetal = false;
         this.isAlive = true;
@@ -360,10 +358,6 @@ public abstract class Character {
 
     public int getPotionLevel() {
         return potionLevel;
-    }
-
-    public int getBelligerence() {
-        return belligerence;
     }
 
     public boolean getLastWasVegetal() {
