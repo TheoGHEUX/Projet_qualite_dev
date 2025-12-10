@@ -26,5 +26,5 @@ Tests unitaires réalisés avec JUnit.
 
 Crédits
 -------
-Basé sur le sujet : TD3/TD4 de Mickaël Martin Nevot.  
+Basé sur les sujets : TD3/TD4 de Mickaël Martin Nevot.  
 Contributeurs : FABRE Alexis, GHEUX Théo, UYSUN Ali.
