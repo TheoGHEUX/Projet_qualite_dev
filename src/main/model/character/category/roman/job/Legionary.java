@@ -45,8 +45,9 @@ public class Legionary extends Roman implements Fighter {
             System.out.println("Legionary " + this.name + " n'a pas assez d'énergie pour activer \"Coup décisif\" !");
             return;
         }
-        System.out.println("Legionary " + this.name + " utilise \"Coup décisif\" sur " + enemy.getType() + " " + enemy.getName() + " !");
-        enemy.updateHealth(-(30+(this.strength/4)));
+        double damage = 30+(this.strength/4);
+        enemy.updateHealth(-damage);
         this.stamina -= 40;
+        System.out.println("Legionary " + this.name + " utilise \"Coup décisif\" sur " + enemy.getType() + " " + enemy.getName() + " | Dégâts: " + damage + " | Vie restante: " + enemy.getHealth());
     }
 }

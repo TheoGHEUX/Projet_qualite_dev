@@ -163,12 +163,12 @@ public class Druid extends Gaul implements Worker, Leader, Fighter {
             System.out.println("Druid " + this.name + " n'a pas assez d'énergie pour activer \"Transfusion\" !");
             return;
         }
-        System.out.println("Druid " + this.name + " utilise \"Transfusion\" sur " + enemy.getType() + " " + enemy.getName() + " !");
         int stealRequested = randomBetween(5, 35);
         double stealActual = Math.min(stealRequested, enemy.getHealth());
-        System.out.println("Druid " + this.name + " vole " + stealActual + " PV.");
         enemy.updateHealth(-stealActual);
         this.updateHealth(stealActual);
         this.stamina -= 35;
+        System.out.println("Druid " + this.name + " utilise \"Transfusion\" sur " + enemy.getType() + " " + enemy.getName() + " | Régénération: " +  stealActual +  " | Dégâts: " + stealActual +" | Vie restante: " + enemy.getHealth());
+
     }
 }

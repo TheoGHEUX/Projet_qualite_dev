@@ -142,11 +142,11 @@ public class Werewolf extends Creature implements Fighter {
             System.out.println("Werewolf " + this.name + " n'a pas assez faim pour activer \"Dents de la bête\" !");
             return;
         }
-        System.out.println("Werewolf " + this.name + " utilise \"Dents de la bête\" sur " + enemy.getType() + " " + enemy.getName() + " !");
         int hungerCost = 50;
         enemy.updateHealth(-50);
         this.updateHunger(-hungerCost);
         this.updateHealth(20);
+        System.out.println("Werewolf " + this.name + " utilise \"Dents de la bête\" sur " + enemy.getType() + " " + enemy.getName() + " | Dégâts: " + 50.0 +" | Vie restante: " + enemy.getHealth());
     }
 
     public void updateRank(DominationRank rank) throws Exception {

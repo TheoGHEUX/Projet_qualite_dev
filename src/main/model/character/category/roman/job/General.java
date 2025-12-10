@@ -75,8 +75,9 @@ public class General extends Roman implements Leader, Fighter {
             System.out.println("General " + this.name + " n'a pas assez d'énergie pour utiliser \"Justice\" !");
             return;
         }
-        System.out.println("General " + this.name + " utilise \"Justice\" sur " + enemy.getType() + " " + enemy.getName() + " !");
-        enemy.updateHealth(-(enemy.getHealth()/2));
+        double damage = enemy.getHealth()/2;
+        enemy.updateHealth(-damage);
         this.stamina -= 45;
+        System.out.println("General " + this.name + " utilise \"Justice\" sur " + enemy.getType() + " " + enemy.getName() + " | Dégâts: " + damage + " | Vie restante: " + enemy.getHealth());
     }
 }
