@@ -2,11 +2,11 @@ package main.model.character.category.roman.job;
 
 import main.model.character.Character;
 import main.enums.Sex;
-import main.interfaces.Fighter;
-import main.interfaces.Leader;
-import main.model.character.category.roman.Roman;
+import main. interfaces.Fighter;
+import main. interfaces.Leader;
+import main. model.character.category.roman. Roman;
 
-import java.util.List;
+import java.util. List;
 
 // Généraux
 public class General extends Roman implements Leader, Fighter {
@@ -38,7 +38,7 @@ public class General extends Roman implements Leader, Fighter {
 
     /**
      * Le général dirige.
-     * Volonté : octroie +10 de force aux personnages présents dans le lieu pour lequel il est le chef de clan
+     * Volonté :  octroie +10 de force aux personnages présents dans le lieu pour lequel il est le chef de clan
      * Coûte 35 d'énergie.
      * @param followers
      */
@@ -48,7 +48,7 @@ public class General extends Roman implements Leader, Fighter {
             System.out.println("General " + this.name + " ne peut pas utiliser \"Volonté\" car il n'est pas dans un lieu!");
             return;
         }
-        if (this.stamina < 35) {
+        if (this. stamina < 35) {
             System.out.println("General " + this.name + " n'a pas assez d'énergie pour utiliser \"Volonté\" !");
             return;
         }
@@ -59,7 +59,6 @@ public class General extends Roman implements Leader, Fighter {
         }
         System.out.println("General " + this.name + " utilise \"Volonté\" !");
         this.stamina -= 35;
-
     }
 
     /**
@@ -70,13 +69,18 @@ public class General extends Roman implements Leader, Fighter {
      */
     @Override
     public void combat(Character enemy) {
-        //
         if (this.stamina < 45) {
-            System.out.println("General " + this.name + " n'a pas assez d'énergie pour utiliser \"Justice\" !");
+            System.out. println("General " + this.name + " n'a pas assez d'énergie pour utiliser \"Justice\" !");
             return;
         }
-        System.out.println("General " + this.name + " utilise \"Justice\" sur " + enemy.getType() + " " + enemy.getName() + " !");
-        enemy.updateHealth(-(enemy.getHealth()/2));
+
+        double damage = enemy.getHealth() / 2;
+        double remainingHealth = enemy.getHealth() - damage;
+        int remainingStamina = this. stamina - 45;
+
+        System.out.println("General " + this.name + " utilise \"Justice\" sur " + enemy.getType() + " " + enemy.getName() + " | Dégâts: " + damage + " | Vie restante: " + remainingHealth );
+
+        enemy.updateHealth(-damage);
         this.stamina -= 45;
     }
 }

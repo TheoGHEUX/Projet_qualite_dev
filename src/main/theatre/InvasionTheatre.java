@@ -415,10 +415,10 @@ public class InvasionTheatre {
 
         // ===== PHASE 1 : Les Gaulois attaquent =====
         for (Character attacker : g1) {
-            if (! attacker.isAlive()) continue;  // ← ENLEVER "instanceof Fighter"
+            if (! attacker.isAlive()) continue;
 
             Character target = null;
-            for (Character potential :  g2) {
+            for (Character potential : g2) {
                 if (potential.isAlive()) {
                     target = potential;
                     break;
@@ -426,7 +426,12 @@ public class InvasionTheatre {
             }
 
             if (target != null) {
-                attacker.fight(target);
+                // Priorité à combat() si c'est un Fighter, sinon fight()
+                if (attacker instanceof Fighter) {
+                    ((Fighter) attacker).combat(target);
+                } else {
+                    attacker.fight(target);
+                }
             }
         }
 
@@ -434,22 +439,27 @@ public class InvasionTheatre {
 
         // ===== PHASE 2 : Les Romains ripostent =====
         for (Character attacker : g2) {
-            if (!attacker.isAlive()) continue;  // ← ENLEVER "instanceof Fighter"
+            if (!attacker.isAlive()) continue;
 
             Character target = null;
             for (Character potential : g1) {
-                if (potential. isAlive()) {
+                if (potential.isAlive()) {
                     target = potential;
                     break;
                 }
             }
 
             if (target != null) {
-                attacker.fight(target);
+                // Priorité à combat() si c'est un Fighter, sinon fight()
+                if (attacker instanceof Fighter) {
+                    ((Fighter) attacker).combat(target);
+                } else {
+                    attacker.fight(target);
+                }
             }
         }
 
-        System.out.println("  " + "-".repeat(50));
+        System.out.println("  " + "-". repeat(50));
     }
 
     //retour au lieu d'origine

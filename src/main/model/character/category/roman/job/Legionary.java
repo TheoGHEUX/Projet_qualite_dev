@@ -2,8 +2,8 @@ package main.model.character.category.roman.job;
 
 import main.model.character.Character;
 import main.enums.Sex;
-import main.interfaces.Fighter;
-import main.model.character.category.roman.Roman;
+import main. interfaces.Fighter;
+import main. model.character.category.roman. Roman;
 
 // Romain légionnaires
 public class Legionary extends Roman implements Fighter {
@@ -42,11 +42,17 @@ public class Legionary extends Roman implements Fighter {
     @Override
     public void combat(Character enemy) {
         if (this.stamina < 40) {
-            System.out.println("Legionary " + this.name + " n'a pas assez d'énergie pour activer \"Coup décisif\" !");
+            System. out.println("Legionary " + this.name + " n'a pas assez d'énergie pour activer \"Coup décisif\" !");
             return;
         }
-        System.out.println("Legionary " + this.name + " utilise \"Coup décisif\" sur " + enemy.getType() + " " + enemy.getName() + " !");
-        enemy.updateHealth(-(30+(this.strength/4)));
+
+        double damage = 30 + (this.strength / 4);
+        double remainingHealth = enemy.getHealth() - damage;
+        int remainingStamina = this.stamina - 40;
+
+        System.out. println("Legionary " + this.name + " utilise \"Coup décisif\" sur " + enemy.getType() + " " + enemy.getName() + " | Dégâts: " + damage + " | Vie restante: " + remainingHealth);
+
+        enemy.updateHealth(-damage);
         this.stamina -= 40;
     }
 }
