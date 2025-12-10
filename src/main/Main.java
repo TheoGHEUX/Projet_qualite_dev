@@ -11,6 +11,9 @@ import main.model. place.category. Enclosure;
 import main.enums.CharacterType;
 import main.enums.Sex;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.ArrayList;
 import java.util. Scanner;
 import java.util.List;
 
@@ -72,15 +75,6 @@ public class Main {
      * Génère ensuite automatiquement le chef, son lieu associé
      * et l'ajoute au théâtre d'envahissement.
      */
-    /**
-     * Cree plusieurs chefs de clan de manière interactive.
-     * Demande à l'utilisateur le nombre de chefs, puis pour chacun :
-     * - son nom,
-     * - son sexe,
-     * - le type de lieu qu'il dirigera.
-     * Génère ensuite automatiquement le chef, son lieu associé
-     * et l'ajoute au théâtre d'envahissement.
-     */
     private static void createClanChiefsInteractively(InvasionTheatre theatre) {
 
         System.out.print("Combien de chefs de clan souhaitez-vous créer ?   ");
@@ -126,8 +120,6 @@ public class Main {
                 System.out.println("2. Camp romain");
                 System.out.println("3. Ville romaine");
                 System.out.println("4. Bourgade gallo-romaine");
-                System.out. println("5. Enclos");
-                System.out.println("6. Champ de bataille");
                 System.out.print("Votre choix :   ");
 
                 int choice = getIntInput();
@@ -137,10 +129,8 @@ public class Main {
                     case 2 -> new RomanFortifiedCamp("Camp de " + name, 1200, chief);
                     case 3 -> new RomanTown("Ville de " + name, 1500, chief);
                     case 4 -> new GalloRomanSettlement("Bourgade de " + name, 1300, chief);
-                    case 5 -> new Enclosure("Enclos " + name, 500);
-                    case 6 -> new Battlefield("Champ de bataille " + name, 1500);
                     default -> {
-                        System.out.println(" Choix invalide !  Veuillez choisir un nombre entre 1 et 6.");
+                        System.out.println(" Choix invalide !  Veuillez choisir un nombre entre 1 et 4.");
                         yield null; // On reste dans la boucle
                     }
                 };
@@ -210,12 +200,12 @@ public class Main {
                     actionsRemaining--;
                     break;
                 case 2: // Nourrir les personnages
-                    chief.feedCharacters();
+                    feedCharactersMenu(chief);
                     actionsRemaining--;
                     break;
                 case 3: // Soigner les personnages
                     healCharactersMenu(chief);
-                    actionsRemaining--;
+                        actionsRemaining--;
                     break;
                 case 4: // Creer un personnage
                     createCharacterMenu(chief);
@@ -256,43 +246,372 @@ public class Main {
         System.out. println("0. Terminer le tour");
         System.out.print("Votre choix : ");
     }
-
     /**
-     * Menu permettant au chef de soigner un personnage de son lieu.
-     * L'utilisateur choisit le personnage et la quantite de soin.
+     * Menu permettant au chef de nourrir les personnages de son lieu.
+     * Propose deux modes :  automatique (1 aliment par personnage) ou manuel (choix précis).
      * @param chief le chef de clan effectuant l'action
      */
-    private static void healCharactersMenu(ClanChief chief) {
+    private static void feedCharactersMenu(ClanChief chief) {
         PlaceWithClanChief place = chief.getPlace();
         if (place == null) {
             System.out.println("Le chef n'a pas de lieu.");
             return;
         }
 
-        List<Character> characters = place.getThe_characters_present();
-        if (characters.isEmpty()) {
-            System.out.println("Aucun personnage a soigner.");
+        List<main.model.character.Character> characters = place.getThe_characters_present();
+        if (characters. isEmpty()) {
+            System.out.println("Aucun personnage à nourrir.");
             return;
         }
 
-        // Affichage des personnages disponibles
-        System.out.println("\nPersonnages dans " + place.getName() + " :");
-        for (int i = 0; i < characters.size(); i++) {
-            Character c = characters.get(i);
-            System.out.println(i + ". " + c.getName() + " (Sante: " + c.getHealth() + ")");
+        if (place.getThe_aliments_present().isEmpty()) {
+            System.out.println("Aucun aliment disponible pour nourrir.");
+            return;
         }
 
-        // Choix du personnage
-        System.out.print("Choisir un personnage (numero) : ");
-        int index = getIntInput();
+        // Menu de choix du mode
+        System.out.println("\n=== MODE DE NOURRISSAGE ===");
+        System.out.println("1. Nourrir automatiquement (tous les personnages consomment 1 aliment aléatoirement)");
+        System.out.println("2. Nourrir manuellement (choisir personnages et aliments)");
+        System.out.println("0. Annuler");
+        System.out.print("Votre choix : ");
 
-        if (index >= 0 && index < characters.size()) {
-            Character character = characters.get(index);
-            System.out.print("Quantite de soin :  ");
-            int amount = getIntInput();
-            place.healCharacter(character, amount);
+        int mode = getIntInput();
+
+        if (mode == 1) {
+            // Mode automatique
+            feedAutomatically(place);
+        } else if (mode == 2) {
+            // Mode manuel
+            feedManually(place);
         } else {
-            System.out. println("Index invalide.");
+            System.out.println("Nourrissage annulé.");
+        }
+    }
+
+    /**
+     * Nourrit automatiquement tous les personnages avec les aliments disponibles.
+     * Chaque personnage mange un aliment.
+     */
+    private static void feedAutomatically(PlaceWithClanChief place) {
+        System.out.println("\n=== NOURRISSAGE AUTOMATIQUE ===");
+
+        List<main.model.character.Character> characters = place.getThe_characters_present();
+        List<main.model.items.food.Food> foods = place.getThe_aliments_present();
+
+        int fed = 0;
+        for (main.model.character.Character c : characters) {
+            if (foods.isEmpty()) {
+                System.out.println("Plus d'aliments disponibles !");
+                break;
+            }
+
+            if (! c.isAlive()) {
+                System.out.println(c.getName() + " est mort, impossible de le nourrir.");
+                continue;
+            }
+
+            // Prendre le premier aliment disponible
+            main.model.items.food.Food food = foods.remove(0);
+            c.eat(food);
+            System.out.println( c.getName() + " a mangé " + food.getFoodType());
+            fed++;
+        }
+
+        System.out.println("\n" + fed + " personnage(s) nourri(s) automatiquement.");
+    }
+
+    /**
+     * Permet de nourrir manuellement les personnages en choisissant qui et avec quoi.
+     * Boucle jusqu'à ce que l'utilisateur quitte.
+     */
+    private static void feedManually(PlaceWithClanChief place) {
+        boolean continueFeeding = true;
+
+        while (continueFeeding) {
+            List<main.model.character.Character> characters = place.getThe_characters_present();
+            List<main.model.items.food. Food> foods = place.getThe_aliments_present();
+
+            if (foods.isEmpty()) {
+                System. out.println("\nPlus d'aliments disponibles !");
+                break;
+            }
+
+            // Afficher les personnages avec leurs stats
+            System.out.println("\n" + "=". repeat(60));
+            System.out.println("PERSONNAGES DISPONIBLES");
+            System.out. println("=".repeat(60));
+
+            for (int i = 0; i < characters.size(); i++) {
+                main.model. character.Character c = characters.get(i);
+                String status = c.isAlive() ? "Vivant" : "Mort";
+                System.out.println((i + 1) + ". " + c.getName() +
+                        " | PV: " + (int)c.getHealth() + "/" + (int)c.getMaxHealth() +
+                        " | Energie: " + c. getStamina() + "/" + c.getMaxStamina() +
+                        " | Faim: " + c.getHunger() + "/100" +
+                        " | " + status);
+            }
+
+            System. out.println("\n0. Terminer le nourrissage manuel");
+            System.out.print("Choisir un personnage à nourrir : ");
+            int charIndex = getIntInput();
+
+            if (charIndex == 0) {
+                continueFeeding = false;
+                System. out.println("Nourrissage manuel terminé.");
+                continue;
+            }
+
+            // Convertir l'index utilisateur (1-based) en index tableau (0-based)
+            int realCharIndex = charIndex - 1;
+
+            if (realCharIndex < 0 || realCharIndex >= characters.size()) {
+                System.out.println(" Index invalide.");
+                continue;
+            }
+
+            main.model.character.Character selectedChar = characters.get(realCharIndex);
+
+            if (! selectedChar.isAlive()) {
+                System.out.println(selectedChar. getName() + " est mort, impossible de le nourrir.");
+                continue;
+            }
+
+            // Afficher les aliments disponibles
+            System.out.println("\n" + "=".repeat(60));
+            System.out.println("ALIMENTS DISPONIBLES");
+            System.out.println("=".repeat(60));
+
+            // Grouper les aliments pour affichage
+            Map<main.enums.FoodType, List<Integer>> foodByType = new HashMap<>();
+            for (int i = 0; i < foods.size(); i++) {
+                main.enums.FoodType type = foods.get(i).getFoodType();
+                foodByType.computeIfAbsent(type, k -> new ArrayList<>()).add(i);
+            }
+
+            int displayIndex = 1;
+            Map<Integer, Integer> displayToRealIndex = new HashMap<>();
+
+            for (Map.Entry<main.enums. FoodType, List<Integer>> entry : foodByType.entrySet()) {
+                main.enums.FoodType foodType = entry.getKey();
+                int count = entry.getValue().size();
+                int firstIndex = entry.getValue().get(0);
+
+                main.model.items.food.Food sampleFood = foods.get(firstIndex);
+                System.out.println(displayIndex + ".  " + foodType + " (x" + count + ")" +
+                        " | Vie:  +" + sampleFood.getHealthEffect() +
+                        " | Faim: +" + sampleFood.getHungerEffect() +
+                        " | Energie:  +" + sampleFood.getStaminaEffect());
+
+                displayToRealIndex.put(displayIndex, firstIndex);
+                displayIndex++;
+            }
+
+            System.out.print("\nChoisir un aliment : ");
+            int foodChoice = getIntInput();
+
+            if (! displayToRealIndex.containsKey(foodChoice)) {
+                System.out.println(" Choix invalide.");
+                continue;
+            }
+
+            int realFoodIndex = displayToRealIndex.get(foodChoice);
+            main.model.items.food. Food selectedFood = foods.get(realFoodIndex);
+
+            // Faire manger l'aliment au personnage
+            selectedChar.eat(selectedFood);
+            foods.remove(realFoodIndex);
+
+            System.out.println("\n✓ " + selectedChar.getName() + " a mangé " + selectedFood.getFoodType());
+            System.out.println("  Nouvel état :  PV:  " + (int)selectedChar.getHealth() +
+                    " | Energie: " + selectedChar.getStamina() +
+                    " | Faim:  " + selectedChar.getHunger());
+        }
+    }
+
+    /**
+     * Menu permettant au chef de soigner/nourrir les personnages de son lieu.
+     * Propose deux modes : automatique (1 aliment par personnage) ou manuel (choix précis).
+     * @param chief le chef de clan effectuant l'action
+     * @return true si une action a été effectuée, false sinon
+     */
+    private static boolean healCharactersMenu(ClanChief chief) {
+        PlaceWithClanChief place = chief.getPlace();
+        if (place == null) {
+            System.out.println("Le chef n'a pas de lieu.");
+            return false;
+        }
+
+        List<main.model.character.Character> characters = place.getThe_characters_present();
+        if (characters.isEmpty()) {
+            System.out.println("Aucun personnage à soigner.");
+            return false;
+        }
+
+        if (place.getThe_aliments_present().isEmpty()) {
+            System.out.println("Aucun aliment disponible pour soigner.");
+            return false;
+        }
+
+        // Menu de choix du mode
+        System.out.println("\n=== MODE DE SOINS ===");
+        System.out.println("1. Soigner automatiquement (tous les personnages consomment 1 aliment aléatoirement)");
+        System.out.println("2. Soigner manuellement (choisir personnages et aliments)");
+        System.out.println("0. Annuler");
+        System.out.print("Votre choix : ");
+
+        int mode = getIntInput();
+
+        if (mode == 1) {
+            // Mode automatique
+            healAutomatically(place);
+            return true; // Action consommée
+        } else if (mode == 2) {
+            // Mode manuel
+            healManually(place);
+            return true; // Action consommée après avoir quitté
+        } else {
+            System. out.println("Soins annulés.");
+            return false; // Pas d'action consommée
+        }
+    }
+
+    /**
+     * Soigne automatiquement tous les personnages avec les aliments disponibles.
+     * Chaque personnage mange un aliment.
+     */
+    private static void healAutomatically(PlaceWithClanChief place) {
+        System.out.println("\n=== SOINS AUTOMATIQUES ===");
+
+        List<main.model.character.Character> characters = place.getThe_characters_present();
+        List<main.model.items.food.Food> foods = place.getThe_aliments_present();
+
+        int healed = 0;
+        for (main.model.character.Character c : characters) {
+            if (foods.isEmpty()) {
+                System.out.println("Plus d'aliments disponibles !");
+                break;
+            }
+
+            if (! c.isAlive()) {
+                System.out.println(c.getName() + " est mort, impossible de le soigner.");
+                continue;
+            }
+
+            // Prendre le premier aliment disponible
+            main.model.items.food.Food food = foods.remove(0);
+            c.eat(food);
+            System.out.println("✓ " + c.getName() + " a mangé " + food.getFoodType());
+            healed++;
+        }
+
+        System.out. println("\n" + healed + " personnage(s) soigné(s) automatiquement.");
+    }
+
+    /**
+     * Permet de soigner manuellement les personnages en choisissant qui et avec quoi.
+     * Boucle jusqu'à ce que l'utilisateur quitte.
+     */
+    private static void healManually(PlaceWithClanChief place) {
+        boolean continueHealing = true;
+
+        while (continueHealing) {
+            List<main.model.character.Character> characters = place.getThe_characters_present();
+            List<main.model.items.food. Food> foods = place.getThe_aliments_present();
+
+            if (foods.isEmpty()) {
+                System. out.println("\nPlus d'aliments disponibles !");
+                break;
+            }
+
+            // Afficher les personnages avec leurs stats
+            System.out. println("\n" + "=".repeat(60));
+            System.out.println("PERSONNAGES DISPONIBLES");
+            System.out. println("=".repeat(60));
+
+            for (int i = 0; i < characters.size(); i++) {
+                main.model.character. Character c = characters.get(i);
+                String status = c. isAlive() ? "Vivant" : "Mort";
+                System.out.println((i + 1) + ". " + c.getName() +
+                        " | PV: " + (int)c.getHealth() + "/" + (int)c.getMaxHealth() +
+                        " | Energie: " + c.getStamina() + "/" + c.getMaxStamina() +
+                        " | Faim: " + c. getHunger() + "/100" +
+                        " | " + status);
+            }
+
+            System.out. println("\n0. Terminer les soins manuels");
+            System.out.print("Choisir un personnage à soigner : ");
+            int charIndex = getIntInput();
+
+            if (charIndex == 0) {
+                continueHealing = false;
+                System.out.println("Soins manuels terminés.");
+                continue;
+            }
+
+            int realCharIndex = charIndex - 1;
+
+            if (realCharIndex < 0 || realCharIndex >= characters.size()) {
+                System. out.println(" Index invalide.");
+                continue;
+            }
+
+            main.model.character.Character selectedChar = characters.get(realCharIndex);
+
+            if (! selectedChar.isAlive()) {
+                System.out.println( selectedChar.getName() + " est mort, impossible de le soigner.");
+                continue;
+            }
+
+            // Afficher les aliments disponibles
+            System.out.println("\n" + "=".repeat(60));
+            System.out.println("ALIMENTS DISPONIBLES");
+            System.out.println("=".repeat(60));
+
+            // Grouper les aliments pour affichage
+            Map<main.enums.FoodType, List<Integer>> foodByType = new HashMap<>();
+            for (int i = 0; i < foods.size(); i++) {
+                main.enums.FoodType type = foods.get(i).getFoodType();
+                foodByType.computeIfAbsent(type, k -> new ArrayList<>()).add(i);
+            }
+
+            int displayIndex = 1;
+            Map<Integer, Integer> displayToRealIndex = new HashMap<>();
+
+            for (Map.Entry<main.enums.FoodType, List<Integer>> entry : foodByType.entrySet()) {
+                main.enums.FoodType foodType = entry.getKey();
+                int count = entry.getValue().size();
+                int firstIndex = entry.getValue().get(0);
+
+                main.model.items.food.Food sampleFood = foods.get(firstIndex);
+                System.out.println(displayIndex + ". " + foodType + " (x" + count + ")" +
+                        " | Vie: +" + sampleFood.getHealthEffect() +
+                        " | Faim: +" + sampleFood. getHungerEffect() +
+                        " | Energie:  +" + sampleFood.getStaminaEffect());
+
+                displayToRealIndex.put(displayIndex, firstIndex);
+                displayIndex++;
+            }
+
+            System.out.print("\nChoisir un aliment : ");
+            int foodChoice = getIntInput();
+
+            if (! displayToRealIndex.containsKey(foodChoice)) {
+                System.out.println(" Choix invalide.");
+                continue;
+            }
+
+            int realFoodIndex = displayToRealIndex.get(foodChoice);
+            main.model.items.food. Food selectedFood = foods.get(realFoodIndex);
+
+            // Faire manger l'aliment au personnage
+            selectedChar.eat(selectedFood);
+            foods.remove(realFoodIndex);
+
+            System.out.println(selectedChar.getName() + " a mangé " + selectedFood.getFoodType());
+            System.out.println("  Nouvel état : PV: " + (int)selectedChar.getHealth() +
+                    " | Energie: " + selectedChar.getStamina() +
+                    " | Faim: " + selectedChar.getHunger());
         }
     }
 
