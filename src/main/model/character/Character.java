@@ -158,6 +158,10 @@ public abstract class Character {
         int effect = food.getHealthEffect();
         if(food.isVege() && lastWasVegetal){
             effect = -Math.abs(effect);
+        } else if(food.isVege()){
+            lastWasVegetal = true;
+        } else {
+            lastWasVegetal = false;
         }
 
         if(effect > 0){
@@ -169,6 +173,14 @@ public abstract class Character {
         } else {
             updateHealth(effect);
         }
+
+        // Gestion de l'énergie
+        if(stamina + food.getStaminaEffect() >= maxStamina){
+            stamina = maxStamina;
+        } else {
+            stamina += food.getStaminaEffect();
+        }
+
 
         // Gestion des végétaux
         lastWasVegetal = food.isVege();
@@ -226,7 +238,7 @@ public abstract class Character {
                             }
                         }
                     }
-                }, 3, TimeUnit.MINUTES);
+                }, 5, TimeUnit.MINUTES);
             }
             // Si les effets deviennent permanents :
             else {
@@ -254,7 +266,7 @@ public abstract class Character {
                         }
                     }
                 }
-            }, 3, TimeUnit.MINUTES);
+            }, 5, TimeUnit.MINUTES);
         }
         // Gestion des autres effets
 

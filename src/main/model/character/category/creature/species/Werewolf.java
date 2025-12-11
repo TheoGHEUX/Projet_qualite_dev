@@ -140,6 +140,7 @@ public class Werewolf extends Creature implements Fighter {
         int currentHunger = this.getHunger();
         if (currentHunger <= 50) {
             System.out.println("Werewolf " + this.name + " n'a pas assez faim pour activer \"Dents de la bête\" !");
+            this.fight(enemy);
             return;
         }
         int hungerCost = 50;
