@@ -73,6 +73,7 @@ public class General extends Roman implements Leader, Fighter {
         //
         if (this.stamina < 45) {
             System.out.println("General " + this.name + " n'a pas assez d'énergie pour utiliser \"Justice\" !");
+            this.fight(enemy);
             return;
         }
         double damage = enemy.getHealth()/2;

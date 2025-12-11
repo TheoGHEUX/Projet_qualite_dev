@@ -43,6 +43,7 @@ public class Legionary extends Roman implements Fighter {
     public void combat(Character enemy) {
         if (this.stamina < 40) {
             System.out.println("Legionary " + this.name + " n'a pas assez d'énergie pour activer \"Coup décisif\" !");
+            this.fight(enemy);
             return;
         }
         double damage = 30+(this.strength/4);

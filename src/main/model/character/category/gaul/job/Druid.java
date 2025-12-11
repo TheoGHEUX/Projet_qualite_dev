@@ -161,6 +161,7 @@ public class Druid extends Gaul implements Worker, Leader, Fighter {
     public void combat(Character enemy) {
         if (this.stamina < 35) {
             System.out.println("Druid " + this.name + " n'a pas assez d'énergie pour activer \"Transfusion\" !");
+            this.fight(enemy);
             return;
         }
         int stealRequested = randomBetween(5, 35);

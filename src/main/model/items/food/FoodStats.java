@@ -29,7 +29,7 @@ public class FoodStats {
             case FRESH_FOUR_LEAF_CLOVER:
                 return new Food(foodType, 7, 10, 20,true);
             case NOT_FRESH_FOUR_LEAF_CLOVER:
-                return new Food(foodType, 3, 5, 2,true);
+                return new Food(foodType, -5, 5, 2,true);
             case ROCKFISH_OIL:
                 return new Food(foodType, 10, 8, 15,false);
             case HONEY:
