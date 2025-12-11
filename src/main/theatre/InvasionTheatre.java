@@ -29,7 +29,7 @@ public class InvasionTheatre {
 
     private int currentTurn = 0;
 
-    //CONSTRUCTEUR
+    //constructeur
     public InvasionTheatre(String name, int maxPlaces) {
         this.name = name;
         this.maxPlaces = maxPlaces;
@@ -38,9 +38,6 @@ public class InvasionTheatre {
     /**
      * Initialise automatiquement des personnages et aliments aléatoires
      * dans chaque lieu avec chef de clan.
-     */
-    /**
-     * Initialise aléatoirement des personnages et des aliments dans les lieux avec chefs.
      */
     public void initializeRandomCharactersAndItems() {
         Random random = new Random();
@@ -115,7 +112,7 @@ public class InvasionTheatre {
         CharacterType type;
 
         if (place instanceof GallicVillage || place instanceof GalloRomanSettlement) {
-            // Lieu gaulois ou mixte
+            // Lieu gaulois ou autre
             baseName = gaulNames[random.nextInt(gaulNames.length)];
             if (index > 1) baseName += " " + index;
 
@@ -158,7 +155,7 @@ public class InvasionTheatre {
         System.out.println("GENERATION DES LIEUX AUTONOMES");
         System.out.println("=".repeat(60));
 
-        // Créer 2-3 champs de bataille (VIDES au départ)
+        // Créer 2-3 champs de bataille (vide au départ)
         int battlefieldCount = random.nextInt(2) + 2;
         for (int i = 1; i <= battlefieldCount; i++) {
             System.out.println("\n[Lieu] Champ de bataille " + i);
@@ -179,7 +176,7 @@ public class InvasionTheatre {
 
             Enclosure enclosure = new Enclosure("Enclos " + i, random.nextInt(300) + 500);
 
-            // Ajouter des personnages (3-5 créatures uniquement)
+            // Ajouter des personnages (3-5 créatures)
             int charCount = random.nextInt(3) + 3;
             System. out.println("  [Personnages] Creation de " + charCount + " creatures :");
 
@@ -187,14 +184,13 @@ public class InvasionTheatre {
             for (int j = 1; j <= charCount; j++) {
                 Character character = createCreatureCharacter("Creature-" + i + "-" + j, enclosure, random);
                 if (enclosure.canAccept(character)) {
-                    // Ajouter sans affichage
                     enclosure.getThe_characters_present().add(character);
                     character.modifyCurrentPlace(enclosure);
                     creatures. add(character);
                 }
             }
 
-            // Afficher toutes les créatures proprement
+            // Afficher toutes les créatures de manière propre
             for (Character c : creatures) {
                 System.out.println("     - " + c.getName() + " (" + c.getType() + ", " + c.getSex() + ")");
             }
@@ -206,12 +202,11 @@ public class InvasionTheatre {
             Map<FoodType, Integer> foodCounts = new LinkedHashMap<>();
             for (int j = 0; j < foodCount; j++) {
                 Food food = createRandomFood();
-                // Ajouter sans affichage
                 enclosure.getThe_aliments_present().add(food);
                 foodCounts. put(food.getFoodType(), foodCounts.getOrDefault(food.getFoodType(), 0) + 1);
             }
 
-            // Afficher les aliments groupés proprement
+            // Afficher les aliments groupés de manière propre
             for (Map.Entry<FoodType, Integer> entry : foodCounts.entrySet()) {
                 System.out. println("     - " + entry. getKey() + " x " + entry.getValue());
             }
@@ -241,7 +236,7 @@ public class InvasionTheatre {
     }
 
     /**
-     * Pour avoir un joli affichage des items
+     * Pour avoir un affichage des items clean
      */
     private String getFoodDisplayName(FoodType foodType) {
         return switch (foodType) {
@@ -290,45 +285,6 @@ public class InvasionTheatre {
         return types;
     }
 
-    /**
-     * Génère un nom aléatoire selon le type de personnage.
-     */
-    private String generateRandomName(CharacterType type) {
-        String[] gaulNames = {"Astérix", "Obélix", "Panoramix", "Assurancetourix",
-                "Abraracourcix", "Bonemine", "Agecanonix", "Cétautomatix",
-                "Ordralfabétix", "Falbala", "Ielosubmarine", "Plaintcontrix"};
-        String[] romanNames = {"Marcus", "Brutus", "Caesar", "Claudius", "Gracchus",
-                "Julius", "Titus", "Lucius", "Gaius", "Publius",
-                "Quintus", "Decimus", "Septimus", "Octavius"};
-
-        return switch (type) {
-            case DRUID, BLACKSMITH, MERCHANT, INNKEEPER ->
-                    gaulNames[random.nextInt(gaulNames.length)];
-            case LEGIONARY, GENERAL, PREFECT ->
-                    romanNames[random.nextInt(romanNames.length)];
-            case WEREWOLF ->
-                    "Loup" + random.nextInt(100);
-        };
-    }
-
-    /**
-     * Retourne un aliment aléatoire adapté au type de lieu.
-     */
-    private FoodType getRandomFoodForPlace(Place place) {
-        FoodType[] gaulFood = {FoodType. WILD_BOAR, FoodType.WILD_BOAR, // Plus de sanglier
-                FoodType. PASSABLE_FRESH_FISH, FoodType.WINE,
-                FoodType. CARROT, FoodType. STRAWBERRY};
-        FoodType[] romanFood = {FoodType.WILD_BOAR, FoodType.HONEY,
-                FoodType. MEAD, FoodType. WINE, FoodType.WINE, // Plus de vin
-                FoodType.LOBSTER};
-
-        if (place instanceof GallicVillage || place instanceof GalloRomanSettlement) {
-            return gaulFood[random.nextInt(gaulFood.length)];
-        } else {
-            return romanFood[random.nextInt(romanFood.length)];
-        }
-    }
-
     //GESTION DES LIEUX
     public boolean addPlace(Place place) {
         if (places.size() >= maxPlaces) return false;
@@ -355,7 +311,7 @@ public class InvasionTheatre {
     public int getCurrentTurn() { return currentTurn; }
 
 
-    // SIMULATION
+    //simulation
     public void simulateTurn() {
         currentTurn++;
 
@@ -366,14 +322,7 @@ public class InvasionTheatre {
         ageFood();
     }
 
-    public void simulate(int maxTurns) {
-        for (int i = 0; i < maxTurns; i++) {
-            simulateTurn();
-        }
-    }
-
-
-    //COMBATS
+    //combats
 
     private void fight() {
         for (Place place : places) {
@@ -500,7 +449,7 @@ public class InvasionTheatre {
         }
     }
 
-    //MODIFICATION ALÉATOIRE
+    //modification aléatoire
 
     private void modifyCharactersState() {
         for (Place p : places) {
@@ -515,7 +464,7 @@ public class InvasionTheatre {
         }
     }
 
-    //APPARITION ALIMENTS
+    //apparitions des aliments
     private void spawnFood() {
         for (Place p :  places) {
             if (p instanceof Battlefield) continue;
@@ -527,7 +476,7 @@ public class InvasionTheatre {
         }
     }
 
-    //VIEILLISSEMENT ET MODIFICATIONS ALEATOIRES DES ALIMENTS
+    //vieillisement et modifications aléatoire des aliment
 
     private void ageFood() {
         System.out.println("\n=== VIEILLISSEMENT ET MODIFICATIONS ALEATOIRES DES ALIMENTS ===");
